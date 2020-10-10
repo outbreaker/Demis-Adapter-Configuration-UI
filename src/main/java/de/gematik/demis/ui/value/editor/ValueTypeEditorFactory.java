@@ -15,6 +15,7 @@ public class ValueTypeEditorFactory {
             case BOOLEAN: return new BooleanEditor();
             case INT: return new IntEditor();
             case STRING_LIST: return new StringListEditor();
+            case RELATIVE_PATH: return new RelativPathEditor();
             default: return new EmptyEditor(type);
         }
     }
