@@ -1,13 +1,12 @@
 package de.gematik.demis.ui;
 
 import de.gematik.demis.ui.actions.DemisMenuActionListener;
+import de.gematik.demis.utils.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -35,11 +34,9 @@ class Menu {
     private JMenuItem getMenuItem(ResourceBundle messages, String name) {
         JMenuItem jMenuItem = new JMenuItem(messages.getString(name));
         jMenuItem.setActionCommand(name);
-        URL resource = getClass().getResource("/icons/" + name + ".png");
-        if (resource == null)
-            LOG.warn("No Icon File for \"" + name + ".png\" found!");
-        else
-            jMenuItem.setIcon(new ImageIcon(new ImageIcon(resource).getImage().getScaledInstance(25, 25, Image.SCALE_AREA_AVERAGING)));
+        ImageIcon imageIcon = ImageUtils.loadResizeImage(name, 25);
+        if (imageIcon != null)
+            jMenuItem.setIcon(imageIcon);
         jMenuItem.addActionListener(demisMenuActionListener);
         return jMenuItem;
     }
