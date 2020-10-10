@@ -13,6 +13,7 @@ public class IntEditor extends JPanel implements IValueTypeView {
     private JFormattedTextField field;
 
     public IntEditor() {
+        this.setLayout(new BorderLayout());
         MaskFormatter formatter = null;
         try {
             formatter = new MaskFormatter("#####");

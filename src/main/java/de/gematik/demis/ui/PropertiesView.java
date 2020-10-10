@@ -56,12 +56,13 @@ public class PropertiesView extends JPanel {
 
         Arrays.stream(APP_Properties.values()).forEach(e -> {
         c.weighty = 0.1;
-                    c.fill = GridBagConstraints.VERTICAL;
+                    c.fill = GridBagConstraints.BOTH;
                     c.gridx = 0;
                     c.insets = new Insets(0, 10, 0, 10);  //top padding
                     c.anchor = GridBagConstraints.LAST_LINE_START;
                     c.weightx = 0;
                     this.add(new Label(e.getKey()), c);
+
                     c.gridx = 1;
                     c.weightx = 1.0;
                     if (e.getType() == VALUE_TYPE.STRING_LIST) {
@@ -69,6 +70,7 @@ public class PropertiesView extends JPanel {
                         c.fill = GridBagConstraints.BOTH;
                     }
                     this.add(ValueTypeEditorFactory.createEditor(e.getType()).getViewComponent(), c);
+
                     c.gridy++;
 
                 }
