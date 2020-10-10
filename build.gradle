@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group 'de.gematik'
+version '1.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'org.junit.jupiter:junit-jupiter:5.5.2'
+    testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: '1.7.0'
+
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    implementation group: 'com.formdev', name: 'flatlaf', version: '0.43'
+    implementation group: 'com.formdev', name: 'flatlaf-intellij-themes', version: '0.43'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.3'
+
+}
