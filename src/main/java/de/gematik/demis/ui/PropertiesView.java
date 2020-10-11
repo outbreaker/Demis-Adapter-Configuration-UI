@@ -1,21 +1,41 @@
 package de.gematik.demis.ui;
 
+import de.gematik.demis.entities.ADAPTER_Properties;
 import de.gematik.demis.entities.APP_Properties;
+import de.gematik.demis.entities.IProperties;
 import de.gematik.demis.entities.VALUE_TYPE;
+import de.gematik.demis.ui.value.editor.IValueTypeView;
 import de.gematik.demis.ui.value.editor.ValueTypeEditorFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Properties;
 
 public class PropertiesView extends JPanel {
-    public PropertiesView() {
-        initComponents();
+    private static Logger LOG = LoggerFactory.getLogger(PropertiesView.class.getName());
+
+
+    public PropertiesView(Path path) {
+        initComponents(path.toFile());
     }
 
-    private void initComponents() {
+    private void initComponents(File file) {
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileInputStream(file));
+        } catch (IOException e) {
+            LOG.error("Could not load Properties-File \"" + file.getAbsolutePath() + "\"", e);
+        }
+
         this.addComponentListener(new ComponentListener() {
             @Override
             public void componentResized(ComponentEvent componentEvent) {
@@ -54,8 +74,16 @@ public class PropertiesView extends JPanel {
 
         c.gridy = 0;
 
-        Arrays.stream(APP_Properties.values()).forEach(e -> {
-        c.weighty = 0.1;
+        IProperties[] values;
+        if (ADAPTER_Properties.containsProperties(prop)) {
+            values = ADAPTER_Properties.values();
+        } else if (APP_Properties.containsProperties(prop)) {
+            values = APP_Properties.values();
+        } else {
+            return;
+        }
+        Arrays.stream(values).forEach(e -> {
+                    c.weighty = 0.1;
                     c.fill = GridBagConstraints.BOTH;
                     c.gridx = 0;
                     c.insets = new Insets(0, 10, 0, 10);  //top padding
@@ -69,7 +97,13 @@ public class PropertiesView extends JPanel {
                         c.weighty = 0.5;
                         c.fill = GridBagConstraints.BOTH;
                     }
-                    this.add(ValueTypeEditorFactory.createEditor(e.getType()).getViewComponent(), c);
+                    IValueTypeView editor = ValueTypeEditorFactory.createEditor(e.getType());
+                    String property = prop.getProperty(e.getKey());
+                    if (property == null)
+                        LOG.error("File: \"" + file.getName() + "\" Property \"" + e.getKey() + "\" has no Value!");
+                    else
+                        editor.setValue(property);
+                    this.add(editor.getViewComponent(), c);
 
                     c.gridy++;
 

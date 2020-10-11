@@ -1,5 +1,7 @@
 package de.gematik.demis.control;
 
+import de.gematik.demis.ui.MainView;
+import de.gematik.demis.ui.PropertiesView;
 import de.gematik.demis.ui.actions.DemisMenuActionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +21,8 @@ public class ConfigurationLoader {
     public void loadAll(File folder) {
         LOG.debug("LoadAll for " + folder.getAbsolutePath());
         try {
-            listFilesUsingFileWalk(folder.getAbsolutePath(), 10)
-                    .forEach(System.out::println);
+            listFilesUsingFileWalk(folder.getAbsolutePath(), 10).stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("properties")))
+                    .forEach(f -> MainView.getInstance().addTab(f.getFileName().toString(), new PropertiesView(f)));
         } catch (IOException e) {
             e.printStackTrace();
         }
