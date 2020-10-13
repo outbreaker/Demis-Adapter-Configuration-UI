@@ -15,7 +15,7 @@ class ValueTypeEditorFactoryTest {
         Assert.assertEquals(IntEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.INT).getClass());
         Assert.assertEquals(StringListEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.STRING_LIST).getClass());
         Assert.assertEquals(RelativPathEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.RELATIVE_PATH).getClass());
-        Assert.assertEquals(EmptyEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.STRING).getClass());
+        Assert.assertEquals(StringEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.STRING).getClass());
         Assert.assertEquals(EmptyEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.PATH_LIST).getClass());
         Assert.assertEquals(EmptyEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.PATH).getClass());
     }
