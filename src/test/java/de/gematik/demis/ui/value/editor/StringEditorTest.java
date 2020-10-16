@@ -13,7 +13,7 @@ class StringEditorTest {
     public static final String TEXT = "MeinText";
 
     @Test
-    void getValue() {
+    void getSetValue() {
         StringEditor stringEditor = new StringEditor();
         Assert.assertNotNull(stringEditor.getValue());
         stringEditor.setValue(TEXT);
