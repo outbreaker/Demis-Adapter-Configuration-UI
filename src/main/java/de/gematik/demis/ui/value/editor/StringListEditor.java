@@ -36,7 +36,7 @@ public class StringListEditor extends JPanel implements IValueTypeView {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 var selectedValuesList = stringList.getSelectedValuesList();
-                selectedValuesList.forEach(e -> listModel.removeElement(e));
+                selectedValuesList.forEach(listModel::removeElement);
                 stringList.revalidate();
             }
         });
@@ -56,12 +56,12 @@ public class StringListEditor extends JPanel implements IValueTypeView {
 
     @Override
     public String getValue() {
-        return String.join(DELIMITER, Arrays.stream(listModel.toArray()).map(e -> e.toString()).collect(Collectors.toList()));
+        return Arrays.stream(listModel.toArray()).map(Object::toString).collect(Collectors.joining(DELIMITER));
     }
 
     @Override
     public void setValue(String value) {
-        Arrays.stream(value.split(DELIMITER)).forEach(e -> listModel.addElement(e));
+        Arrays.stream(value.split(DELIMITER)).forEach(listModel::addElement);
     }
 
     @Override
