@@ -18,6 +18,7 @@ public class ValueTypeEditorFactory {
             case RELATIVE_PATH: return new RelativPathEditor();
             case STRING: return new StringEditor();
             case PASSWORD: return new PasswordEditor();
+            case URL: return new UrlEditor();
             default: return new EmptyEditor(type);
         }
     }

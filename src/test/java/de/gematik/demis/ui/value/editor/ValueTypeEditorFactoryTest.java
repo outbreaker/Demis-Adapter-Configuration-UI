@@ -18,5 +18,7 @@ class ValueTypeEditorFactoryTest {
         Assert.assertEquals(StringEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.STRING).getClass());
         Assert.assertEquals(EmptyEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.PATH_LIST).getClass());
         Assert.assertEquals(EmptyEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.PATH).getClass());
+        Assert.assertEquals(UrlEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.URL).getClass());
+        Assert.assertEquals(PasswordEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.PASSWORD).getClass());
     }
 }
