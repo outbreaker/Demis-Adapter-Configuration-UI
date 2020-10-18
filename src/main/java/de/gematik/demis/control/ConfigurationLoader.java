@@ -1,5 +1,6 @@
 package de.gematik.demis.control;
 
+import de.gematik.demis.ui.LaboratoryView;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.PropertiesView;
 import de.gematik.demis.ui.actions.DemisMenuActionListener;
@@ -21,8 +22,12 @@ public class ConfigurationLoader {
     public void loadAll(File folder) {
         LOG.debug("LoadAll for " + folder.getAbsolutePath());
         try {
-            listFilesUsingFileWalk(folder.getAbsolutePath(), 10).stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("properties")))
+            Set<Path> paths = listFilesUsingFileWalk(folder.getAbsolutePath(), 10);
+
+            paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("properties")))
                     .forEach(f -> MainView.getInstance().addTab(f.getFileName().toString(), new PropertiesView(f)));
+            paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
+                    .forEach(f -> MainView.getInstance().addTab(f.getFileName().toString(), new LaboratoryView(f)));
         } catch (IOException e) {
             e.printStackTrace();
         }

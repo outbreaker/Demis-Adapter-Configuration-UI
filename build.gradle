@@ -19,5 +19,7 @@ dependencies {
     implementation group: 'com.formdev', name: 'flatlaf', version: '0.43'
     implementation group: 'com.formdev', name: 'flatlaf-intellij-themes', version: '0.43'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.3'
-
+//    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
+    compileOnly 'org.projectlombok:lombok:1.18.16'
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
 }
