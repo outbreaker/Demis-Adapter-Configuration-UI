@@ -12,7 +12,16 @@ import java.awt.*;
 class StringListEditorTest {
 
     public static final String DUMMY_LIST = "a,b,cc,fd,gg,hh,ttt";
+    public static final String[] DUMMY_ARRAY = {"a", "b", "cc", "fd", "gg", "hh", "ttt"};
     public static final String DUMMY_LIST_2 = "a,cc,fd,gg,hh,ttt";
+
+    @Test
+    void createWithValue() {
+        StringListEditor stringListEditor = new StringListEditor(DUMMY_ARRAY);
+        Assert.assertEquals(DUMMY_LIST, stringListEditor.getValue());
+        stringListEditor.setValue(DUMMY_LIST_2);
+        Assert.assertEquals(DUMMY_LIST_2, stringListEditor.getValue());
+    }
 
     @Test
     void getSetValue() {
@@ -27,11 +36,11 @@ class StringListEditorTest {
         ListModel model = ((JList) jListComp).getModel();
         Assert.assertEquals(DefaultListModel.class.toString(), model.getClass().toString());
         Object[] values = ((DefaultListModel) model).toArray();
-        Assert.assertArrayEquals(DUMMY_LIST.split(","),values);
+        Assert.assertArrayEquals(DUMMY_LIST.split(","), values);
 
         ((DefaultListModel) model).removeElementAt(1);
         values = ((DefaultListModel) model).toArray();
-        Assert.assertArrayEquals(DUMMY_LIST_2.split(","),values);
+        Assert.assertArrayEquals(DUMMY_LIST_2.split(","), values);
         Assert.assertEquals(DUMMY_LIST_2, stringListEditor.getValue());
 
     }

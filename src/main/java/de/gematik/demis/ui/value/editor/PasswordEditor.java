@@ -24,25 +24,12 @@ public class PasswordEditor extends JPanel implements IValueTypeView {
         add(pwField, BorderLayout.CENTER);
         JButton button = new JButton(ImageUtils.loadResizeImage("eye-icon", 15));
         button.addChangeListener(new myChangeL());
-//        button.addChangeListener(e -> {
-//            if (((JButton) e.getSource()).getModel().isPressed()) {
-//                System.out.println(e);
-//                try {
-//                    clearPwField.setText(pwField.getDocument().getText(0, pwField.getDocument().getLength()));
-//                    remove(pwField);
-//                    add(clearPwField, BorderLayout.CENTER);
-//                    revalidate();
-//                } catch (BadLocationException ex) {
-//                    LOG.error("Can't show Password clear!" , e);
-//                }
-//            } else {
-//                remove(clearPwField);
-//                add(pwField, BorderLayout.CENTER);
-//                revalidate();
-//            }
-//            repaint();
-//        });
         add(button, BorderLayout.EAST);
+    }
+
+    public PasswordEditor(String authcertpassword) {
+        this();
+        setValue(authcertpassword);
     }
 
     @Override

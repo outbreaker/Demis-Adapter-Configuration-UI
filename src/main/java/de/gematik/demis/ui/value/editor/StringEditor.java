@@ -12,6 +12,10 @@ public class StringEditor extends JPanel implements IValueTypeView {
     private static Logger LOG = LoggerFactory.getLogger(StringEditor.class.getName());
     private JTextField field;
 
+    public StringEditor(String value) {
+        this();
+        setValue(value);
+    }
     public StringEditor() {
         this.setLayout(new BorderLayout());
         field = new JTextField();

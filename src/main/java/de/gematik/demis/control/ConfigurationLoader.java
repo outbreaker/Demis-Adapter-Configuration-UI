@@ -7,6 +7,7 @@ import de.gematik.demis.ui.actions.DemisMenuActionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -25,9 +26,9 @@ public class ConfigurationLoader {
             Set<Path> paths = listFilesUsingFileWalk(folder.getAbsolutePath(), 10);
 
             paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("properties")))
-                    .forEach(f -> MainView.getInstance().addTab(f.getFileName().toString(), new PropertiesView(f)));
+                    .forEach(f -> MainView.getInstance().addTab(f.getFileName().toString(), new JScrollPane(new PropertiesView(f))));
             paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
-                    .forEach(f -> MainView.getInstance().addTab(f.getFileName().toString(), new LaboratoryView(f)));
+                    .forEach(f -> MainView.getInstance().addTab(f.getFileName().toString(), new JScrollPane(new LaboratoryView(f))));
         } catch (IOException e) {
             e.printStackTrace();
         }

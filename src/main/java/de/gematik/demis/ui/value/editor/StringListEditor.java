@@ -27,6 +27,11 @@ public class StringListEditor extends JPanel implements IValueTypeView {
         this.add(buttonPanel, BorderLayout.EAST);
     }
 
+    public StringListEditor(String[] positiveTestergebnisBezeichnungen) {
+        this();
+        setValue(String.join(",",positiveTestergebnisBezeichnungen));
+    }
+
     private JPanel createButtonPanel(ResourceBundle messages) {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BorderLayout());
@@ -61,6 +66,7 @@ public class StringListEditor extends JPanel implements IValueTypeView {
 
     @Override
     public void setValue(String value) {
+        listModel.clear();
         Arrays.stream(value.split(DELIMITER)).forEach(listModel::addElement);
     }
 

@@ -11,6 +11,15 @@ import javax.swing.*;
 class StringEditorTest {
 
     public static final String TEXT = "MeinText";
+    public static final String TEXT2 = "NeuerText";
+
+    @Test
+    void createWithValue() {
+        StringEditor stringEditor = new StringEditor(TEXT);
+        Assert.assertNotNull(stringEditor.getValue());
+        stringEditor.setValue(TEXT2);
+        Assert.assertEquals(TEXT2,stringEditor.getValue());
+    }
 
     @Test
     void getSetValue() {

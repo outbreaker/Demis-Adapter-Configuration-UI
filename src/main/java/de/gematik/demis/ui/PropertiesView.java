@@ -42,7 +42,6 @@ public class PropertiesView extends JPanel {
                 PropertiesView.this.invalidate();
                 PropertiesView.this.revalidate();
                 PropertiesView.this.repaint();
-                System.out.println("repaint");
             }
 
             @Override
@@ -60,18 +59,8 @@ public class PropertiesView extends JPanel {
 
             }
         });
-//        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(
-//                new javax.swing.border.EmptyBorder(0, 0, 0, 0), "Properties"
-//                , javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BOTTOM
-//                , new java.awt.Font("Dia\u006cog", java.awt.Font.BOLD, 12)
-//                , java.awt.Color.red), getBorder()));
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-//        ((GridBagLayout) getLayout()).columnWidths = new int[]{0, 0, 0};
-//        ((GridBagLayout) getLayout()).rowHeights = new int[]{0, 0, 0, 0};
-//        ((GridBagLayout) getLayout()).columnWeights = new double[]{0.0, 0.0, 1.0E-4};
-//        ((GridBagLayout) getLayout()).rowWeights = new double[]{0.0, 0.0, 0.0, 1.0E-4};
-
         c.gridy = 0;
 
         IProperties[] values;
