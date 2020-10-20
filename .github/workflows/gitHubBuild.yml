@@ -5,9 +5,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ master ]
+    branches: [ githubPipeline ]
   pull_request:
-    branches: [ master ]
+    branches: [ githubPipeline ]
 
 jobs:
   build:
@@ -23,4 +23,4 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew -Djava.awt.headless=true build
+      run: ./gradlew build
