@@ -1,11 +1,9 @@
 package de.gematik.demis;
 
-import com.formdev.flatlaf.FlatLightLaf;
-import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatArcIJTheme;
-import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
 import de.gematik.demis.ui.MainView;
 
+import javax.swing.*;
 import java.awt.*;
 
 class Start {
@@ -15,6 +13,10 @@ class Start {
 //        FlatLightLaf.install();
 //        FlatArcDarkIJTheme.install();
         FlatArcIJTheme.install();
-        MainView.getInstance().show();
+        System.setProperty("java.awt.headless", "false");
+        SwingUtilities.invokeLater(() -> {
+            MainView.getInstance().show();
+        });
+
     }
 }
