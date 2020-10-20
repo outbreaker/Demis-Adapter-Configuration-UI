@@ -36,29 +36,6 @@ public class PropertiesView extends JPanel {
             LOG.error("Could not load Properties-File \"" + file.getAbsolutePath() + "\"", e);
         }
 
-        this.addComponentListener(new ComponentListener() {
-            @Override
-            public void componentResized(ComponentEvent componentEvent) {
-                PropertiesView.this.invalidate();
-                PropertiesView.this.revalidate();
-                PropertiesView.this.repaint();
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent componentEvent) {
-
-            }
-
-            @Override
-            public void componentShown(ComponentEvent componentEvent) {
-
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent componentEvent) {
-
-            }
-        });
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;

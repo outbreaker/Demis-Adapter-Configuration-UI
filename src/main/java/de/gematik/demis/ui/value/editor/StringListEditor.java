@@ -75,19 +75,4 @@ public class StringListEditor extends JPanel implements IValueTypeView {
         return this;
     }
 
-    @Override
-    public void repaint() {
-        super.repaint();
-        Dimension size = this.getSize();
-        double height = size.getHeight() - 8;
-        if (height < 40) height = 40;
-        double width = size.getWidth() / 2;
-        if (width < 300) width = 300;
-        size.setSize(width, height);
-        if (stringListScrollPane != null)
-            stringListScrollPane.setPreferredSize(size);
-
-    }
-
-
 }

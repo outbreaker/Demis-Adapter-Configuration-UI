@@ -37,29 +37,6 @@ public class LaboratoryView extends JPanel {
             throw new RuntimeException("Failed to load Laboratory JSON: '" + file.getAbsolutePath() + "'", e);
         }
 
-        this.addComponentListener(new ComponentListener() {
-            @Override
-            public void componentResized(ComponentEvent componentEvent) {
-                LaboratoryView.this.invalidate();
-                LaboratoryView.this.revalidate();
-                LaboratoryView.this.repaint();
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent componentEvent) {
-
-            }
-
-            @Override
-            public void componentShown(ComponentEvent componentEvent) {
-
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent componentEvent) {
-
-            }
-        });
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
