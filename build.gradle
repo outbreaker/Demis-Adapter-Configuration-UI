@@ -9,6 +9,12 @@ repositories {
     mavenCentral()
 }
 
+test {
+    useJUnitPlatform()
+
+    jvmArgs "-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500"
+}
+
 dependencies {
     testCompile 'org.junit.jupiter:junit-jupiter:5.5.2'
     testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: '1.7.0'
