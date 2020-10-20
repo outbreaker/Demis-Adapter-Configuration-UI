@@ -14,6 +14,9 @@ dependencies {
     testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: '1.7.0'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '3.5.13'
 
+    implementation 'org.assertj:assertj-swing-jide:3.17.1'
+    implementation 'org.assertj:assertj-swing-junit-4.5:1.2.0'
+   
     implementation group: 'commons-validator', name: 'commons-validator', version: '1.7'
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     implementation group: 'com.formdev', name: 'flatlaf', version: '0.43'
