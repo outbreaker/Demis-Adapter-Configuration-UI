@@ -21,9 +21,9 @@ class ConfigurationLoaderTest {
 
     }
 
-    @Test
+    //@Test
     public void loadAll() {
-        new ConfigurationLoader().loadAll(new File("C:\\Demis\\Demis-Adapter-1.1.0 -- Docker LAB-01.01.01.100"));
+//        new ConfigurationLoader().loadAll(new File("C:\\Demis\\Demis-Adapter-1.1.0 -- Docker LAB-01.01.01.100"));
     }
 
     @Test
