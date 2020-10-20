@@ -1,8 +1,6 @@
 package de.gematik.demis.ui;
 
 import de.gematik.demis.entities.IdentityProvider;
-import de.gematik.demis.entities.ReportingPerson;
-import de.gematik.demis.entities.VALUE_TYPE;
 import de.gematik.demis.ui.value.editor.IValueTypeView;
 import de.gematik.demis.ui.value.editor.PasswordEditor;
 import de.gematik.demis.ui.value.editor.StringEditor;
@@ -23,12 +21,15 @@ public class IdentityProviderView extends JPanel {
     private static Logger LOG = LoggerFactory.getLogger(IdentityProviderView.class.getName());
     private final HashMap<String, IValueTypeView> values = new HashMap<>();
     private static String lastPath;
+    private JTextField username;
+    private IdentityProvider idp;
     public IdentityProviderView(IdentityProvider identityProvider) {
         initComponents(identityProvider);
     }
 
 
     private void initComponents(IdentityProvider identityProvider) {
+        idp = identityProvider;
         setLayout(new GridBagLayout());
         this.setBorder(new TitledBorder("Identity Provider"));
         GridBagConstraints c = new GridBagConstraints();
@@ -99,7 +100,38 @@ public class IdentityProviderView extends JPanel {
             File folderToLoad = jFileChooser.getSelectedFile();
             lastPath = folderToLoad.getAbsolutePath();
             //TODO load P12, JKS
+            setIdpProperties(folderToLoad);
         }
+    }
+
+    private void setIdpProperties(File keystore) {
+        LOG.debug("Loaded Keystore: " + keystore.getName());
+        String keystoreName = keystore.getName();
+        String authCertAlias = extractAuthCertAlias(keystoreName);
+        String username = extractUsername(authCertAlias);
+        LOG.debug("Set ipdProperties: AuthCertName=" + authCertAlias + "; Username=" + username);
+        idp.setAuthcertkeystore(keystore.getAbsolutePath());
+        idp.setUsername(username);
+        idp.setAuthcertalias(authCertAlias);
+
+        values.get("Username").setValue(username);
+        values.get("Authcert Alias").setValue(authCertAlias);
+        values.get("Authcert Keystore").setValue(keystore.getAbsolutePath());
+
+        this.repaint();
+    }
+
+    private String extractAuthCertAlias(String keystorename) {
+        LOG.debug("Extract AuthCertName");
+        String authCertAlias = keystorename.split("_")[0];
+        authCertAlias = authCertAlias.toLowerCase();
+        return authCertAlias;
+    }
+
+    private String extractUsername(String authCertName) {
+        LOG.debug("Extract Username");
+        String username = authCertName.split("-")[1];
+        return username;
     }
 
 }
