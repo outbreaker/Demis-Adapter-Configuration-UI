@@ -19,10 +19,11 @@ class Menu {
 
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu(messages.getString("FILE"));
-        fileMenu.add(getMenuItem(messages, "OPEN_ALL"));
-        fileMenu.add(getMenuItem(messages, "OPEN"));
-        fileMenu.add(getMenuItem(messages, "CLOSE"));
-        fileMenu.add(getMenuItem(messages, "EXIT"));
+        fileMenu.add(getMenuItem(messages, "OPEN_ALL",true));
+        fileMenu.add(getMenuItem(messages, "OPEN",true));
+        fileMenu.add(getMenuItem(messages, "SAVE_ALL",false));
+        fileMenu.add(getMenuItem(messages, "CLOSE",true));
+        fileMenu.add(getMenuItem(messages, "EXIT",true));
         JMenu editMenu = new JMenu(messages.getString("EDIT"));
         JMenu helpMenu = new JMenu(messages.getString("HELP"));
         menuBar.add(fileMenu);
@@ -31,9 +32,10 @@ class Menu {
         return menuBar;
     }
 
-    private JMenuItem getMenuItem(ResourceBundle messages, String name) {
+    private JMenuItem getMenuItem(ResourceBundle messages, String name, boolean enabled) {
         JMenuItem jMenuItem = new JMenuItem(messages.getString(name));
         jMenuItem.setActionCommand(name);
+        jMenuItem.setEnabled(enabled);
         ImageIcon imageIcon = ImageUtils.loadResizeImage(name, 25);
         if (imageIcon != null)
             jMenuItem.setIcon(imageIcon);

@@ -28,6 +28,8 @@ public class DemisMenuActionListener implements ActionListener {
                 break;
             case "OPEN":
                 break;
+            case "SAVE_ALL":
+                break;
             default:
                 LOG.warn("Action for Command \"" + actionEvent.getActionCommand() + "\" not implemented");
         }
