@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
 group 'de.gematik'
@@ -7,6 +8,15 @@ version '1.0.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'de.gematik.demis.Start'
+    }
 }
 
 dependencies {
@@ -25,4 +35,10 @@ dependencies {
 //    implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
     compileOnly 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
+}
+
+shadowJar {
+    archiveBaseName.set('Demis-Adapter-Configuration-UI')
+    archiveClassifier.set('')
+    archiveVersion.set('')
 }
