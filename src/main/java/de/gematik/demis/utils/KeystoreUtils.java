@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
 public class KeystoreUtils {
@@ -18,7 +19,7 @@ public class KeystoreUtils {
   private File keystore;
   private String password;
 
-  public KeystoreUtils(File keystore, String password) {
+  public KeystoreUtils(File keystore, String password) throws UnrecoverableKeyException {
     this.idp = new IdentityProvider();
     this.keystore = keystore;
     this.password = password;
@@ -39,22 +40,22 @@ public class KeystoreUtils {
     return idp;
   }
 
-  private boolean checkValidity() {
+  private boolean checkValidity() throws UnrecoverableKeyException {
     boolean valid = false;
 
     try (FileInputStream fis = new FileInputStream(keystore)) {
       KeyStore p12 = KeyStore.getInstance(KeyStore.getDefaultType());
       p12.load(fis, password.toCharArray());
       valid = true;
-
-      // TODO ExceptionHandling
     } catch (KeyStoreException e) {
       LOG.debug("Keystore Exception!");
     } catch (CertificateException e) {
       LOG.debug("Certificate could not be loaded");
     } catch (IOException e) {
        // Cause UnrecoverableKeyException --> falsches PW
+      LOG.debug(String.valueOf(e.getCause()));
         LOG.debug("Wrong Password!");
+       throw new UnrecoverableKeyException();
     }
     catch (Exception e) {
     }
