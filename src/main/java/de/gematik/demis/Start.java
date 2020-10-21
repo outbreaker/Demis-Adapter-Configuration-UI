@@ -13,7 +13,6 @@ class Start {
 //        FlatLightLaf.install();
 //        FlatArcDarkIJTheme.install();
         FlatArcIJTheme.install();
-        System.setProperty("java.awt.headless", "false");
         SwingUtilities.invokeLater(() -> {
             MainView.getInstance().show();
         });
