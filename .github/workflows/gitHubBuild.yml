@@ -29,4 +29,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: Demis-Adapter-Configuration-UI
-        path: **/Demis-Adapter-Configuration-UI.jar
+        path: build/libs/Demis-Adapter-Configuration-UI.jar
