@@ -5,6 +5,7 @@ import de.gematik.demis.ui.value.editor.IValueTypeView;
 import de.gematik.demis.ui.value.editor.PasswordEditor;
 import de.gematik.demis.ui.value.editor.StringEditor;
 import de.gematik.demis.utils.ImageUtils;
+import de.gematik.demis.utils.KeystoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,14 +23,12 @@ public class IdentityProviderView extends JPanel {
     private final HashMap<String, IValueTypeView> values = new HashMap<>();
     private static String lastPath;
     private JTextField username;
-    private IdentityProvider idp;
     public IdentityProviderView(IdentityProvider identityProvider) {
         initComponents(identityProvider);
     }
 
 
     private void initComponents(IdentityProvider identityProvider) {
-        idp = identityProvider;
         setLayout(new GridBagLayout());
         this.setBorder(new TitledBorder("Identity Provider"));
         GridBagConstraints c = new GridBagConstraints();
@@ -100,38 +99,21 @@ public class IdentityProviderView extends JPanel {
             File folderToLoad = jFileChooser.getSelectedFile();
             lastPath = folderToLoad.getAbsolutePath();
             //TODO load P12, JKS
-            setIdpProperties(folderToLoad);
+
+            String password = JOptionPane.showInputDialog("Authcert Keystore Password");
+            LOG.debug("Ihr SMS Passwort für den Keystore: " + password);
+            KeystoreUtils keystoreUtils = new KeystoreUtils(folderToLoad, password);
+            IdentityProvider idp = keystoreUtils.loadIdpProperties();
+            // TODO Catch "Wrong PW", ask again
+            this.repaint(idp);
         }
     }
 
-    private void setIdpProperties(File keystore) {
-        LOG.debug("Loaded Keystore: " + keystore.getName());
-        String keystoreName = keystore.getName();
-        String authCertAlias = extractAuthCertAlias(keystoreName);
-        String username = extractUsername(authCertAlias);
-        LOG.debug("Set ipdProperties: AuthCertName=" + authCertAlias + "; Username=" + username);
-        idp.setAuthcertkeystore(keystore.getAbsolutePath());
-        idp.setUsername(username);
-        idp.setAuthcertalias(authCertAlias);
-
-        values.get("Username").setValue(username);
-        values.get("Authcert Alias").setValue(authCertAlias);
-        values.get("Authcert Keystore").setValue(keystore.getAbsolutePath());
-
+    private void repaint(IdentityProvider idp) {
+        values.get("Username").setValue(idp.getUsername());
+        values.get("Authcert Alias").setValue(idp.getAuthcertalias());
+        values.get("Authcert Keystore").setValue(idp.getAuthcertkeystore());
+        values.get("Authcert Keystore Password").setValue(idp.getAuthcertpassword());
         this.repaint();
     }
-
-    private String extractAuthCertAlias(String keystorename) {
-        LOG.debug("Extract AuthCertName");
-        String authCertAlias = keystorename.split("_")[0];
-        authCertAlias = authCertAlias.toLowerCase();
-        return authCertAlias;
-    }
-
-    private String extractUsername(String authCertName) {
-        LOG.debug("Extract Username");
-        String username = authCertName.split("-")[1];
-        return username;
-    }
-
 }
