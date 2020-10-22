@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.File;
+import java.security.KeyStoreException;
 import java.security.UnrecoverableKeyException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -108,15 +109,24 @@ public class IdentityProviderView extends JPanel {
       String password = JOptionPane.showInputDialog("Ihr SMS Passwort für den Keystore:");
       LOG.debug("Authcert Keystore Password " + password);
       IdentityProvider idp = null;
-      try {
-        KeystoreUtils keystoreUtils = new KeystoreUtils(folderToLoad, password);
-        idp = keystoreUtils.loadIdpProperties();
-      } catch (UnrecoverableKeyException e) {
-          JOptionPane.showMessageDialog(this, "Falsches Passwort!", "Warning",
-                  JOptionPane.WARNING_MESSAGE);
+      if (password.isEmpty()) {
+        showWarningDialog("Kein Passwort eingegeben!");
+      } else {
+        try {
+          KeystoreUtils keystoreUtils = new KeystoreUtils(folderToLoad, password);
+          idp = keystoreUtils.loadIdpProperties();
+        } catch (UnrecoverableKeyException e) {
+          showWarningDialog(e.getMessage());
+        } catch (KeyStoreException e) {
+          showWarningDialog("Fehler im Keystore!");
+        }
       }
-      this.repaint(idp);
+        this.repaint(idp);
     }
+  }
+
+  private void showWarningDialog(String msg) {
+    JOptionPane.showMessageDialog(this, msg, "Warning", JOptionPane.WARNING_MESSAGE);
   }
 
   private void repaint(IdentityProvider idp) {
@@ -126,12 +136,11 @@ public class IdentityProviderView extends JPanel {
       values.get("Authcert Keystore").setValue(idp.getAuthcertkeystore());
       values.get("Authcert Keystore Password").setValue(idp.getAuthcertpassword());
     } else {
-        values.get("Username").setValue("");
-        values.get("Authcert Alias").setValue("");
-        values.get("Authcert Keystore").setValue("");
-        values.get("Authcert Keystore Password").setValue("");
+      values.get("Username").setValue("");
+      values.get("Authcert Alias").setValue("");
+      values.get("Authcert Keystore").setValue("");
+      values.get("Authcert Keystore Password").setValue("");
     }
     this.repaint();
   }
-
 }
