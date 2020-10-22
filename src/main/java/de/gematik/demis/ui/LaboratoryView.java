@@ -1,6 +1,7 @@
 package de.gematik.demis.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.gematik.demis.entities.LABORATORY_JSON;
 import de.gematik.demis.entities.Laboratory;
 import de.gematik.demis.entities.VALUE_TYPE;
 import de.gematik.demis.ui.value.editor.IValueTypeView;
@@ -20,15 +21,21 @@ import java.util.HashMap;
 
 public class LaboratoryView extends JPanel {
     private static Logger LOG = LoggerFactory.getLogger(LaboratoryView.class.getName());
-    private final HashMap<String, IValueTypeView> values = new HashMap<>();
+    private final HashMap<LABORATORY_JSON, IValueTypeView> values = new HashMap<>();
+    private final Path path;
+    private Laboratory laboratory;
+    private IdentityProviderView identityProviderView;
+    private ReportingPersonView reportingPersonView;
+    private ReportingFacilityView reportingFacilityView;
+
 
     public LaboratoryView(Path path) {
+        this.path = path;
         initComponents(path.toFile());
     }
 
     private void initComponents(File file) {
         LOG.debug("Laboratory File to load: " + file.getAbsolutePath());
-        Laboratory laboratory;
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             laboratory = objectMapper.readValue(file, Laboratory.class);
@@ -41,29 +48,32 @@ public class LaboratoryView extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
 
         c.gridy = 0;
-        addLabel(c, new Label("identifikator"));
-        addEditor(new StringEditor(laboratory.getIdentifikator()), c, "identifikator");
+        addLabel(c, new Label(LABORATORY_JSON.IDENTIFIKATOR.getDisplayName()));
+        addEditor(new StringEditor(laboratory.getIdentifikator()), c, LABORATORY_JSON.IDENTIFIKATOR);
         c.gridy++;
-        addLabel(c, new Label("positiveTestergebnisBezeichnungen"));
-        addEditor(new StringListEditor(laboratory.getPositiveTestergebnisBezeichnungen()), c, "positiveTestergebnisBezeichnungen");
+        addLabel(c, new Label(LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN.getDisplayName()));
+        addEditor(new StringListEditor(laboratory.getPositiveTestergebnisBezeichnungen()), c, LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN);
         c.gridy++;
         c.gridx = 0;
         c.gridwidth = 2;
         c.weighty = 0.5;
         c.fill = GridBagConstraints.BOTH;
 
-        this.add(new ReportingPersonView(laboratory.getMelderPerson()), c);
+        reportingPersonView = new ReportingPersonView(laboratory.getMelderPerson());
+        this.add(reportingPersonView, c);
         c.gridy++;
-        this.add(new ReportingFacilityView(laboratory.getMelderEinrichtung()), c);
+        reportingFacilityView = new ReportingFacilityView(laboratory.getMelderEinrichtung());
+        this.add(reportingFacilityView, c);
 
         c.gridy++;
-        this.add(new IdentityProviderView(laboratory.getIdp()), c);
+        identityProviderView = new IdentityProviderView(laboratory.getIdp());
+        this.add(identityProviderView, c);
 
 
         this.repaint();
     }
 
-    private void addEditor(IValueTypeView editor, GridBagConstraints c, String id) {
+    private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
         c.gridx = 1;
         c.weightx = 1.0;
         this.add(editor.getViewComponent(), c);
@@ -89,4 +99,17 @@ public class LaboratoryView extends JPanel {
         }
     }
 
+    public Path getPath() {
+        return path;
+    }
+
+    public Laboratory getLaboratory() {
+        laboratory.setIdentifikator(values.get(LABORATORY_JSON.IDENTIFIKATOR).getValue());
+        laboratory.setPositiveTestergebnisBezeichnungen(values.get(LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN).getValue().split(","));
+        laboratory.setIdp(identityProviderView.getIdentityProvider());
+        laboratory.setMelderEinrichtung(reportingFacilityView.getReportingFacility());
+        laboratory.setMelderPerson(reportingPersonView.getReportingPerson());
+
+        return laboratory;
+    }
 }

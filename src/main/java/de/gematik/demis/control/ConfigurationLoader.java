@@ -13,12 +13,35 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ConfigurationLoader {
     private static Logger LOG = LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
+    private static ConfigurationLoader instance;
+    private final List<PropertiesView> propertiesViews = new ArrayList<>();
+    private final List<LaboratoryView> laboratoryViews = new ArrayList<>();
+
+    private ConfigurationLoader() {
+    }
+
+    public static ConfigurationLoader getInstance() {
+        if (instance == null)
+            instance = new ConfigurationLoader();
+        return instance;
+    }
+
+    public PropertiesView add(PropertiesView propertiesView){
+        propertiesViews.add(propertiesView);
+        return propertiesView;
+    }
+    public LaboratoryView add(LaboratoryView laboratoryView){
+        laboratoryViews.add(laboratoryView);
+        return laboratoryView;
+    }
 
     public void loadAll(File folder) {
         LOG.debug("LoadAll for " + folder.getAbsolutePath());
@@ -26,11 +49,13 @@ public class ConfigurationLoader {
             Set<Path> paths = listFilesUsingFileWalk(folder.getAbsolutePath(), 10);
 
             paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("properties")))
-                    .forEach(f -> MainView.getInstance().addTab(f.getFileName().toString(), new JScrollPane(new PropertiesView(f))));
+                    .forEach(f -> MainView.getInstance().addTab(f.getFileName().toString(), new JScrollPane(add(new PropertiesView(f)))));
             paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
-                    .forEach(f -> MainView.getInstance().addTab(f.getFileName().toString(), new JScrollPane(new LaboratoryView(f))));
+                    .forEach(f -> MainView.getInstance().addTab(f.getFileName().toString(), new JScrollPane(add(new LaboratoryView(f)))));
         } catch (IOException e) {
-            e.printStackTrace();
+            String failed = "Failed to read all Files";
+            LOG.error(failed, e);
+            throw new RuntimeException(failed,e);
         }
     }
 
@@ -44,5 +69,13 @@ public class ConfigurationLoader {
 //                    .map(Path::toString)
                     .collect(Collectors.toSet());
         }
+    }
+
+    public List<PropertiesView> getPropertiesViews() {
+        return propertiesViews;
+    }
+
+    public List<LaboratoryView> getLaboratoryViews() {
+        return laboratoryViews;
     }
 }

@@ -1,8 +1,7 @@
 package de.gematik.demis.ui;
 
+import de.gematik.demis.entities.LABORATORY_JSON;
 import de.gematik.demis.entities.ReportingFacility;
-import de.gematik.demis.entities.ReportingPerson;
-import de.gematik.demis.entities.VALUE_TYPE;
 import de.gematik.demis.ui.value.editor.IValueTypeView;
 import de.gematik.demis.ui.value.editor.StringEditor;
 import org.slf4j.Logger;
@@ -11,77 +10,77 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.HashMap;
 
 public class ReportingFacilityView extends JPanel {
     private static Logger LOG = LoggerFactory.getLogger(ReportingFacilityView.class.getName());
-    private final HashMap<String, IValueTypeView> values = new HashMap<>();
+    private final HashMap<LABORATORY_JSON, IValueTypeView> values = new HashMap<>();
+    private final ReportingFacility reportingFacility;
 
     public ReportingFacilityView(ReportingFacility reportingFacility) {
-        initComponents(reportingFacility);
+        this.reportingFacility = reportingFacility;
+        initComponents();
     }
 
-    private void initComponents(ReportingFacility reportingFacility) {
+    private void initComponents() {
 
         setLayout(new GridBagLayout());
-        this.setBorder(new TitledBorder("Melder-Einrichtung"));
+        this.setBorder(new TitledBorder(LABORATORY_JSON.MELDER_EINRICHTUNG.getDisplayName()));
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
 
-        addLabel(c, new Label("Bsnr"));
-        addEditor(new StringEditor(reportingFacility.getBsnr()), c, "Bsnr");
+        addLabel(c, new Label(LABORATORY_JSON.BSNR.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getBsnr()), c, LABORATORY_JSON.BSNR);
         c.gridy++;
 
-        addLabel(c, new Label("Name"));
-        addEditor(new StringEditor(reportingFacility.getName()), c, "Name");
+        addLabel(c, new Label(LABORATORY_JSON.NAME.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getName()), c, LABORATORY_JSON.NAME);
         c.gridy++;
 
-        addLabel(c, new Label("EinrichtungsArt"));
-        addEditor(new StringEditor(reportingFacility.getEinrichtungsArt()), c, "EinrichtungsArt");
+        addLabel(c, new Label(LABORATORY_JSON.EINRICHTUNGS_ART.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getEinrichtungsArt()), c, LABORATORY_JSON.EINRICHTUNGS_ART);
         c.gridy++;
 
-        addLabel(c, new Label("AnsprechspartnerVorname"));
-        addEditor(new StringEditor(reportingFacility.getAnsprechspartnerVorname()), c, "AnsprechspartnerVorname");
+        addLabel(c, new Label(LABORATORY_JSON.ANSPRECHSPARTNER_VORNAME.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getAnsprechspartnerVorname()), c, LABORATORY_JSON.ANSPRECHSPARTNER_VORNAME);
         c.gridy++;
 
-        addLabel(c, new Label("AnsprechspartnerNachname"));
-        addEditor(new StringEditor(reportingFacility.getAnsprechspartnerNachname()), c, "AnsprechspartnerNachname");
+        addLabel(c, new Label(LABORATORY_JSON.ANSPRECHSPARTNER_NACHNAME.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getAnsprechspartnerNachname()), c, LABORATORY_JSON.ANSPRECHSPARTNER_NACHNAME);
         c.gridy++;
 
-        addLabel(c, new Label("Anschriftenzeile"));
-        addEditor(new StringEditor(reportingFacility.getAnschriftenzeile()), c, "Anschriftenzeile");
+        addLabel(c, new Label(LABORATORY_JSON.ANSCHRIFTENZEILE.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getAnschriftenzeile()), c, LABORATORY_JSON.ANSCHRIFTENZEILE);
         c.gridy++;
 
-        addLabel(c, new Label("Postleitzahl"));
-        addEditor(new StringEditor(reportingFacility.getPostleitzahl()), c, "Postleitzahl");
+        addLabel(c, new Label(LABORATORY_JSON.POSTLEITZAHL.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getPostleitzahl()), c, LABORATORY_JSON.POSTLEITZAHL);
         c.gridy++;
 
-        addLabel(c, new Label("Stadt"));
-        addEditor(new StringEditor(reportingFacility.getStadt()), c, "Stadt");
+        addLabel(c, new Label(LABORATORY_JSON.STADT.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getStadt()), c, LABORATORY_JSON.STADT);
         c.gridy++;
 
-        addLabel(c, new Label("Telefonnummer"));
-        addEditor(new StringEditor(reportingFacility.getTelefonnummer()), c, "Telefonnummer");
+        addLabel(c, new Label(LABORATORY_JSON.TELEFONNUMMER.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getTelefonnummer()), c, LABORATORY_JSON.TELEFONNUMMER);
         c.gridy++;
 
-        addLabel(c, new Label("Faxnummer"));
-        addEditor(new StringEditor(reportingFacility.getFaxnummer()), c, "Faxnummer");
+        addLabel(c, new Label(LABORATORY_JSON.FAXNUMMER.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getFaxnummer()), c, LABORATORY_JSON.FAXNUMMER);
         c.gridy++;
 
-        addLabel(c, new Label("Email"));
-        addEditor(new StringEditor(reportingFacility.getEmail()), c, "Email");
+        addLabel(c, new Label(LABORATORY_JSON.EMAIL.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getEmail()), c, LABORATORY_JSON.EMAIL);
         c.gridy++;
 
-        addLabel(c, new Label("Webseite"));
-        addEditor(new StringEditor(reportingFacility.getWebseite()), c, "Webseite");
+        addLabel(c, new Label(LABORATORY_JSON.WEBSEITE.getDisplayName()));
+        addEditor(new StringEditor(reportingFacility.getWebseite()), c, LABORATORY_JSON.WEBSEITE);
         c.gridy++;
 
         this.repaint();
     }
 
-    private void addEditor(IValueTypeView editor, GridBagConstraints c, String id) {
+    private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
         c.gridx = 1;
         c.weightx = 1.0;
         this.add(editor.getViewComponent(), c);
@@ -98,4 +97,19 @@ public class ReportingFacilityView extends JPanel {
         this.add(label, c);
     }
 
+    public ReportingFacility getReportingFacility() {
+        reportingFacility.setTelefonnummer(values.get(LABORATORY_JSON.TELEFONNUMMER).getValue());
+        reportingFacility.setStadt(values.get(LABORATORY_JSON.STADT).getValue());
+        reportingFacility.setPostleitzahl(values.get(LABORATORY_JSON.POSTLEITZAHL).getValue());
+        reportingFacility.setAnschriftenzeile(values.get(LABORATORY_JSON.ANSCHRIFTENZEILE).getValue());
+        reportingFacility.setBsnr(values.get(LABORATORY_JSON.BSNR).getValue());
+        reportingFacility.setWebseite(values.get(LABORATORY_JSON.WEBSEITE).getValue());
+        reportingFacility.setEmail(values.get(LABORATORY_JSON.EMAIL).getValue());
+        reportingFacility.setFaxnummer(values.get(LABORATORY_JSON.FAXNUMMER).getValue());
+        reportingFacility.setAnsprechspartnerVorname(values.get(LABORATORY_JSON.ANSPRECHSPARTNER_VORNAME).getValue());
+        reportingFacility.setAnsprechspartnerNachname(values.get(LABORATORY_JSON.ANSPRECHSPARTNER_NACHNAME).getValue());
+        reportingFacility.setEinrichtungsArt(values.get(LABORATORY_JSON.EINRICHTUNGS_ART).getValue());
+        reportingFacility.setName(values.get(LABORATORY_JSON.NAME).getValue());
+        return reportingFacility;
+    }
 }

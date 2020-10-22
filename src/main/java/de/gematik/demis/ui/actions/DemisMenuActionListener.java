@@ -22,7 +22,7 @@ public class DemisMenuActionListener implements ActionListener {
                 int opt = jFileChooser.showOpenDialog(MainView.getInstance().getMainComponent());
                 if (opt == JFileChooser.APPROVE_OPTION) {
                     File folderToLoad = jFileChooser.getSelectedFile();
-                    new ConfigurationLoader().loadAll(folderToLoad);
+                    ConfigurationLoader.getInstance().loadAll(folderToLoad);
                     LOG.debug("Selected Folder to Load all Configurations: " + folderToLoad);
                 }
                 break;

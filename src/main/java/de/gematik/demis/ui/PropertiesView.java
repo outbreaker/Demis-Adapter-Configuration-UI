@@ -11,20 +11,23 @@ import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class PropertiesView extends JPanel {
-    private static Logger LOG = LoggerFactory.getLogger(PropertiesView.class.getName());
-
+    private static final Logger LOG = LoggerFactory.getLogger(PropertiesView.class.getName());
+    private final Map<IProperties, IValueTypeView> editors = new HashMap<>();
+    private final Properties prop = new Properties();
+    private final Path path;
 
     public PropertiesView(Path path) {
+        this.path = path;
         initComponents(path.toFile());
     }
 
@@ -70,7 +73,7 @@ public class PropertiesView extends JPanel {
                     else
                         editor.setValue(property);
                     this.add(editor.getViewComponent(), c);
-
+                    editors.put(e, editor);
                     c.gridy++;
 
                 }
@@ -86,5 +89,17 @@ public class PropertiesView extends JPanel {
                 return new JLabel(valueType.toString());
         }
     }
+
+    public Properties getProperties() {
+        editors.forEach((k, v) -> {
+            prop.put(k.getKey(),v.getValue());
+        });
+        return prop;
+    }
+
+    public Path getPath() {
+        return path;
+    }
+
 
 }

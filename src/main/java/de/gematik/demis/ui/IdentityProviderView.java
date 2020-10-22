@@ -1,6 +1,7 @@
 package de.gematik.demis.ui;
 
 import de.gematik.demis.entities.IdentityProvider;
+import de.gematik.demis.entities.LABORATORY_JSON;
 import de.gematik.demis.entities.ReportingPerson;
 import de.gematik.demis.entities.VALUE_TYPE;
 import de.gematik.demis.ui.value.editor.IValueTypeView;
@@ -21,20 +22,23 @@ import java.util.ResourceBundle;
 
 public class IdentityProviderView extends JPanel {
     private static Logger LOG = LoggerFactory.getLogger(IdentityProviderView.class.getName());
-    private final HashMap<String, IValueTypeView> values = new HashMap<>();
+    private final HashMap<LABORATORY_JSON, IValueTypeView> values = new HashMap<>();
     private static String lastPath;
+    private IdentityProvider identityProvider;
+
     public IdentityProviderView(IdentityProvider identityProvider) {
-        initComponents(identityProvider);
+        this.identityProvider = identityProvider;
+        initComponents();
     }
 
 
-    private void initComponents(IdentityProvider identityProvider) {
+    private void initComponents() {
         setLayout(new GridBagLayout());
-        this.setBorder(new TitledBorder("Identity Provider"));
+        this.setBorder(new TitledBorder(LABORATORY_JSON.IDP.getDisplayName()));
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
 
-        addLabel(c, new Label("Daten laden"));
+        addLabel(c, new Label(LABORATORY_JSON.LOAD_DATA.getDisplayName()));
         JButton loadJB = new JButton(ImageUtils.loadResizeImage("open-file-icon",20));
         loadJB.addActionListener(actionEvent -> selectFolder());
 
@@ -43,26 +47,26 @@ public class IdentityProviderView extends JPanel {
         this.add(loadJB, c);
         c.gridy++;
 
-        addLabel(c, new Label("Username"));
-        addEditor(new StringEditor(identityProvider.getUsername()), c, "Username");
+        addLabel(c, new Label(LABORATORY_JSON.USERNAME.getDisplayName()));
+        addEditor(new StringEditor(identityProvider.getUsername()), c, LABORATORY_JSON.USERNAME);
         c.gridy++;
 
-        addLabel(c, new Label("Authcert Keystore"));
-        addEditor(new StringEditor(identityProvider.getAuthcertkeystore()), c, "Authcert Keystore");
+        addLabel(c, new Label(LABORATORY_JSON.AUTHCERTKEYSTORE.getDisplayName()));
+        addEditor(new StringEditor(identityProvider.getAuthcertkeystore()), c, LABORATORY_JSON.AUTHCERTKEYSTORE);
         c.gridy++;
 
-        addLabel(c, new Label("Authcert Keystore Password"));
-        addEditor(new PasswordEditor(identityProvider.getAuthcertpassword()), c, "Authcert Keystore Password");
+        addLabel(c, new Label(LABORATORY_JSON.AUTHCERTPASSWORD.getDisplayName()));
+        addEditor(new PasswordEditor(identityProvider.getAuthcertpassword()), c, LABORATORY_JSON.AUTHCERTPASSWORD);
         c.gridy++;
 
-        addLabel(c, new Label("Authcert Alias"));
-        addEditor(new StringEditor(identityProvider.getAuthcertalias()), c, "Authcert Alias");
+        addLabel(c, new Label(LABORATORY_JSON.AUTHCERTALIAS.getDisplayName()));
+        addEditor(new StringEditor(identityProvider.getAuthcertalias()), c, LABORATORY_JSON.AUTHCERTALIAS);
         c.gridy++;
 
         this.repaint();
     }
 
-    private void addEditor(IValueTypeView editor, GridBagConstraints c, String id) {
+    private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
         c.gridx = 1;
         c.weightx = 1.0;
         this.add(editor.getViewComponent(), c);
@@ -102,4 +106,11 @@ public class IdentityProviderView extends JPanel {
         }
     }
 
+    public IdentityProvider getIdentityProvider() {
+        identityProvider.setAuthcertalias(values.get(LABORATORY_JSON.AUTHCERTALIAS).getValue());
+        identityProvider.setAuthcertpassword(values.get(LABORATORY_JSON.AUTHCERTPASSWORD).getValue());
+        identityProvider.setAuthcertkeystore(values.get(LABORATORY_JSON.AUTHCERTKEYSTORE).getValue());
+        identityProvider.setUsername(values.get(LABORATORY_JSON.USERNAME).getValue());
+        return identityProvider;
+    }
 }
