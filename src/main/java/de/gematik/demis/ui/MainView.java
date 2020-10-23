@@ -42,6 +42,10 @@ public class MainView {
     return getInstance().frame;
   }
 
+  public JTabbedPaneCloseButton getJTabs() {
+    return getInstance().configTabs;
+  }
+
   public void show() {
     frame.setVisible(true);
   }

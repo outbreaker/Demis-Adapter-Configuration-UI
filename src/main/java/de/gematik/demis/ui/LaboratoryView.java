@@ -64,6 +64,7 @@ public class LaboratoryView extends JPanel {
     c.gridwidth = 2;
     c.weighty = 0.5;
     c.fill = GridBagConstraints.BOTH;
+    c.insets = new Insets(20, 0, 0, 0);  //top padding
 
     reportingPersonView = new ReportingPersonView(laboratory.getMelderPerson());
     this.add(reportingPersonView, c);
