@@ -1,15 +1,16 @@
 package de.gematik.demis.entities;
 
 public interface IProperties {
-    String getKey();
 
-    VALUE_TYPE getType();
+  String getKey();
 
-    boolean isOptional();
+  VALUE_TYPE getType();
 
-    String getDisplayName();
+  boolean isOptional();
 
-    String getToolTip();
+  String getDisplayName();
 
-    String getDefaultValue();
+  String getToolTip();
+
+  String getDefaultValue();
 }

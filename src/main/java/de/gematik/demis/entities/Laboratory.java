@@ -8,9 +8,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Laboratory {
-    private String identifikator;
-    private String[] positiveTestergebnisBezeichnungen;
-    private ReportingPerson melderPerson;
-    private ReportingFacility melderEinrichtung;
-    private IdentityProvider idp;
+
+  private String identifikator;
+  private String[] positiveTestergebnisBezeichnungen;
+  private ReportingPerson melderPerson;
+  private ReportingFacility melderEinrichtung;
+  private IdentityProvider idp;
 }

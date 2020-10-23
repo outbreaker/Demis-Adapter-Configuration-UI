@@ -8,8 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class IdentityProvider {
-    private String username;
-    private String authcertkeystore;
-    private String authcertpassword;
-    private String authcertalias;
+
+  private String username;
+  private String authcertkeystore;
+  private String authcertpassword;
+  private String authcertalias;
 }

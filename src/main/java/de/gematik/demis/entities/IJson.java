@@ -1,13 +1,14 @@
 package de.gematik.demis.entities;
 
 public interface IJson {
-    String getKey();
 
-    boolean isOptional();
+  String getKey();
 
-    String getDisplayName();
+  boolean isOptional();
 
-    String getToolTip();
+  String getDisplayName();
 
-    String getDefaultValue();
+  String getToolTip();
+
+  String getDefaultValue();
 }
