@@ -24,7 +24,7 @@ class Menu {
     JMenu fileMenu = new JMenu(messages.getString("FILE"));
     fileMenu.add(getMenuItem(messages, "OPEN_ALL", true));
     fileMenu.add(getMenuItem(messages, "OPEN", true));
-    fileMenu.add(getMenuItem(messages, "SAVE_ALL", false));
+    fileMenu.add(getMenuItem(messages, "SAVE_ALL", true));
     fileMenu.add(getMenuItem(messages, "CLOSE", true));
     fileMenu.add(getMenuItem(messages, "EXIT", true));
     JMenu editMenu = new JMenu(messages.getString("EDIT"));
