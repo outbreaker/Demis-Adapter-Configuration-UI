@@ -14,13 +14,14 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DemisMenuActionListener implements ActionListener {
 
-  private static Logger LOG = LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
+  private static final Logger LOG = LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
   private static File lastPath;
 
   @Override
@@ -85,7 +86,10 @@ public class DemisMenuActionListener implements ActionListener {
       properties.store(new FileOutputStream(path.toFile()), null);
     } catch (IOException e) {
       LOG.error("Failed to Save Properties to " + path.toFile().getAbsolutePath(), e);
-      //TODO POPUP with Error
+      String errorMessage = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("SAVE_PROPERTIES_ERROR");
+      errorMessage = errorMessage.replace("XX_PATH_XX", path.toString()).replace("XX_ERROR_XX", e.getMessage());
+      JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),
+          errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
     }
   }
 
@@ -96,7 +100,10 @@ public class DemisMenuActionListener implements ActionListener {
       objectMapper.writerWithDefaultPrettyPrinter().writeValue(path.toFile(), laboratory);
     } catch (IOException e) {
       LOG.error("Failed to Save Json to " + path.toFile().getAbsolutePath(), e);
-      //TODO POPUP with Error
+      String errorMessage = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("SAVE_JSON_ERROR");
+      errorMessage = errorMessage.replace("XX_PATH_XX", path.toString()).replace("XX_ERROR_XX", e.getMessage());
+      JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),
+          errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
   }
