@@ -1,9 +1,6 @@
 package de.gematik.demis.utils;
 
 import de.gematik.demis.entities.IdentityProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,6 +10,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.Enumeration;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KeystoreUtils {
 
@@ -45,6 +46,7 @@ public class KeystoreUtils {
 
   private boolean checkValidity() throws UnrecoverableKeyException {
     boolean valid = false;
+    var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
 
     try (FileInputStream fis = new FileInputStream(keystoreFile)) {
       keystore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -52,14 +54,17 @@ public class KeystoreUtils {
       valid = true;
     } catch (KeyStoreException | NoSuchAlgorithmException e) {
       LOG.debug("Keystore Exception!");
-      throw new UnrecoverableKeyException("Fehler im Keystore!");
+      throw new UnrecoverableKeyException(
+          messages.getString("LOAD_KEYSTORE_PASSWORD_ERROR").replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()));
     } catch (CertificateException e) {
       LOG.debug("Certificate could not be loaded");
-      throw new UnrecoverableKeyException("Das Zertifikat konnte nicht geladen werden!");
+      throw new UnrecoverableKeyException(
+          messages.getString("LOAD_KEYSTORE_CERT_ERROR").replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()));
     } catch (IOException e) {
       LOG.debug(String.valueOf(e.getCause()));
       LOG.debug("Wrong Password!");
-      throw new UnrecoverableKeyException("Falsches Passwort!");
+      throw new UnrecoverableKeyException(
+          messages.getString("LOAD_KEYSTORE_PASSWORD_ERROR").replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()));
     }
     return valid;
   }
@@ -77,7 +82,7 @@ public class KeystoreUtils {
 
   private String extractUsername(String authCertName) {
     LOG.debug("Extract Username");
-    String username ="";
+    String username = "";
     if (authCertName.contains("demis-")) {
       username = authCertName.substring(6);
     }

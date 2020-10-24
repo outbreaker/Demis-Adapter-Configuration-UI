@@ -115,19 +115,21 @@ public class IdentityProviderView extends JPanel {
       File folderToLoad = jFileChooser.getSelectedFile();
       lastPath = folderToLoad.getAbsolutePath();
 
-      String password = JOptionPane.showInputDialog("Ihr SMS Passwort f�r den Keystore:");
-      LOG.debug("Authcert Keystore Password " + password);
+      String password = JOptionPane.showInputDialog(messages.getString("KEYSTORE_SMS_PASSWORD"));
       IdentityProvider idp = null;
       if (password.isEmpty()) {
-        showWarningDialog("Kein Passwort eingegeben!");
+        showWarningDialog(messages.getString("LOAD_KEYSTORE_PASSWORD_EMPTY"));
       } else {
         try {
-          KeystoreUtils keystoreUtils = new KeystoreUtils(folderToLoad, password);
-          idp = keystoreUtils.loadIdpProperties();
+          idp = new KeystoreUtils(folderToLoad, password).loadIdpProperties();
         } catch (UnrecoverableKeyException e) {
-          showWarningDialog(e.getMessage());
+          JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),
+              messages.getString("LOAD_KEYSTORE_PASSWORD_ERROR_SHORT").replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()),
+              "Error", JOptionPane.ERROR_MESSAGE);
         } catch (KeyStoreException e) {
-          showWarningDialog("Fehler im Keystore!");
+          JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),
+              messages.getString("LOAD_KEYSTORE_ERROR").replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()), "Error",
+              JOptionPane.ERROR_MESSAGE);
         }
       }
       this.repaint(idp);
