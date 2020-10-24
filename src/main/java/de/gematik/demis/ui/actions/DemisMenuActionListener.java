@@ -42,43 +42,18 @@ public class DemisMenuActionListener implements ActionListener {
       case "OPEN":
         break;
       case "SAVE_ALL":
-
         ConfigurationLoader.getInstance().getLaboratoryViews().forEach(
             lab -> {
-              Path path = lab.getPath();
-              if (path == null) {
-                JFileChooser jsonFileChooser = getJsonFileChooser(messages);
-                if (jsonFileChooser.showSaveDialog(MainView.getInstance().getMainComponent()) == JFileChooser.APPROVE_OPTION) {
-                  File folderToLoad = jsonFileChooser.getSelectedFile();
-                  if (!folderToLoad.getAbsolutePath().toLowerCase().endsWith(".json")) {
-                    lastPath = new File(folderToLoad.getAbsolutePath() + ".json");
-                  } else {
-                    lastPath = folderToLoad.getAbsoluteFile();
-                  }
-                  path = lastPath.toPath();
-                  saveJson(path, lab.getLaboratory());
-                }
-              } else {
+              Path path = checkPath(messages, lab.getPath(), "json", "LOAD_JSON_DESCRIPTION");
+              if (path != null) {
                 saveJson(path, lab.getLaboratory());
               }
             }
         );
 
         ConfigurationLoader.getInstance().getPropertiesViews().forEach(props -> {
-          Path path = props.getPath();
-          if (path == null) {
-            JFileChooser propsFileChooser = getPropsFileChooser(messages);
-            if (propsFileChooser.showSaveDialog(MainView.getInstance().getMainComponent()) == JFileChooser.APPROVE_OPTION) {
-              File folderToLoad = propsFileChooser.getSelectedFile();
-              if (!folderToLoad.getAbsolutePath().toLowerCase().endsWith(".properties")) {
-                lastPath = new File(folderToLoad.getAbsolutePath() + ".properties");
-              } else {
-                lastPath = folderToLoad.getAbsoluteFile();
-              }
-              path = lastPath.toPath();
-              saveProperties(path, props.getProperties());
-            }
-          } else {
+          Path path = checkPath(messages, props.getPath(), "properties", "LOAD_PROPERTIES_DESCRIPTION");
+          if (path != null) {
             saveProperties(path, props.getProperties());
           }
 
@@ -87,6 +62,22 @@ public class DemisMenuActionListener implements ActionListener {
       default:
         LOG.warn("Action for Command \"" + actionEvent.getActionCommand() + "\" not implemented");
     }
+  }
+
+  private Path checkPath(final ResourceBundle messages, final Path path, final String fileType, final String descriptionId) {
+    if (path == null) {
+      JFileChooser universalFileChooser = getUniversalFileChooser(messages, descriptionId, fileType);
+      if (universalFileChooser.showSaveDialog(MainView.getInstance().getMainComponent()) == JFileChooser.APPROVE_OPTION) {
+        File folderToLoad = universalFileChooser.getSelectedFile();
+        if (!folderToLoad.getAbsolutePath().toLowerCase().endsWith("." + fileType)) {
+          lastPath = new File(folderToLoad.getAbsolutePath() + "." + fileType);
+        } else {
+          lastPath = folderToLoad.getAbsoluteFile();
+        }
+        return lastPath.toPath();
+      }
+    }
+    return path;
   }
 
   private void saveProperties(Path path, Properties properties) {
