@@ -6,16 +6,20 @@ import de.gematik.demis.ui.value.editor.IValueTypeView;
 import de.gematik.demis.ui.value.editor.PasswordEditor;
 import de.gematik.demis.ui.value.editor.StringEditor;
 import de.gematik.demis.utils.ImageUtils;
+import de.gematik.demis.utils.KeystoreUtils;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
 import java.io.File;
+import java.security.KeyStoreException;
+import java.security.UnrecoverableKeyException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
@@ -42,6 +46,7 @@ public class IdentityProviderView extends JPanel {
     c.gridy = 0;
 
     addLabel(c, new Label(LABORATORY_JSON.LOAD_DATA.getDisplayName()));
+
     JButton loadJB = new JButton(ImageUtils.loadResizeImage("open-file-icon", 20));
     loadJB.addActionListener(actionEvent -> selectFolder());
 
@@ -109,8 +114,43 @@ public class IdentityProviderView extends JPanel {
     if (opt == JFileChooser.APPROVE_OPTION) {
       File folderToLoad = jFileChooser.getSelectedFile();
       lastPath = folderToLoad.getAbsolutePath();
-      //TODO load P12, JKS
+
+      String password = JOptionPane.showInputDialog("Ihr SMS Passwort f�r den Keystore:");
+      LOG.debug("Authcert Keystore Password " + password);
+      IdentityProvider idp = null;
+      if (password.isEmpty()) {
+        showWarningDialog("Kein Passwort eingegeben!");
+      } else {
+        try {
+          KeystoreUtils keystoreUtils = new KeystoreUtils(folderToLoad, password);
+          idp = keystoreUtils.loadIdpProperties();
+        } catch (UnrecoverableKeyException e) {
+          showWarningDialog(e.getMessage());
+        } catch (KeyStoreException e) {
+          showWarningDialog("Fehler im Keystore!");
+        }
+      }
+      this.repaint(idp);
     }
+  }
+
+  private void showWarningDialog(String msg) {
+    JOptionPane.showMessageDialog(this, msg, "Warning", JOptionPane.WARNING_MESSAGE);
+  }
+
+  private void repaint(IdentityProvider idp) {
+    if (idp != null) {
+      values.get(LABORATORY_JSON.USERNAME).setValue(idp.getUsername());
+      values.get(LABORATORY_JSON.AUTHCERTALIAS).setValue(idp.getAuthcertalias());
+      values.get(LABORATORY_JSON.AUTHCERTKEYSTORE).setValue(idp.getAuthcertkeystore());
+      values.get(LABORATORY_JSON.AUTHCERTPASSWORD).setValue(idp.getAuthcertpassword());
+    } else {
+      values.get(LABORATORY_JSON.USERNAME).setValue("");
+      values.get(LABORATORY_JSON.AUTHCERTALIAS).setValue("");
+      values.get(LABORATORY_JSON.AUTHCERTKEYSTORE).setValue("");
+      values.get(LABORATORY_JSON.AUTHCERTPASSWORD).setValue("");
+    }
+    this.repaint();
   }
 
   public IdentityProvider getIdentityProvider() {
