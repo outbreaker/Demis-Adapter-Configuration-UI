@@ -21,16 +21,16 @@ import java.util.Map;
 import java.util.Properties;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PropertiesView extends JPanel {
+public class PropertiesView extends AbstractConfigurationView {
 
   private static final Logger LOG = LoggerFactory.getLogger(PropertiesView.class.getName());
   private final Map<IProperties, IValueTypeView> editors = new HashMap<>();
   private final Properties prop = new Properties();
   private final Path path;
+  private IProperties[] values;
 
   public PropertiesView(Path path) {
     this.path = path;
@@ -49,7 +49,6 @@ public class PropertiesView extends JPanel {
     GridBagConstraints c = new GridBagConstraints();
     c.gridy = 0;
 
-    IProperties[] values;
     if (ADAPTER_Properties.containsProperties(prop)) {
       values = ADAPTER_Properties.values();
     } else if (APP_Properties.containsProperties(prop)) {
@@ -73,12 +72,16 @@ public class PropertiesView extends JPanel {
             c.fill = GridBagConstraints.BOTH;
           }
           IValueTypeView editor = ValueTypeEditorFactory.createEditor(e.getType());
+
           String property = prop.getProperty(e.getKey());
           if (property == null) {
             LOG.error("File: \"" + file.getName() + "\" Property \"" + e.getKey() + "\" has no Value!");
           } else {
             editor.setValue(property);
           }
+          editor.addChangeListener(s -> {
+            setUnsaved();
+          });
           this.add(editor.getViewComponent(), c);
           editors.put(e, editor);
           c.gridy++;
@@ -109,4 +112,8 @@ public class PropertiesView extends JPanel {
   }
 
 
+  @Override
+  public String getName() {
+    return path == null ? "New Properties Configuration" : path.toFile().getName();
+  }
 }

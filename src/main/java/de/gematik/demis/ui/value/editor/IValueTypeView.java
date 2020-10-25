@@ -1,6 +1,7 @@
 package de.gematik.demis.ui.value.editor;
 
 import javax.swing.JComponent;
+import javax.swing.event.ChangeListener;
 
 public interface IValueTypeView {
 
@@ -9,4 +10,6 @@ public interface IValueTypeView {
   void setValue(String value);
 
   JComponent getViewComponent();
+
+  void addChangeListener(ChangeListener changeListener);
 }

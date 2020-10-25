@@ -14,6 +14,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class StringListEditor extends JPanel implements IValueTypeView {
 
@@ -48,6 +50,7 @@ public class StringListEditor extends JPanel implements IValueTypeView {
       public void actionPerformed(ActionEvent actionEvent) {
         var selectedValuesList = stringList.getSelectedValuesList();
         selectedValuesList.forEach(listModel::removeElement);
+        fireTabChangedEvent();
         stringList.revalidate();
       }
     });
@@ -58,6 +61,7 @@ public class StringListEditor extends JPanel implements IValueTypeView {
       public void actionPerformed(ActionEvent actionEvent) {
         String result = JOptionPane.showInputDialog(messages.getString("INPUT_VALUE"));
         listModel.addElement(result);
+        fireTabChangedEvent();
         stringList.revalidate();
       }
     });
@@ -82,4 +86,18 @@ public class StringListEditor extends JPanel implements IValueTypeView {
     return this;
   }
 
+  @Override
+  public void addChangeListener(ChangeListener changeListener) {
+    listenerList.add(ChangeListener.class, changeListener);
+  }
+
+  protected void fireTabChangedEvent() {
+    ChangeEvent evt = new ChangeEvent(this);
+    Object[] listeners = listenerList.getListenerList();
+    for (int i = 0; i < listeners.length; i = i + 2) {
+      if (listeners[i] == ChangeListener.class) {
+        ((ChangeListener) listeners[i + 1]).stateChanged(evt);
+      }
+    }
+  }
 }

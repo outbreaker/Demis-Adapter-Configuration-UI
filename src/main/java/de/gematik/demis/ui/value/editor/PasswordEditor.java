@@ -2,6 +2,8 @@ package de.gematik.demis.ui.value.editor;
 
 import de.gematik.demis.utils.ImageUtils;
 import java.awt.BorderLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -53,6 +55,16 @@ public class PasswordEditor extends JPanel implements IValueTypeView {
   @Override
   public JComponent getViewComponent() {
     return this;
+  }
+
+  @Override
+  public void addChangeListener(ChangeListener changeListener) {
+    pwField.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyTyped(KeyEvent keyEvent) {
+        changeListener.stateChanged(new ChangeEvent(PasswordEditor.this));
+      }
+    });
   }
 
   class myChangeL implements ChangeListener {

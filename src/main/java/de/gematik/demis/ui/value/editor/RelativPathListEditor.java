@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class RelativPathListEditor extends JPanel implements IValueTypeView {
 
@@ -46,6 +48,7 @@ public class RelativPathListEditor extends JPanel implements IValueTypeView {
       public void actionPerformed(ActionEvent actionEvent) {
         var selectedValuesList = pathList.getSelectedValuesList();
         selectedValuesList.forEach(listModel::removeElement);
+        fireTabChangedEvent();
         pathList.revalidate();
       }
     });
@@ -62,6 +65,7 @@ public class RelativPathListEditor extends JPanel implements IValueTypeView {
                 JOptionPane.PLAIN_MESSAGE, ImageUtils.loadResizeImage("Folder-icon", 35));
         if (okCxl == JOptionPane.OK_OPTION) {
           listModel.addElement(relativPathEditor.getValue());
+          fireTabChangedEvent();
           pathList.revalidate();
         }
       }
@@ -84,6 +88,21 @@ public class RelativPathListEditor extends JPanel implements IValueTypeView {
   @Override
   public JComponent getViewComponent() {
     return this;
+  }
+
+  @Override
+  public void addChangeListener(ChangeListener changeListener) {
+    listenerList.add(ChangeListener.class, changeListener);
+  }
+
+  protected void fireTabChangedEvent() {
+    ChangeEvent evt = new ChangeEvent(this);
+    Object[] listeners = listenerList.getListenerList();
+    for (int i = 0; i < listeners.length; i = i + 2) {
+      if (listeners[i] == ChangeListener.class) {
+        ((ChangeListener) listeners[i + 1]).stateChanged(evt);
+      }
+    }
   }
 
 }

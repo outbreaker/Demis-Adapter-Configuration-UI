@@ -1,10 +1,14 @@
 package de.gematik.demis.ui.value.editor;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.MaskFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,5 +47,15 @@ public class IntEditor extends JPanel implements IValueTypeView {
   @Override
   public JComponent getViewComponent() {
     return this;
+  }
+
+  @Override
+  public void addChangeListener(ChangeListener changeListener) {
+    field.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyTyped(KeyEvent keyEvent) {
+        changeListener.stateChanged(new ChangeEvent(IntEditor.this));
+      }
+    });
   }
 }

@@ -48,6 +48,7 @@ public class DemisMenuActionListener implements ActionListener {
               Path path = checkPath(messages, lab.getPath(), "json", "LOAD_JSON_DESCRIPTION");
               if (path != null) {
                 saveJson(path, lab.getLaboratory());
+                lab.setSaved();
               }
             }
         );
@@ -56,6 +57,7 @@ public class DemisMenuActionListener implements ActionListener {
           Path path = checkPath(messages, props.getPath(), "properties", "LOAD_PROPERTIES_DESCRIPTION");
           if (path != null) {
             saveProperties(path, props.getProperties());
+            props.setSaved();
           }
 
         });

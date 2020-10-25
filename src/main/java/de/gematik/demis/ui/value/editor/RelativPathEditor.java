@@ -3,12 +3,16 @@ package de.gematik.demis.ui.value.editor;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.utils.ImageUtils;
 import java.awt.BorderLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class RelativPathEditor extends JPanel implements IValueTypeView {
 
@@ -49,5 +53,15 @@ public class RelativPathEditor extends JPanel implements IValueTypeView {
   @Override
   public JComponent getViewComponent() {
     return this;
+  }
+
+  @Override
+  public void addChangeListener(ChangeListener changeListener) {
+    relativPath.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyTyped(KeyEvent e) {
+        changeListener.stateChanged(new ChangeEvent(RelativPathEditor.this));
+      }
+    });
   }
 }

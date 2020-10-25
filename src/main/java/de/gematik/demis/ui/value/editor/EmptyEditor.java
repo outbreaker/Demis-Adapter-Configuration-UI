@@ -3,6 +3,7 @@ package de.gematik.demis.ui.value.editor;
 import de.gematik.demis.entities.VALUE_TYPE;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.event.ChangeListener;
 
 public class EmptyEditor extends JLabel implements IValueTypeView {
 
@@ -25,5 +26,10 @@ public class EmptyEditor extends JLabel implements IValueTypeView {
   @Override
   public JComponent getViewComponent() {
     return new JLabel("Editor for Value Type \"" + type + "\" not implemented!");
+  }
+
+  @Override
+  public void addChangeListener(ChangeListener changeListener) {
+
   }
 }
