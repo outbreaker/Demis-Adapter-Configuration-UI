@@ -4,9 +4,7 @@ import java.awt.Component;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
@@ -45,17 +43,8 @@ public abstract class AbstractConfigurationView extends JPanel implements IConfi
     //TODO UI Workaround
     JScrollPane jScrollPane = new JScrollPane(comp);
     final boolean[] wheel = {false};
-    jScrollPane.addMouseWheelListener(new MouseWheelListener() {
-      @Override
-      public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
-        wheel[0] = true;
-      }
-    });
-    jScrollPane.addMouseMotionListener(new MouseMotionListener() {
-      @Override
-      public void mouseDragged(MouseEvent mouseEvent) {
-
-      }
+    jScrollPane.addMouseWheelListener(mouseWheelEvent -> wheel[0] = true);
+    jScrollPane.addMouseMotionListener(new MouseMotionAdapter() {
 
       @Override
       public void mouseMoved(MouseEvent mouseEvent) {
