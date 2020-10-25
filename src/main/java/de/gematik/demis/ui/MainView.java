@@ -9,7 +9,6 @@ public class MainView {
 
   private static MainView instance = new MainView();
   private JFrame frame;
-  //  private JTabbedPaneCloseButton configTabs;
   private JClosableTabbedPane configTabs;
 
   private MainView() {
@@ -17,15 +16,13 @@ public class MainView {
     frame = new JFrame();
     frame.setJMenuBar(new Menu().createMenuBar());
     configTabs = new JClosableTabbedPane();
-//        configTabs.addTab("FileName", new PropertiesView());
     frame.add(configTabs, BorderLayout.CENTER);
 
     frame.setTitle("Demis Adapter-Konfigurator");
-    frame.setSize(900, 400);
+    frame.setSize(900, 600);
     frame.setLocation(200, 200);
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setResizable(false);
   }
 
   public static MainView getInstance() {

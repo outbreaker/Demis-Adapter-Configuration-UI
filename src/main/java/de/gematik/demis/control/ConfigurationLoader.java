@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 public class ConfigurationLoader {
 
-  private static Logger LOG = LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
+  private static final Logger LOG = LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
   private static ConfigurationLoader instance;
   private final List<PropertiesView> propertiesViews = new ArrayList<>();
   private final List<LaboratoryView> laboratoryViews = new ArrayList<>();
@@ -51,11 +51,9 @@ public class ConfigurationLoader {
 
       paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("properties")))
           .forEach(f -> MainView.getInstance()
-//              .addTab(f.getFileName().toString(), createJScrollPane(add(new PropertiesView(f)))));
               .addTab(add(new PropertiesView(f))));
       paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
           .forEach(f -> MainView.getInstance()
-//              .addTab(f.getFileName().toString(), createJScrollPane(add(new LaboratoryView(f)))));
               .addCloeTab(add(new LaboratoryView(f))));
     } catch (IOException e) {
       String failed = "Failed to read all Files";
@@ -64,8 +62,6 @@ public class ConfigurationLoader {
     }
   }
 
-//y
-
   public Set<Path> listFilesUsingFileWalk(String dir, int depth) throws IOException {
     try (Stream<Path> stream = Files.walk(Paths.get(dir), depth)) {
       return stream
@@ -73,8 +69,6 @@ public class ConfigurationLoader {
           .filter(file -> !file.toFile().getAbsolutePath().toLowerCase().contains("\\jre"))
           .filter(f -> (f.toFile().getAbsolutePath().endsWith("properties") || f.toFile()
               .getAbsolutePath().endsWith("json")))
-//                    .filter(f -> f.toFile().getAbsolutePath().endsWith("json"))
-//                    .map(Path::toString)
           .collect(Collectors.toSet());
     }
   }
