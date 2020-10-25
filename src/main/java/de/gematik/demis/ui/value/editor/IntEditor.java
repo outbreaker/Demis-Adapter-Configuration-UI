@@ -3,13 +3,13 @@ package de.gematik.demis.ui.value.editor;
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.ParseException;
+import java.text.NumberFormat;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.MaskFormatter;
+import javax.swing.text.NumberFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,12 +20,13 @@ public class IntEditor extends JPanel implements IValueTypeView {
 
   public IntEditor() {
     this.setLayout(new BorderLayout());
-    MaskFormatter formatter = null;
-    try {
-      formatter = new MaskFormatter("#####");
-    } catch (ParseException e) {
-      LOG.error("MaskFormatter initializing with error", e);
-    }
+    NumberFormat format = NumberFormat.getInstance();
+    NumberFormatter formatter = new NumberFormatter(format);
+    formatter.setValueClass(Integer.class);
+    formatter.setMinimum(0);
+    formatter.setMaximum(Integer.MAX_VALUE);
+    formatter.setAllowsInvalid(false);
+    formatter.setCommitsOnValidEdit(true);
     field = new JFormattedTextField(formatter);
     this.add(field, BorderLayout.CENTER);
   }
