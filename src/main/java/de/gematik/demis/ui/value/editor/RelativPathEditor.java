@@ -71,10 +71,12 @@ public class RelativPathEditor extends AbstractEditor {
   @Override
   public void checkExpertMode() {
     dialogJb.setEnabled(!isExpertEditor());
+    relativPath.setEnabled(!isExpertEditor());
   }
 
   @Override
   public void activateForExperts() {
     dialogJb.setEnabled(true);
+    relativPath.setEnabled(true);
   }
 }

@@ -23,7 +23,7 @@ import javax.swing.event.ChangeListener;
 public class RelativPathListEditor extends AbstractEditor {
 
   public static final String DELIMITER = ",";
-  private final JList pathList;
+  private final JList<String> pathList;
   private final DefaultListModel<String> listModel = new DefaultListModel<>();
   private final JScrollPane relativPathListScrollPane;
   private JButton addJb;
@@ -32,7 +32,7 @@ public class RelativPathListEditor extends AbstractEditor {
   public RelativPathListEditor() {
     setLayout(new BorderLayout());
     var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
-    pathList = new JList(listModel);
+    pathList = new JList<>(listModel);
     relativPathListScrollPane = new JScrollPane(pathList);
     this.add(relativPathListScrollPane, BorderLayout.CENTER);
     JPanel buttonPanel = createButtonPanel(messages);
@@ -119,11 +119,15 @@ public class RelativPathListEditor extends AbstractEditor {
   public void checkExpertMode() {
     addJb.setEnabled(!isExpertEditor());
     removeJb.setEnabled(!isExpertEditor());
+    pathList.setEnabled(!isExpertEditor());
+    relativPathListScrollPane.setEnabled(!isExpertEditor());
   }
 
   @Override
   public void activateForExperts() {
     addJb.setEnabled(true);
     removeJb.setEnabled(true);
+    pathList.setEnabled(true);
+    relativPathListScrollPane.setEnabled(true);
   }
 }
