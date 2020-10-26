@@ -71,6 +71,8 @@ public class DemisMenuActionListener implements ActionListener {
                     props.setSaved();
                   }
                 });
+        String successMessage = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("SAVE_PROPERTIES_SUCCESSFULL");
+        JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), successMessage, "Information", JOptionPane.INFORMATION_MESSAGE);
         break;
       case "EXPERT":
           if (actionEvent.getSource() instanceof JToggleButton){
