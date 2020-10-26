@@ -9,5 +9,6 @@ public enum VALUE_TYPE {
   PATH_LIST,
   INT,
   URL,
+  SELECT_FIX_FHIR_BASEPATH,
   PASSWORD;
 }

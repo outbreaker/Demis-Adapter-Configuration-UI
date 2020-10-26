@@ -27,6 +27,8 @@ public class ValueTypeEditorFactory {
         return new UrlEditor();
       case PATH_LIST:
         return new RelativPathListEditor();
+      case SELECT_FIX_FHIR_BASEPATH:
+        return new FhirBasePathEditor();
       default:
         return new EmptyEditor(type);
     }
