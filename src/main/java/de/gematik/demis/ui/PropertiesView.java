@@ -101,6 +101,7 @@ public class PropertiesView extends AbstractConfigurationView {
   public void checkExpertMode() {
     editors.values().forEach(IValueTypeView::checkExpertMode);
   }
+
   ;
 
   public void activateForExperts() {
@@ -132,4 +133,11 @@ public class PropertiesView extends AbstractConfigurationView {
   public String getName() {
     return path == null ? "New Properties Configuration" : path.toFile().getName();
   }
+
+  public void setPropertiesValue(IProperties property, String value) {
+    if (editors.containsKey(property)) {
+      editors.get(property).setValue(value);
+    }
+  }
+
 }

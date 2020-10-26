@@ -27,7 +27,8 @@ public class UrlEditor extends AbstractEditor {
     field.addFocusListener(
         new FocusListener() {
           @Override
-          public void focusGained(FocusEvent focusEvent) {}
+          public void focusGained(FocusEvent focusEvent) {
+          }
 
           @Override
           public void focusLost(FocusEvent focusEvent) {
@@ -49,7 +50,6 @@ public class UrlEditor extends AbstractEditor {
             new RegexValidator(
                 "^https://[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.\\w+(:\\d+)?(/[\\w-=.?]+)*/?$"),
             UrlValidator.ALLOW_LOCAL_URLS);
-    System.out.println("URL: " + urlValidator.isValid(field.getText()));
     return urlValidator.isValid(field.getText())
         && field.getText().toLowerCase().startsWith("https");
   }

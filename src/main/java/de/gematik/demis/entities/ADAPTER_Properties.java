@@ -4,7 +4,7 @@ import java.util.Properties;
 
 public enum ADAPTER_Properties implements IProperties {
   DEBUG("debuginfo.enabled", VALUE_TYPE.BOOLEAN, false, "Debug", true),
-  FHIR_BASEPATH("fhir.basepath", VALUE_TYPE.URL, false, "Server-URL", false),
+  FHIR_BASEPATH("fhir.basepath", VALUE_TYPE.SELECT_FIX_FHIR_BASEPATH, false, "Server-URL", false),
   IDP_LAB_TOKENENDPOINT("idp.lab.tokenendpoint", VALUE_TYPE.URL, false, "IDP-URL", true),
   IDP_LAB_CLIENTID("idp.lab.clientid", VALUE_TYPE.STRING, false, "demis-adapter", true),
   IDP_LAB_SECRET("idp.lab.secret", VALUE_TYPE.STRING, false, "secret_client_secret", true),

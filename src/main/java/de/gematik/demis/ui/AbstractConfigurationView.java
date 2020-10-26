@@ -93,4 +93,5 @@ public abstract class AbstractConfigurationView extends JPanel implements IConfi
       fireTabChangedEvent();
     }
   }
+
 }

@@ -1,5 +1,6 @@
 package de.gematik.demis.control;
 
+import de.gematik.demis.entities.IProperties;
 import de.gematik.demis.ui.LaboratoryView;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.PropertiesView;
@@ -25,7 +26,8 @@ public class ConfigurationLoader {
   private final List<PropertiesView> propertiesViews = new ArrayList<>();
   private final List<LaboratoryView> laboratoryViews = new ArrayList<>();
 
-  private ConfigurationLoader() {}
+  private ConfigurationLoader() {
+  }
 
   public static ConfigurationLoader getInstance() {
     if (instance == null) {
@@ -81,5 +83,9 @@ public class ConfigurationLoader {
 
   public List<LaboratoryView> getLaboratoryViews() {
     return laboratoryViews;
+  }
+
+  public void setPropertiesValue(IProperties property, String value) {
+    propertiesViews.forEach(prop -> prop.setPropertiesValue(property, value));
   }
 }
