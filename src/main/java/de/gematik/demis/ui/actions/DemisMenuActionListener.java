@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.gematik.demis.control.ConfigurationLoader;
 import de.gematik.demis.entities.Laboratory;
 import de.gematik.demis.ui.MainView;
+import de.gematik.demis.ui.MessageWithLinksPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,8 +14,11 @@ import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import javax.swing.filechooser.FileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +67,10 @@ public class DemisMenuActionListener implements ActionListener {
         });
         String successMessage = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("SAVE_PROPERTIES_SUCCESSFULL");
         JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), successMessage, "Information", JOptionPane.INFORMATION_MESSAGE);
+        break;
+      case "HELP_WDB":
+        openHelpDialog(messages);
+        LOG.debug("CLick on Help!");
         break;
       default:
         LOG.warn("Action for Command \"" + actionEvent.getActionCommand() + "\" not implemented");
@@ -136,6 +144,11 @@ public class DemisMenuActionListener implements ActionListener {
       }
     });
     return jFileChooser;
+  }
+
+  private void openHelpDialog(ResourceBundle messages) {
+    String help = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("HELP_DESCRIPTION");
+    JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), new MessageWithLinksPane(help),"Hilfe", JOptionPane.QUESTION_MESSAGE);
   }
 
 
