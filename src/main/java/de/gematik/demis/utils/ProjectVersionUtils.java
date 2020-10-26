@@ -20,8 +20,8 @@ public class ProjectVersionUtils {
     try {
       input = new FileInputStream("build.gradle");
       prop.load(input);
-      LOG.debug(prop.getProperty("version"));
       projectVersion = prop.getProperty("version");
+      LOG.debug("Version: " + prop.getProperty("version"));
     } catch (IOException ex) {
       LOG.debug("Could not get Version!");
     }

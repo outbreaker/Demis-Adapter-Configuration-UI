@@ -1,11 +1,8 @@
 package de.gematik.demis.ui;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.io.IOException;
 import java.net.URI;
 import javax.swing.JEditorPane;
-import javax.swing.JLabel;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import org.slf4j.Logger;
@@ -26,7 +23,6 @@ public class MessageWithLinksPane extends JEditorPane {
             java.awt.Desktop.getDesktop().browse(URI.create(e.getURL().toString()));
           } catch (IOException ioException) {
             LOG.debug("Error while opening link!");
-            // TODO ? Noch ein Fenster für Fehler, dass Browser nicht gefunden werden kann?
           }
         }
       }
