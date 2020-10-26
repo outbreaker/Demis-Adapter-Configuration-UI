@@ -68,18 +68,19 @@ public class JClosableTabbedPane extends JTabbedPane implements ChangeListener {
   }
 
   private JButton createCloseButton() {
-    final JButton btnClose = new JButton(ImageUtils.loadResizeImage("closeTabDisabled", 10)) {
+    final JButton btnClose =
+        new JButton(ImageUtils.loadResizeImage("closeTabDisabled", 10)) {
 
-      private static final long serialVersionUID = 3964294119405101848L;
-      private static final int HEIGHT = 25;
+          private static final long serialVersionUID = 3964294119405101848L;
+          private static final int HEIGHT = 25;
 
-      @Override
-      public Dimension getPreferredSize() {
-        Dimension dimension = super.getPreferredSize();
-        dimension.setSize(HEIGHT, dimension.getHeight());
-        return dimension;
-      }
-    };
+          @Override
+          public Dimension getPreferredSize() {
+            Dimension dimension = super.getPreferredSize();
+            dimension.setSize(HEIGHT, dimension.getHeight());
+            return dimension;
+          }
+        };
     btnClose.setBorderPainted(false);
     btnClose.setFocusPainted(false);
     btnClose.setOpaque(false);
@@ -91,14 +92,16 @@ public class JClosableTabbedPane extends JTabbedPane implements ChangeListener {
   public void stateChanged(ChangeEvent changeEvent) {
     if (changeEvent.getSource() instanceof IConfigurationView) {
       IConfigurationView configurationView = (IConfigurationView) changeEvent.getSource();
-      String title = configurationView.getName() + (configurationView.hasUnsavedChanges() ? " *" : "");
+      String title =
+          configurationView.getName() + (configurationView.hasUnsavedChanges() ? " *" : "");
       int index = indexOfComponent(configurationView.getComponent());
       if (getTabComponentAt(index) instanceof JPanel) {
-        Arrays.stream(((JPanel) getTabComponentAt(index)).getComponents()).filter(s -> s instanceof JLabel).forEach(s -> ((JLabel) s).setText(title));
+        Arrays.stream(((JPanel) getTabComponentAt(index)).getComponents())
+            .filter(s -> s instanceof JLabel)
+            .forEach(s -> ((JLabel) s).setText(title));
       } else {
         setTitleAt(index, title);
       }
     }
   }
-
 }

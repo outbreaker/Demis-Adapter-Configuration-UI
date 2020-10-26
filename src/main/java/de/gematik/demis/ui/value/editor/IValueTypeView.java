@@ -12,4 +12,12 @@ public interface IValueTypeView {
   JComponent getViewComponent();
 
   void addChangeListener(ChangeListener changeListener);
+
+  boolean isExpertEditor();
+
+  void setExpertEditor(boolean value);
+
+  void checkExpertMode();
+
+  void activateForExperts();
 }

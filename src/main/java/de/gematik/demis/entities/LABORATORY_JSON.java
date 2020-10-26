@@ -3,40 +3,42 @@ package de.gematik.demis.entities;
 import java.util.Properties;
 
 public enum LABORATORY_JSON implements IJson {
-  IDENTIFIKATOR("identifikator", false, ""),
-  POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN("positiveTestergebnisBezeichnungen", false, ""),
-  MELDER_PERSON("Melder-Person", false, ""),
-  VORNAME("vorname", false, ""),
-  NACHNAME("nachname", false, ""),
-  ANSCHRIFTENZEILE("anschriftenzeile", false, ""),
-  POSTLEITZAHL("postleitzahl", false, ""),
-  STADT("stadt", false, ""),
-  TELEFONNUMMER("telefonnummer", false, ""),
-  ERREICHBARKEIT("erreichbarkeit", false, ""),
-  MELDER_EINRICHTUNG("Melder-Einrichtung", false, ""),
-  BSNR("BSNR", false, ""),
-  NAME("name", false, ""),
-  EINRICHTUNGS_ART("einrichtungsArt", false, ""),
-  ANSPRECHSPARTNER_NACHNAME("ansprechspartnerNachname", false, ""),
-  ANSPRECHSPARTNER_VORNAME("ansprechspartnerVorname", false, ""),
-  FAXNUMMER("faxnummer", false, ""),
-  EMAIL("email", false, ""),
-  WEBSEITE("webseite", false, ""),
-  IDP("idp", false, ""),
-  USERNAME("username", false, ""),
-  AUTHCERTKEYSTORE("authcertkeystore", false, ""),
-  AUTHCERTPASSWORD("authcertpassword", false, ""),
-  AUTHCERTALIAS("authcertalias", false, ""),
-  LOAD_DATA("LOAD_DATA", false, ""),
+  IDENTIFIKATOR("identifikator", false, "", false),
+  POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN("positiveTestergebnisBezeichnungen", false, "", false),
+  MELDER_PERSON("Melder-Person", false, "", false),
+  VORNAME("vorname", false, "", false),
+  NACHNAME("nachname", false, "", false),
+  ANSCHRIFTENZEILE("anschriftenzeile", false, "", false),
+  POSTLEITZAHL("postleitzahl", false, "", false),
+  STADT("stadt", false, "", false),
+  TELEFONNUMMER("telefonnummer", false, "", false),
+  ERREICHBARKEIT("erreichbarkeit", false, "", false),
+  MELDER_EINRICHTUNG("Melder-Einrichtung", false, "", false),
+  BSNR("BSNR", false, "", false),
+  NAME("name", false, "", false),
+  EINRICHTUNGS_ART("einrichtungsArt", false, "", false),
+  ANSPRECHSPARTNER_NACHNAME("ansprechspartnerNachname", false, "", false),
+  ANSPRECHSPARTNER_VORNAME("ansprechspartnerVorname", false, "", false),
+  FAXNUMMER("faxnummer", false, "", false),
+  EMAIL("email", false, "", false),
+  WEBSEITE("webseite", false, "", false),
+  IDP("idp", false, "", true),
+  USERNAME("username", false, "", true),
+  AUTHCERTKEYSTORE("authcertkeystore", false, "", true),
+  AUTHCERTPASSWORD("authcertpassword", false, "", true),
+  AUTHCERTALIAS("authcertalias", false, "", true),
+  LOAD_DATA("LOAD_DATA", false, "", false),
   ;
 
-  private String key;
-  private boolean optional;
-  private String defaultValue;
+  private final String key;
+  private final boolean optional;
+  private final boolean expertValue;
+  private final String defaultValue;
 
-  LABORATORY_JSON(String key, boolean optional, String defaultValue) {
+  LABORATORY_JSON(String key, boolean optional, String defaultValue, boolean expertValue) {
     this.key = key;
     this.optional = optional;
+    this.expertValue = expertValue;
     this.defaultValue = defaultValue;
   }
 
@@ -62,16 +64,20 @@ public enum LABORATORY_JSON implements IJson {
 
   @Override
   public String getDisplayName() {
-    return getKey(); //TODO: load from Languagefile
+    return getKey(); // TODO: load from Languagefile
   }
 
   @Override
   public String getToolTip() {
-    return ""; //TODO: load from Languagefile
+    return ""; // TODO: load from Languagefile
   }
 
   @Override
   public String getDefaultValue() {
     return defaultValue;
+  }
+
+  public boolean isExpertValue() {
+    return expertValue;
   }
 }

@@ -5,7 +5,7 @@ import de.gematik.demis.entities.VALUE_TYPE;
 public class ValueTypeEditorFactory {
 
   private ValueTypeEditorFactory() {
-    //Factory Class
+    // Factory Class
   }
 
   public static IValueTypeView createEditor(VALUE_TYPE type) {

@@ -4,14 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StringEditor extends JPanel implements IValueTypeView {
+public class StringEditor extends AbstractEditor {
 
   private static Logger LOG = LoggerFactory.getLogger(StringEditor.class.getName());
   private JTextField field;
@@ -48,11 +47,22 @@ public class StringEditor extends JPanel implements IValueTypeView {
 
   @Override
   public void addChangeListener(ChangeListener changeListener) {
-    field.addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyTyped(KeyEvent e) {
-        changeListener.stateChanged(new ChangeEvent(StringEditor.this));
-      }
-    });
+    field.addKeyListener(
+        new KeyAdapter() {
+          @Override
+          public void keyTyped(KeyEvent e) {
+            changeListener.stateChanged(new ChangeEvent(StringEditor.this));
+          }
+        });
+  }
+
+  @Override
+  public void checkExpertMode() {
+    field.setEnabled(!isExpertEditor());
+  }
+
+  @Override
+  public void activateForExperts() {
+    field.setEnabled(true);
   }
 }

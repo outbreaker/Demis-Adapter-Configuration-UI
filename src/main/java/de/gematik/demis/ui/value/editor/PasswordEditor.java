@@ -6,7 +6,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
@@ -15,7 +14,7 @@ import javax.swing.text.BadLocationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PasswordEditor extends JPanel implements IValueTypeView {
+public class PasswordEditor extends AbstractEditor {
 
   private static Logger LOG = LoggerFactory.getLogger(PasswordEditor.class.getName());
 
@@ -59,12 +58,23 @@ public class PasswordEditor extends JPanel implements IValueTypeView {
 
   @Override
   public void addChangeListener(ChangeListener changeListener) {
-    pwField.addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyTyped(KeyEvent keyEvent) {
-        changeListener.stateChanged(new ChangeEvent(PasswordEditor.this));
-      }
-    });
+    pwField.addKeyListener(
+        new KeyAdapter() {
+          @Override
+          public void keyTyped(KeyEvent keyEvent) {
+            changeListener.stateChanged(new ChangeEvent(PasswordEditor.this));
+          }
+        });
+  }
+
+  @Override
+  public void checkExpertMode() {
+    pwField.setEnabled(!isExpertEditor());
+  }
+
+  @Override
+  public void activateForExperts() {
+    pwField.setEnabled(true);
   }
 
   class myChangeL implements ChangeListener {
