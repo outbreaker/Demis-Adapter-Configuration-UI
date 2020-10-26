@@ -59,6 +59,8 @@ public class DemisMenuActionListener implements ActionListener {
           }
 
         });
+        String successMessage = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("SAVE_PROPERTIES_SUCCESSFULL");
+        JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), successMessage, "Information", JOptionPane.INFORMATION_MESSAGE);
         break;
       default:
         LOG.warn("Action for Command \"" + actionEvent.getActionCommand() + "\" not implemented");
