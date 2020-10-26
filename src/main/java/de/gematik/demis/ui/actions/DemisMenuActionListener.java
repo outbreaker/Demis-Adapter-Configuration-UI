@@ -5,11 +5,13 @@ import de.gematik.demis.control.ConfigurationLoader;
 import de.gematik.demis.entities.Laboratory;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.MessageWithLinksPane;
+import de.gematik.demis.utils.ProjectVersionUtils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Properties;
@@ -71,6 +73,9 @@ public class DemisMenuActionListener implements ActionListener {
       case "HELP_WDB":
         openHelpDialog(messages);
         LOG.debug("CLick on Help!");
+        break;
+      case "ABOUT":
+        openAboutDialog(messages);
         break;
       default:
         LOG.warn("Action for Command \"" + actionEvent.getActionCommand() + "\" not implemented");
@@ -151,5 +156,9 @@ public class DemisMenuActionListener implements ActionListener {
     JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), new MessageWithLinksPane(help),"Hilfe", JOptionPane.QUESTION_MESSAGE);
   }
 
-
+  private void openAboutDialog(ResourceBundle messages) {
+    String version = ProjectVersionUtils.getProjectVersion();
+    String versionMessage = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("VERSION");
+    JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), versionMessage + version, "Information", JOptionPane.INFORMATION_MESSAGE);
+  }
 }
