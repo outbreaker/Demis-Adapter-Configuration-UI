@@ -1,9 +1,13 @@
 package de.gematik.demis.ui.value.editor;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,5 +39,16 @@ public class BooleanEditor extends JPanel implements IValueTypeView {
   @Override
   public JComponent getViewComponent() {
     return this;
+  }
+
+  @Override
+  public void addChangeListener(ChangeListener changeListener) {
+    booleanCheckBox.addActionListener(l -> changeListener.stateChanged(new ChangeEvent(BooleanEditor.this)));
+    booleanCheckBox.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseClicked(MouseEvent e) {
+        changeListener.stateChanged(new ChangeEvent(BooleanEditor.this));
+      }
+    });
   }
 }

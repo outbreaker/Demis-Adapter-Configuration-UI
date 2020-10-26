@@ -18,11 +18,10 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LaboratoryView extends JPanel {
+public class LaboratoryView extends AbstractConfigurationView {
 
   private static Logger LOG = LoggerFactory.getLogger(LaboratoryView.class.getName());
   private final HashMap<LABORATORY_JSON, IValueTypeView> values = new HashMap<>();
@@ -84,6 +83,9 @@ public class LaboratoryView extends JPanel {
     c.weightx = 1.0;
     this.add(editor.getViewComponent(), c);
     values.put(id, editor);
+    editor.addChangeListener(s -> {
+      setUnsaved();
+    });
   }
 
   private void addLabel(GridBagConstraints c, Label label) {
@@ -119,4 +121,11 @@ public class LaboratoryView extends JPanel {
 
     return laboratory;
   }
+
+  @Override
+  public String getName() {
+    return path == null ? "New Json Configuration" : path.toFile().getName();
+  }
+
+
 }

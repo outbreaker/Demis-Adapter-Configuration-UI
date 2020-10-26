@@ -4,13 +4,6 @@ import de.gematik.demis.ui.LaboratoryView;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.PropertiesView;
 import de.gematik.demis.ui.actions.DemisMenuActionListener;
-import java.awt.Component;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,13 +14,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.swing.JScrollPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ConfigurationLoader {
 
-  private static Logger LOG = LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
+  private static final Logger LOG = LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
   private static ConfigurationLoader instance;
   private final List<PropertiesView> propertiesViews = new ArrayList<>();
   private final List<LaboratoryView> laboratoryViews = new ArrayList<>();
@@ -59,56 +51,15 @@ public class ConfigurationLoader {
 
       paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("properties")))
           .forEach(f -> MainView.getInstance()
-              .addTab(f.getFileName().toString(), createJScrollPane(add(new PropertiesView(f)))));
+              .addTab(add(new PropertiesView(f))));
       paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
           .forEach(f -> MainView.getInstance()
-              .addTab(f.getFileName().toString(), createJScrollPane(add(new LaboratoryView(f)))));
+              .addCloeTab(add(new LaboratoryView(f))));
     } catch (IOException e) {
       String failed = "Failed to read all Files";
       LOG.error(failed, e);
       throw new RuntimeException(failed, e);
     }
-  }
-
-  private JScrollPane createJScrollPane(Component comp) {
-    //TODO UI Workaround
-    JScrollPane jScrollPane = new JScrollPane(comp);
-    final boolean[] wheel = {false};
-    jScrollPane.addMouseWheelListener(new MouseWheelListener() {
-      @Override
-      public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
-        wheel[0] = true;
-      }
-    });
-    jScrollPane.addMouseMotionListener(new MouseMotionListener() {
-      @Override
-      public void mouseDragged(MouseEvent mouseEvent) {
-
-      }
-
-      @Override
-      public void mouseMoved(MouseEvent mouseEvent) {
-        if (wheel[0]) {
-          MainView.getInstance().getJTabs().setVisible(false);
-          MainView.getInstance().getJTabs().setVisible(true);
-        }
-        wheel[0] = false;
-      }
-    });
-    jScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-      @Override
-      public void adjustmentValueChanged(AdjustmentEvent e) {
-        if (e.getAdjustmentType() == AdjustmentEvent.TRACK) {
-          e.getAdjustable().setUnitIncrement(500);
-          e.getAdjustable().setBlockIncrement(500);
-          comp.repaint();
-          comp.revalidate();
-          MainView.getInstance().getMainComponent().repaint();
-        }
-      }
-    });
-
-    return jScrollPane;
   }
 
   public Set<Path> listFilesUsingFileWalk(String dir, int depth) throws IOException {
@@ -118,8 +69,6 @@ public class ConfigurationLoader {
           .filter(file -> !file.toFile().getAbsolutePath().toLowerCase().contains("\\jre"))
           .filter(f -> (f.toFile().getAbsolutePath().endsWith("properties") || f.toFile()
               .getAbsolutePath().endsWith("json")))
-//                    .filter(f -> f.toFile().getAbsolutePath().endsWith("json"))
-//                    .map(Path::toString)
           .collect(Collectors.toSet());
     }
   }

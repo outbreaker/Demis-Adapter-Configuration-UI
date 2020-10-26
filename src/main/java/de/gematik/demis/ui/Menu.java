@@ -3,6 +3,8 @@ package de.gematik.demis.ui;
 import de.gematik.demis.ui.actions.DemisMenuActionListener;
 import de.gematik.demis.utils.ImageUtils;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
@@ -22,6 +24,15 @@ class Menu {
 
     JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu(messages.getString("FILE"));
+    fileMenu.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mouseEntered(MouseEvent e) {
+        super.mouseEntered(e);
+        //UI Workaround
+        MainView.getInstance().getJTabs().setVisible(false);
+        MainView.getInstance().getJTabs().setVisible(true);
+      }
+    });
     fileMenu.add(getMenuItem(messages, "OPEN_ALL", true));
     fileMenu.add(getMenuItem(messages, "OPEN", true));
     fileMenu.add(getMenuItem(messages, "SAVE_ALL", true));

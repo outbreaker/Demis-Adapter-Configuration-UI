@@ -9,22 +9,20 @@ public class MainView {
 
   private static MainView instance = new MainView();
   private JFrame frame;
-  private JTabbedPaneCloseButton configTabs;
+  private JClosableTabbedPane configTabs;
 
   private MainView() {
     System.out.println(">>>>>>>" + Locale.getDefault().getCountry());
     frame = new JFrame();
     frame.setJMenuBar(new Menu().createMenuBar());
-    configTabs = new JTabbedPaneCloseButton();
-//        configTabs.addTab("FileName", new PropertiesView());
+    configTabs = new JClosableTabbedPane();
     frame.add(configTabs, BorderLayout.CENTER);
 
     frame.setTitle("Demis Adapter-Konfigurator");
-    frame.setSize(900, 400);
+    frame.setSize(900, 600);
     frame.setLocation(200, 200);
 
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setResizable(false);
   }
 
   public static MainView getInstance() {
@@ -34,15 +32,19 @@ public class MainView {
     return instance;
   }
 
-  public void addTab(String title, Component component) {
-    configTabs.addTab(title, null, component);
+  public void addTab(IConfigurationView configurationView) {
+    configTabs.addTab(configurationView);
+  }
+
+  public void addCloeTab(IConfigurationView configurationView) {
+    configTabs.addClosableTab(configurationView);
   }
 
   public Component getMainComponent() {
     return getInstance().frame;
   }
 
-  public JTabbedPaneCloseButton getJTabs() {
+  public JClosableTabbedPane getJTabs() {
     return getInstance().configTabs;
   }
 
