@@ -98,11 +98,12 @@ public class PropertiesView extends AbstractConfigurationView {
     this.repaint();
   }
 
-  public void checkExpertMode(){
+  public void checkExpertMode() {
     editors.values().forEach(IValueTypeView::checkExpertMode);
-  };
+  }
+  ;
 
-  public void activateForExperts(){
+  public void activateForExperts() {
     editors.values().forEach(IValueTypeView::activateForExperts);
   }
 

@@ -134,11 +134,12 @@ public class ReportingFacilityView extends JPanel {
     return reportingFacility;
   }
 
-  public void checkExpertMode(){
+  public void checkExpertMode() {
     values.values().forEach(IValueTypeView::checkExpertMode);
-  };
+  }
+  ;
 
-  public void activateForExperts(){
+  public void activateForExperts() {
     values.values().forEach(IValueTypeView::activateForExperts);
   }
 }

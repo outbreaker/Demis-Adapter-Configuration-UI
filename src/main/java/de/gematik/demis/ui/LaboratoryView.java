@@ -126,14 +126,15 @@ public class LaboratoryView extends AbstractConfigurationView {
     return laboratory;
   }
 
-  public void checkExpertMode(){
+  public void checkExpertMode() {
     values.values().forEach(IValueTypeView::checkExpertMode);
-     identityProviderView.checkExpertMode();
-     reportingPersonView.checkExpertMode();
-     reportingFacilityView.checkExpertMode();
-  };
+    identityProviderView.checkExpertMode();
+    reportingPersonView.checkExpertMode();
+    reportingFacilityView.checkExpertMode();
+  }
+  ;
 
-  public void activateForExperts(){
+  public void activateForExperts() {
     values.values().forEach(IValueTypeView::activateForExperts);
     identityProviderView.activateForExperts();
     reportingPersonView.activateForExperts();

@@ -7,7 +7,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
@@ -84,6 +83,7 @@ public class UrlEditor extends AbstractEditor {
           }
         });
   }
+
   @Override
   public void checkExpertMode() {
     field.setEnabled(!isExpertEditor());

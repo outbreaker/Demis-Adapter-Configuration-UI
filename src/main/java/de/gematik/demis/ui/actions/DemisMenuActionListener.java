@@ -19,7 +19,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.plaf.basic.BasicBorders.ToggleButtonBorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,26 +70,34 @@ public class DemisMenuActionListener implements ActionListener {
                     props.setSaved();
                   }
                 });
-        String successMessage = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("SAVE_PROPERTIES_SUCCESSFULL");
-        JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), successMessage, "Information", JOptionPane.INFORMATION_MESSAGE);
+        String successMessage =
+            ResourceBundle.getBundle("MessagesBundle", Locale.getDefault())
+                .getString("SAVE_PROPERTIES_SUCCESSFULL");
+        JOptionPane.showMessageDialog(
+            MainView.getInstance().getMainComponent(),
+            successMessage,
+            "Information",
+            JOptionPane.INFORMATION_MESSAGE);
         break;
       case "EXPERT":
-          if (actionEvent.getSource() instanceof JToggleButton){
-            JToggleButton jToggleButton = (JToggleButton) actionEvent.getSource();
-            if (jToggleButton.isSelected()){
-              ConfigurationLoader.getInstance()
-                  .getLaboratoryViews().forEach(LaboratoryView::activateForExperts);
-              ConfigurationLoader.getInstance()
-                  .getPropertiesViews()
-                  .forEach(PropertiesView::activateForExperts);
-            } else {
-              ConfigurationLoader.getInstance()
-                  .getLaboratoryViews().forEach(LaboratoryView::checkExpertMode);
-              ConfigurationLoader.getInstance()
-                  .getPropertiesViews()
-                  .forEach(PropertiesView::checkExpertMode);
-            }
+        if (actionEvent.getSource() instanceof JToggleButton) {
+          JToggleButton jToggleButton = (JToggleButton) actionEvent.getSource();
+          if (jToggleButton.isSelected()) {
+            ConfigurationLoader.getInstance()
+                .getLaboratoryViews()
+                .forEach(LaboratoryView::activateForExperts);
+            ConfigurationLoader.getInstance()
+                .getPropertiesViews()
+                .forEach(PropertiesView::activateForExperts);
+          } else {
+            ConfigurationLoader.getInstance()
+                .getLaboratoryViews()
+                .forEach(LaboratoryView::checkExpertMode);
+            ConfigurationLoader.getInstance()
+                .getPropertiesViews()
+                .forEach(PropertiesView::checkExpertMode);
           }
+        }
         break;
       default:
         LOG.warn("Action for Command \"" + actionEvent.getActionCommand() + "\" not implemented");

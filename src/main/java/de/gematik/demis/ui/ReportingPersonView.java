@@ -97,11 +97,12 @@ public class ReportingPersonView extends JPanel {
     return reportingPerson;
   }
 
-  public void checkExpertMode(){
+  public void checkExpertMode() {
     values.values().forEach(IValueTypeView::checkExpertMode);
-  };
+  }
+  ;
 
-  public void activateForExperts(){
+  public void activateForExperts() {
     values.values().forEach(IValueTypeView::activateForExperts);
   }
 }

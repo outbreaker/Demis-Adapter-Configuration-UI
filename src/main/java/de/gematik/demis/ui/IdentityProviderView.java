@@ -178,11 +178,12 @@ public class IdentityProviderView extends JPanel {
     return identityProvider;
   }
 
-  public void checkExpertMode(){
+  public void checkExpertMode() {
     values.values().forEach(IValueTypeView::checkExpertMode);
-  };
+  }
+  ;
 
-  public void activateForExperts(){
+  public void activateForExperts() {
     values.values().forEach(IValueTypeView::activateForExperts);
   }
 }

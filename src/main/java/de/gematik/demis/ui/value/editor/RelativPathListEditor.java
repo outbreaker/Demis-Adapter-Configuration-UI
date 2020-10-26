@@ -37,14 +37,13 @@ public class RelativPathListEditor extends AbstractEditor {
     this.add(relativPathListScrollPane, BorderLayout.CENTER);
     JPanel buttonPanel = createButtonPanel(messages);
     this.add(buttonPanel, BorderLayout.EAST);
-
   }
 
   private JPanel createButtonPanel(ResourceBundle messages) {
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new BorderLayout());
 
-     removeJb = new JButton(messages.getString("BUTTON_REMOVE"));
+    removeJb = new JButton(messages.getString("BUTTON_REMOVE"));
     removeJb.addActionListener(
         new ActionListener() {
           @Override

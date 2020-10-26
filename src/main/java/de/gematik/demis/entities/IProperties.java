@@ -15,5 +15,4 @@ public interface IProperties {
   String getDefaultValue();
 
   boolean isExpertValue();
-
 }

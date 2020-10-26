@@ -32,12 +32,8 @@ public class EmptyEditor extends AbstractEditor {
   public void addChangeListener(ChangeListener changeListener) {}
 
   @Override
-  public void checkExpertMode() {
-
-  }
+  public void checkExpertMode() {}
 
   @Override
-  public void activateForExperts() {
-
-  }
+  public void activateForExperts() {}
 }
