@@ -16,6 +16,7 @@ public class MainView {
     frame = new JFrame();
     frame.setJMenuBar(new Menu().createMenuBar());
     configTabs = new JClosableTabbedPane();
+    frame.add(new ToolBar().getToolBar(), BorderLayout.NORTH);
     frame.add(configTabs, BorderLayout.CENTER);
 
     frame.setTitle("Demis Adapter-Konfigurator");
