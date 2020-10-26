@@ -17,18 +17,19 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class StringListEditor extends JPanel implements IValueTypeView {
+public class StringListEditor extends AbstractEditor {
 
   public static final String DELIMITER = ",";
-  private final JList stringList;
+  private final JList<String> stringList;
   private final DefaultListModel<String> listModel = new DefaultListModel<>();
   private final JScrollPane stringListScrollPane;
-
+  private JButton addJb;
+  private JButton removeJb;
 
   public StringListEditor() {
     setLayout(new BorderLayout());
     var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
-    stringList = new JList(listModel);
+    stringList = new JList<>(listModel);
     stringListScrollPane = new JScrollPane(stringList);
     this.add(stringListScrollPane, BorderLayout.CENTER);
     JPanel buttonPanel = createButtonPanel(messages);
@@ -44,34 +45,37 @@ public class StringListEditor extends JPanel implements IValueTypeView {
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new BorderLayout());
 
-    JButton removeJb = new JButton(messages.getString("BUTTON_REMOVE"));
-    removeJb.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent) {
-        var selectedValuesList = stringList.getSelectedValuesList();
-        selectedValuesList.forEach(listModel::removeElement);
-        fireTabChangedEvent();
-        stringList.revalidate();
-      }
-    });
+    removeJb = new JButton(messages.getString("BUTTON_REMOVE"));
+    removeJb.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent actionEvent) {
+            var selectedValuesList = stringList.getSelectedValuesList();
+            selectedValuesList.forEach(listModel::removeElement);
+            fireTabChangedEvent();
+            stringList.revalidate();
+          }
+        });
     buttonPanel.add(removeJb, BorderLayout.NORTH);
-    JButton addJb = new JButton(messages.getString("BUTTON_ADD"));
-    addJb.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent) {
-        String result = JOptionPane.showInputDialog(messages.getString("INPUT_VALUE"));
-        listModel.addElement(result);
-        fireTabChangedEvent();
-        stringList.revalidate();
-      }
-    });
+    addJb = new JButton(messages.getString("BUTTON_ADD"));
+    addJb.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent actionEvent) {
+            String result = JOptionPane.showInputDialog(messages.getString("INPUT_VALUE"));
+            listModel.addElement(result);
+            fireTabChangedEvent();
+            stringList.revalidate();
+          }
+        });
     buttonPanel.add(addJb, BorderLayout.SOUTH);
     return buttonPanel;
   }
 
   @Override
   public String getValue() {
-    return Arrays.stream(listModel.toArray()).map(Object::toString)
+    return Arrays.stream(listModel.toArray())
+        .map(Object::toString)
         .collect(Collectors.joining(DELIMITER));
   }
 
@@ -99,5 +103,21 @@ public class StringListEditor extends JPanel implements IValueTypeView {
         ((ChangeListener) listeners[i + 1]).stateChanged(evt);
       }
     }
+  }
+
+  @Override
+  public void checkExpertMode() {
+    addJb.setEnabled(!isExpertEditor());
+    removeJb.setEnabled(!isExpertEditor());
+    stringListScrollPane.setEnabled(!isExpertEditor());
+    stringList.setEnabled(!isExpertEditor());
+  }
+
+  @Override
+  public void activateForExperts() {
+    addJb.setEnabled(true);
+    removeJb.setEnabled(true);
+    stringListScrollPane.setEnabled(true);
+    stringList.setEnabled(true);
   }
 }

@@ -5,13 +5,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BooleanEditor extends JPanel implements IValueTypeView {
+public class BooleanEditor extends AbstractEditor {
 
   private static Logger LOG = LoggerFactory.getLogger(BooleanEditor.class.getName());
   private final JCheckBox booleanCheckBox = new JCheckBox();
@@ -43,12 +42,24 @@ public class BooleanEditor extends JPanel implements IValueTypeView {
 
   @Override
   public void addChangeListener(ChangeListener changeListener) {
-    booleanCheckBox.addActionListener(l -> changeListener.stateChanged(new ChangeEvent(BooleanEditor.this)));
-    booleanCheckBox.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-        changeListener.stateChanged(new ChangeEvent(BooleanEditor.this));
-      }
-    });
+    booleanCheckBox.addActionListener(
+        l -> changeListener.stateChanged(new ChangeEvent(BooleanEditor.this)));
+    booleanCheckBox.addMouseListener(
+        new MouseAdapter() {
+          @Override
+          public void mouseClicked(MouseEvent e) {
+            changeListener.stateChanged(new ChangeEvent(BooleanEditor.this));
+          }
+        });
+  }
+
+  @Override
+  public void checkExpertMode() {
+    booleanCheckBox.setEnabled(!isExpertEditor());
+  }
+
+  @Override
+  public void activateForExperts() {
+    booleanCheckBox.setEnabled(true);
   }
 }

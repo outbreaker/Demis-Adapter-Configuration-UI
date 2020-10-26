@@ -41,28 +41,36 @@ public class ReportingFacilityView extends JPanel {
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.EINRICHTUNGS_ART.getDisplayName()));
-    addEditor(new StringEditor(reportingFacility.getEinrichtungsArt()), c,
+    addEditor(
+        new StringEditor(reportingFacility.getEinrichtungsArt()),
+        c,
         LABORATORY_JSON.EINRICHTUNGS_ART);
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.ANSPRECHSPARTNER_VORNAME.getDisplayName()));
-    addEditor(new StringEditor(reportingFacility.getAnsprechspartnerVorname()), c,
+    addEditor(
+        new StringEditor(reportingFacility.getAnsprechspartnerVorname()),
+        c,
         LABORATORY_JSON.ANSPRECHSPARTNER_VORNAME);
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.ANSPRECHSPARTNER_NACHNAME.getDisplayName()));
-    addEditor(new StringEditor(reportingFacility.getAnsprechspartnerNachname()), c,
+    addEditor(
+        new StringEditor(reportingFacility.getAnsprechspartnerNachname()),
+        c,
         LABORATORY_JSON.ANSPRECHSPARTNER_NACHNAME);
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.ANSCHRIFTENZEILE.getDisplayName()));
-    addEditor(new StringEditor(reportingFacility.getAnschriftenzeile()), c,
+    addEditor(
+        new StringEditor(reportingFacility.getAnschriftenzeile()),
+        c,
         LABORATORY_JSON.ANSCHRIFTENZEILE);
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.POSTLEITZAHL.getDisplayName()));
-    addEditor(new StringEditor(reportingFacility.getPostleitzahl()), c,
-        LABORATORY_JSON.POSTLEITZAHL);
+    addEditor(
+        new StringEditor(reportingFacility.getPostleitzahl()), c, LABORATORY_JSON.POSTLEITZAHL);
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.STADT.getDisplayName()));
@@ -70,8 +78,8 @@ public class ReportingFacilityView extends JPanel {
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.TELEFONNUMMER.getDisplayName()));
-    addEditor(new StringEditor(reportingFacility.getTelefonnummer()), c,
-        LABORATORY_JSON.TELEFONNUMMER);
+    addEditor(
+        new StringEditor(reportingFacility.getTelefonnummer()), c, LABORATORY_JSON.TELEFONNUMMER);
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.FAXNUMMER.getDisplayName()));
@@ -92,6 +100,8 @@ public class ReportingFacilityView extends JPanel {
   private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
     c.gridx = 1;
     c.weightx = 1.0;
+    editor.setExpertEditor(id.isExpertValue());
+    editor.checkExpertMode();
     this.add(editor.getViewComponent(), c);
     values.put(id, editor);
   }
@@ -100,7 +110,7 @@ public class ReportingFacilityView extends JPanel {
     c.weighty = 0.1;
     c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
-    c.insets = new Insets(0, 10, 0, 10);  //top padding
+    c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
     this.add(label, c);
@@ -122,5 +132,14 @@ public class ReportingFacilityView extends JPanel {
     reportingFacility.setEinrichtungsArt(values.get(LABORATORY_JSON.EINRICHTUNGS_ART).getValue());
     reportingFacility.setName(values.get(LABORATORY_JSON.NAME).getValue());
     return reportingFacility;
+  }
+
+  public void checkExpertMode() {
+    values.values().forEach(IValueTypeView::checkExpertMode);
+  }
+  ;
+
+  public void activateForExperts() {
+    values.values().forEach(IValueTypeView::activateForExperts);
   }
 }

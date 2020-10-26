@@ -55,16 +55,22 @@ public class KeystoreUtils {
     } catch (KeyStoreException | NoSuchAlgorithmException e) {
       LOG.debug("Keystore Exception!");
       throw new UnrecoverableKeyException(
-          messages.getString("LOAD_KEYSTORE_PASSWORD_ERROR").replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()));
+          messages
+              .getString("LOAD_KEYSTORE_PASSWORD_ERROR")
+              .replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()));
     } catch (CertificateException e) {
       LOG.debug("Certificate could not be loaded");
       throw new UnrecoverableKeyException(
-          messages.getString("LOAD_KEYSTORE_CERT_ERROR").replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()));
+          messages
+              .getString("LOAD_KEYSTORE_CERT_ERROR")
+              .replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()));
     } catch (IOException e) {
       LOG.debug(String.valueOf(e.getCause()));
       LOG.debug("Wrong Password!");
       throw new UnrecoverableKeyException(
-          messages.getString("LOAD_KEYSTORE_PASSWORD_ERROR").replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()));
+          messages
+              .getString("LOAD_KEYSTORE_PASSWORD_ERROR")
+              .replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()));
     }
     return valid;
   }

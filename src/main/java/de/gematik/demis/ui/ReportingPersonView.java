@@ -40,7 +40,9 @@ public class ReportingPersonView extends JPanel {
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.ANSCHRIFTENZEILE.getDisplayName()));
-    addEditor(new StringEditor(reportingPerson.getAnschriftenzeile()), c,
+    addEditor(
+        new StringEditor(reportingPerson.getAnschriftenzeile()),
+        c,
         LABORATORY_JSON.ANSCHRIFTENZEILE);
     c.gridy++;
 
@@ -53,13 +55,13 @@ public class ReportingPersonView extends JPanel {
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.TELEFONNUMMER.getDisplayName()));
-    addEditor(new StringEditor(reportingPerson.getTelefonnummer()), c,
-        LABORATORY_JSON.TELEFONNUMMER);
+    addEditor(
+        new StringEditor(reportingPerson.getTelefonnummer()), c, LABORATORY_JSON.TELEFONNUMMER);
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.ERREICHBARKEIT.getDisplayName()));
-    addEditor(new StringEditor(reportingPerson.getErreichbarkeit()), c,
-        LABORATORY_JSON.ERREICHBARKEIT);
+    addEditor(
+        new StringEditor(reportingPerson.getErreichbarkeit()), c, LABORATORY_JSON.ERREICHBARKEIT);
     c.gridy++;
 
     this.repaint();
@@ -68,6 +70,8 @@ public class ReportingPersonView extends JPanel {
   private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
     c.gridx = 1;
     c.weightx = 1.0;
+    editor.setExpertEditor(id.isExpertValue());
+    editor.checkExpertMode();
     this.add(editor.getViewComponent(), c);
     values.put(id, editor);
   }
@@ -76,7 +80,7 @@ public class ReportingPersonView extends JPanel {
     c.weighty = 0.1;
     c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
-    c.insets = new Insets(0, 10, 0, 10);  //top padding
+    c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
     this.add(label, c);
@@ -91,5 +95,14 @@ public class ReportingPersonView extends JPanel {
     reportingPerson.setPostleitzahl(values.get(LABORATORY_JSON.POSTLEITZAHL).getValue());
     reportingPerson.setAnschriftenzeile(values.get(LABORATORY_JSON.ANSCHRIFTENZEILE).getValue());
     return reportingPerson;
+  }
+
+  public void checkExpertMode() {
+    values.values().forEach(IValueTypeView::checkExpertMode);
+  }
+  ;
+
+  public void activateForExperts() {
+    values.values().forEach(IValueTypeView::activateForExperts);
   }
 }

@@ -5,7 +5,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.event.ChangeListener;
 
-public class EmptyEditor extends JLabel implements IValueTypeView {
+public class EmptyEditor extends AbstractEditor {
 
   private VALUE_TYPE type;
 
@@ -20,7 +20,7 @@ public class EmptyEditor extends JLabel implements IValueTypeView {
 
   @Override
   public void setValue(String value) {
-    //Nothing
+    // Nothing
   }
 
   @Override
@@ -29,7 +29,11 @@ public class EmptyEditor extends JLabel implements IValueTypeView {
   }
 
   @Override
-  public void addChangeListener(ChangeListener changeListener) {
+  public void addChangeListener(ChangeListener changeListener) {}
 
-  }
+  @Override
+  public void checkExpertMode() {}
+
+  @Override
+  public void activateForExperts() {}
 }

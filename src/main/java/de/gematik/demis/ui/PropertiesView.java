@@ -56,39 +56,56 @@ public class PropertiesView extends AbstractConfigurationView {
     } else {
       return;
     }
-    Arrays.stream(values).forEach(e -> {
-          c.weighty = 0.1;
-          c.fill = GridBagConstraints.BOTH;
-          c.gridx = 0;
-          c.insets = new Insets(0, 10, 0, 10);  //top padding
-          c.anchor = GridBagConstraints.LAST_LINE_START;
-          c.weightx = 0;
-          this.add(new Label(e.getKey()), c);
+    Arrays.stream(values)
+        .forEach(
+            e -> {
+              c.weighty = 0.1;
+              c.fill = GridBagConstraints.BOTH;
+              c.gridx = 0;
+              c.insets = new Insets(0, 10, 0, 10); // top padding
+              c.anchor = GridBagConstraints.LAST_LINE_START;
+              c.weightx = 0;
+              this.add(new Label(e.getKey()), c);
 
-          c.gridx = 1;
-          c.weightx = 1.0;
-          if (e.getType() == VALUE_TYPE.STRING_LIST) {
-            c.weighty = 0.5;
-            c.fill = GridBagConstraints.BOTH;
-          }
-          IValueTypeView editor = ValueTypeEditorFactory.createEditor(e.getType());
-
-          String property = prop.getProperty(e.getKey());
-          if (property == null) {
-            LOG.error("File: \"" + file.getName() + "\" Property \"" + e.getKey() + "\" has no Value!");
-          } else {
-            editor.setValue(property);
-          }
-          editor.addChangeListener(s -> {
-            setUnsaved();
-          });
-          this.add(editor.getViewComponent(), c);
-          editors.put(e, editor);
-          c.gridy++;
-
-        }
-    );
+              c.gridx = 1;
+              c.weightx = 1.0;
+              if (e.getType() == VALUE_TYPE.STRING_LIST) {
+                c.weighty = 0.5;
+                c.fill = GridBagConstraints.BOTH;
+              }
+              IValueTypeView editor = ValueTypeEditorFactory.createEditor(e.getType());
+              editor.setExpertEditor(e.isExpertValue());
+              editor.checkExpertMode();
+              String property = prop.getProperty(e.getKey());
+              if (property == null) {
+                LOG.error(
+                    "File: \""
+                        + file.getName()
+                        + "\" Property \""
+                        + e.getKey()
+                        + "\" has no Value!");
+              } else {
+                editor.setValue(property);
+              }
+              editor.addChangeListener(
+                  s -> {
+                    setUnsaved();
+                  });
+              this.add(editor.getViewComponent(), c);
+              editors.put(e, editor);
+              c.gridy++;
+            });
     this.repaint();
+  }
+
+  public void checkExpertMode() {
+    editors.values().forEach(IValueTypeView::checkExpertMode);
+  }
+
+  ;
+
+  public void activateForExperts() {
+    editors.values().forEach(IValueTypeView::activateForExperts);
   }
 
   private Component createComponent(VALUE_TYPE valueType) {
@@ -101,9 +118,10 @@ public class PropertiesView extends AbstractConfigurationView {
   }
 
   public Properties getProperties() {
-    editors.forEach((k, v) -> {
-      prop.put(k.getKey(), v.getValue());
-    });
+    editors.forEach(
+        (k, v) -> {
+          prop.put(k.getKey(), v.getValue());
+        });
     return prop;
   }
 
@@ -111,9 +129,15 @@ public class PropertiesView extends AbstractConfigurationView {
     return path;
   }
 
-
   @Override
   public String getName() {
     return path == null ? "New Properties Configuration" : path.toFile().getName();
   }
+
+  public void setPropertiesValue(IProperties property, String value) {
+    if (editors.containsKey(property)) {
+      editors.get(property).setValue(value);
+    }
+  }
+
 }

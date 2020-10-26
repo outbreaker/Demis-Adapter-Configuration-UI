@@ -10,12 +10,12 @@ class Start {
   static GraphicsConfiguration gc;
 
   public static void main(String[] args) throws Exception {
-//        FlatLightLaf.install();
-//        FlatArcDarkIJTheme.install();
+    //        FlatLightLaf.install();
+    //        FlatArcDarkIJTheme.install();
     FlatArcIJTheme.install();
-    SwingUtilities.invokeLater(() -> {
-      MainView.getInstance().show();
-    });
-
+    SwingUtilities.invokeLater(
+        () -> {
+          MainView.getInstance().show();
+        });
   }
 }

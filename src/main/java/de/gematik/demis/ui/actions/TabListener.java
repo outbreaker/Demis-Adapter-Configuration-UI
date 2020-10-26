@@ -19,7 +19,10 @@ public class TabListener implements MouseListener, ActionListener {
   private final JTabbedPane jTabbedPane;
   private final IConfigurationView configurationView;
 
-  public TabListener(final JButton btnClose, final JTabbedPane jTabbedPane, final IConfigurationView configurationView) {
+  public TabListener(
+      final JButton btnClose,
+      final JTabbedPane jTabbedPane,
+      final IConfigurationView configurationView) {
     super();
     this.btnClose = btnClose;
     this.jTabbedPane = jTabbedPane;
@@ -36,12 +39,10 @@ public class TabListener implements MouseListener, ActionListener {
   }
 
   @Override
-  public void mousePressed(final MouseEvent e) {
-  }
+  public void mousePressed(final MouseEvent e) {}
 
   @Override
-  public void mouseReleased(final MouseEvent e) {
-  }
+  public void mouseReleased(final MouseEvent e) {}
 
   @Override
   public void mouseEntered(final MouseEvent e) {
@@ -56,9 +57,12 @@ public class TabListener implements MouseListener, ActionListener {
   private void closeTab() {
     var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
 
-    if (JOptionPane
-        .showConfirmDialog(MainView.getInstance().getMainComponent(), messages.getString("CLOSE_JSON_MSG"), messages.getString("CLOSE_JSON_TITLE"),
-            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+    if (JOptionPane.showConfirmDialog(
+            MainView.getInstance().getMainComponent(),
+            messages.getString("CLOSE_JSON_MSG"),
+            messages.getString("CLOSE_JSON_TITLE"),
+            JOptionPane.YES_NO_OPTION)
+        == JOptionPane.YES_OPTION) {
       int index = jTabbedPane.indexOfComponent(configurationView.getComponent());
       String tabTitle = jTabbedPane.getTitleAt(index);
       jTabbedPane.remove(index);
@@ -69,6 +73,4 @@ public class TabListener implements MouseListener, ActionListener {
   public void actionPerformed(final ActionEvent e) {
     closeTab();
   }
-
 }
-

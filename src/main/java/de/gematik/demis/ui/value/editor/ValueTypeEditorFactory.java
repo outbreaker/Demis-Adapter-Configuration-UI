@@ -5,7 +5,7 @@ import de.gematik.demis.entities.VALUE_TYPE;
 public class ValueTypeEditorFactory {
 
   private ValueTypeEditorFactory() {
-    //Factory Class
+    // Factory Class
   }
 
   public static IValueTypeView createEditor(VALUE_TYPE type) {
@@ -27,6 +27,8 @@ public class ValueTypeEditorFactory {
         return new UrlEditor();
       case PATH_LIST:
         return new RelativPathListEditor();
+      case SELECT_FIX_FHIR_BASEPATH:
+        return new FhirBasePathEditor();
       default:
         return new EmptyEditor(type);
     }
