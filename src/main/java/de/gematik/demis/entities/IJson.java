@@ -1,10 +1,8 @@
 package de.gematik.demis.entities;
 
-public interface IProperties {
+public interface IJson {
 
   String getKey();
-
-  VALUE_TYPE getType();
 
   boolean isOptional();
 
