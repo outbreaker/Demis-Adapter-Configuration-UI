@@ -13,4 +13,7 @@ public interface IProperties {
   String getToolTip();
 
   String getDefaultValue();
+
+  boolean isExpertValue();
+
 }

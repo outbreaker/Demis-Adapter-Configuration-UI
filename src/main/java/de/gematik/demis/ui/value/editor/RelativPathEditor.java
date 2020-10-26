@@ -14,18 +14,21 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class RelativPathEditor extends JPanel implements IValueTypeView {
+public class RelativPathEditor extends AbstractEditor {
 
   private static String lastPath;
   private JTextField relativPath;
+  private JButton dialogJb;
 
   public RelativPathEditor() {
     this.setLayout(new BorderLayout());
     relativPath = new JTextField();
     relativPath.setEditable(false);
     add(relativPath, BorderLayout.CENTER);
-    JButton dialogJb = new JButton(ImageUtils.loadResizeImage("Folder-Open-icon", 15));
+    dialogJb = new JButton(ImageUtils.loadResizeImage("Folder-Open-icon", 15));
     dialogJb.addActionListener(actionEvent -> selectFolder());
+    dialogJb.setEnabled(!isExpertEditor());
+    relativPath.setEnabled(!isExpertEditor());
     add(dialogJb, BorderLayout.EAST);
   }
 
@@ -57,11 +60,22 @@ public class RelativPathEditor extends JPanel implements IValueTypeView {
 
   @Override
   public void addChangeListener(ChangeListener changeListener) {
-    relativPath.addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyTyped(KeyEvent e) {
-        changeListener.stateChanged(new ChangeEvent(RelativPathEditor.this));
-      }
-    });
+    relativPath.addKeyListener(
+        new KeyAdapter() {
+          @Override
+          public void keyTyped(KeyEvent e) {
+            changeListener.stateChanged(new ChangeEvent(RelativPathEditor.this));
+          }
+        });
+  }
+
+  @Override
+  public void checkExpertMode() {
+    dialogJb.setEnabled(!isExpertEditor());
+  }
+
+  @Override
+  public void activateForExperts() {
+    dialogJb.setEnabled(true);
   }
 }

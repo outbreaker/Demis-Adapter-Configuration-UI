@@ -19,13 +19,13 @@ import org.slf4j.LoggerFactory;
 
 public class ConfigurationLoader {
 
-  private static final Logger LOG = LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
+  private static final Logger LOG =
+      LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
   private static ConfigurationLoader instance;
   private final List<PropertiesView> propertiesViews = new ArrayList<>();
   private final List<LaboratoryView> laboratoryViews = new ArrayList<>();
 
-  private ConfigurationLoader() {
-  }
+  private ConfigurationLoader() {}
 
   public static ConfigurationLoader getInstance() {
     if (instance == null) {
@@ -49,12 +49,12 @@ public class ConfigurationLoader {
     try {
       Set<Path> paths = listFilesUsingFileWalk(folder.getAbsolutePath(), 10);
 
-      paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("properties")))
-          .forEach(f -> MainView.getInstance()
-              .addTab(add(new PropertiesView(f))));
-      paths.stream().filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
-          .forEach(f -> MainView.getInstance()
-              .addCloeTab(add(new LaboratoryView(f))));
+      paths.stream()
+          .filter(f -> (f.toFile().getAbsolutePath().endsWith("properties")))
+          .forEach(f -> MainView.getInstance().addTab(add(new PropertiesView(f))));
+      paths.stream()
+          .filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
+          .forEach(f -> MainView.getInstance().addCloeTab(add(new LaboratoryView(f))));
     } catch (IOException e) {
       String failed = "Failed to read all Files";
       LOG.error(failed, e);
@@ -67,8 +67,10 @@ public class ConfigurationLoader {
       return stream
           .filter(file -> !Files.isDirectory(file))
           .filter(file -> !file.toFile().getAbsolutePath().toLowerCase().contains("\\jre"))
-          .filter(f -> (f.toFile().getAbsolutePath().endsWith("properties") || f.toFile()
-              .getAbsolutePath().endsWith("json")))
+          .filter(
+              f ->
+                  (f.toFile().getAbsolutePath().endsWith("properties")
+                      || f.toFile().getAbsolutePath().endsWith("json")))
           .collect(Collectors.toSet());
     }
   }

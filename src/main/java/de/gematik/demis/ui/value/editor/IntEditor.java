@@ -6,14 +6,13 @@ import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
-import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.NumberFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IntEditor extends JPanel implements IValueTypeView {
+public class IntEditor extends AbstractEditor {
 
   private static Logger LOG = LoggerFactory.getLogger(IntEditor.class.getName());
   private JFormattedTextField field;
@@ -52,11 +51,22 @@ public class IntEditor extends JPanel implements IValueTypeView {
 
   @Override
   public void addChangeListener(ChangeListener changeListener) {
-    field.addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyTyped(KeyEvent keyEvent) {
-        changeListener.stateChanged(new ChangeEvent(IntEditor.this));
-      }
-    });
+    field.addKeyListener(
+        new KeyAdapter() {
+          @Override
+          public void keyTyped(KeyEvent keyEvent) {
+            changeListener.stateChanged(new ChangeEvent(IntEditor.this));
+          }
+        });
+  }
+
+  @Override
+  public void checkExpertMode() {
+    field.setEnabled(!isExpertEditor());
+  }
+
+  @Override
+  public void activateForExperts() {
+    field.setEnabled(true);
   }
 }

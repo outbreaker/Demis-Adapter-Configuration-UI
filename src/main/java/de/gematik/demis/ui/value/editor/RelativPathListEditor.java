@@ -20,13 +20,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class RelativPathListEditor extends JPanel implements IValueTypeView {
+public class RelativPathListEditor extends AbstractEditor {
 
   public static final String DELIMITER = ",";
   private final JList pathList;
   private final DefaultListModel<String> listModel = new DefaultListModel<>();
   private final JScrollPane relativPathListScrollPane;
-
+  private JButton addJb;
+  private JButton removeJb;
 
   public RelativPathListEditor() {
     setLayout(new BorderLayout());
@@ -36,47 +37,57 @@ public class RelativPathListEditor extends JPanel implements IValueTypeView {
     this.add(relativPathListScrollPane, BorderLayout.CENTER);
     JPanel buttonPanel = createButtonPanel(messages);
     this.add(buttonPanel, BorderLayout.EAST);
+
   }
 
   private JPanel createButtonPanel(ResourceBundle messages) {
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new BorderLayout());
 
-    JButton removeJb = new JButton(messages.getString("BUTTON_REMOVE"));
-    removeJb.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent) {
-        var selectedValuesList = pathList.getSelectedValuesList();
-        selectedValuesList.forEach(listModel::removeElement);
-        fireTabChangedEvent();
-        pathList.revalidate();
-      }
-    });
+     removeJb = new JButton(messages.getString("BUTTON_REMOVE"));
+    removeJb.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent actionEvent) {
+            var selectedValuesList = pathList.getSelectedValuesList();
+            selectedValuesList.forEach(listModel::removeElement);
+            fireTabChangedEvent();
+            pathList.revalidate();
+          }
+        });
     buttonPanel.add(removeJb, BorderLayout.NORTH);
-    JButton addJb = new JButton(messages.getString("BUTTON_ADD"));
-    addJb.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent actionEvent) {
-        RelativPathEditor relativPathEditor = new RelativPathEditor();
-        relativPathEditor.setPreferredSize(new Dimension(500, 25));
-        int okCxl = JOptionPane
-            .showConfirmDialog(SwingUtilities.getWindowAncestor(RelativPathListEditor.this),
-                relativPathEditor, messages.getString("INPUT_PATH"), JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE, ImageUtils.loadResizeImage("Folder-icon", 35));
-        if (okCxl == JOptionPane.OK_OPTION) {
-          listModel.addElement(relativPathEditor.getValue());
-          fireTabChangedEvent();
-          pathList.revalidate();
-        }
-      }
-    });
+    addJb = new JButton(messages.getString("BUTTON_ADD"));
+    addJb.addActionListener(
+        new ActionListener() {
+          @Override
+          public void actionPerformed(ActionEvent actionEvent) {
+            RelativPathEditor relativPathEditor = new RelativPathEditor();
+            relativPathEditor.setPreferredSize(new Dimension(500, 25));
+            int okCxl =
+                JOptionPane.showConfirmDialog(
+                    SwingUtilities.getWindowAncestor(RelativPathListEditor.this),
+                    relativPathEditor,
+                    messages.getString("INPUT_PATH"),
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
+                    ImageUtils.loadResizeImage("Folder-icon", 35));
+            if (okCxl == JOptionPane.OK_OPTION) {
+              listModel.addElement(relativPathEditor.getValue());
+              fireTabChangedEvent();
+              pathList.revalidate();
+            }
+          }
+        });
     buttonPanel.add(addJb, BorderLayout.SOUTH);
+    removeJb.setEnabled(!isExpertEditor());
+    addJb.setEnabled(!isExpertEditor());
     return buttonPanel;
   }
 
   @Override
   public String getValue() {
-    return Arrays.stream(listModel.toArray()).map(Object::toString)
+    return Arrays.stream(listModel.toArray())
+        .map(Object::toString)
         .collect(Collectors.joining(DELIMITER));
   }
 
@@ -105,4 +116,15 @@ public class RelativPathListEditor extends JPanel implements IValueTypeView {
     }
   }
 
+  @Override
+  public void checkExpertMode() {
+    addJb.setEnabled(!isExpertEditor());
+    removeJb.setEnabled(!isExpertEditor());
+  }
+
+  @Override
+  public void activateForExperts() {
+    addJb.setEnabled(true);
+    removeJb.setEnabled(true);
+  }
 }

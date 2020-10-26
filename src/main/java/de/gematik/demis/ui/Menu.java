@@ -24,15 +24,16 @@ class Menu {
 
     JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu(messages.getString("FILE"));
-    fileMenu.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mouseEntered(MouseEvent e) {
-        super.mouseEntered(e);
-        //UI Workaround
-        MainView.getInstance().getJTabs().setVisible(false);
-        MainView.getInstance().getJTabs().setVisible(true);
-      }
-    });
+    fileMenu.addMouseListener(
+        new MouseAdapter() {
+          @Override
+          public void mouseEntered(MouseEvent e) {
+            super.mouseEntered(e);
+            // UI Workaround
+            MainView.getInstance().getJTabs().setVisible(false);
+            MainView.getInstance().getJTabs().setVisible(true);
+          }
+        });
     fileMenu.add(getMenuItem(messages, "OPEN_ALL", true));
     fileMenu.add(getMenuItem(messages, "OPEN", true));
     fileMenu.add(getMenuItem(messages, "SAVE_ALL", true));

@@ -38,7 +38,6 @@ public class IdentityProviderView extends JPanel {
     initComponents();
   }
 
-
   private void initComponents() {
     setLayout(new GridBagLayout());
     this.setBorder(new TitledBorder(LABORATORY_JSON.IDP.getDisplayName()));
@@ -60,18 +59,22 @@ public class IdentityProviderView extends JPanel {
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.AUTHCERTKEYSTORE.getDisplayName()));
-    addEditor(new StringEditor(identityProvider.getAuthcertkeystore()), c,
+    addEditor(
+        new StringEditor(identityProvider.getAuthcertkeystore()),
+        c,
         LABORATORY_JSON.AUTHCERTKEYSTORE);
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.AUTHCERTPASSWORD.getDisplayName()));
-    addEditor(new PasswordEditor(identityProvider.getAuthcertpassword()), c,
+    addEditor(
+        new PasswordEditor(identityProvider.getAuthcertpassword()),
+        c,
         LABORATORY_JSON.AUTHCERTPASSWORD);
     c.gridy++;
 
     addLabel(c, new Label(LABORATORY_JSON.AUTHCERTALIAS.getDisplayName()));
-    addEditor(new StringEditor(identityProvider.getAuthcertalias()), c,
-        LABORATORY_JSON.AUTHCERTALIAS);
+    addEditor(
+        new StringEditor(identityProvider.getAuthcertalias()), c, LABORATORY_JSON.AUTHCERTALIAS);
     c.gridy++;
 
     this.repaint();
@@ -80,6 +83,8 @@ public class IdentityProviderView extends JPanel {
   private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
     c.gridx = 1;
     c.weightx = 1.0;
+    editor.setExpertEditor(id.isExpertValue());
+    editor.checkExpertMode();
     this.add(editor.getViewComponent(), c);
     values.put(id, editor);
   }
@@ -88,7 +93,7 @@ public class IdentityProviderView extends JPanel {
     c.weighty = 0.1;
     c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
-    c.insets = new Insets(0, 10, 0, 10);  //top padding
+    c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
     this.add(label, c);
@@ -98,18 +103,20 @@ public class IdentityProviderView extends JPanel {
     var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
     JFileChooser jFileChooser = new JFileChooser(lastPath);
     jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    jFileChooser.setFileFilter(new FileFilter() {
-      @Override
-      public boolean accept(File file) {
-        return file.getName().toLowerCase().endsWith("jks") || file.getName().endsWith("p12")
-            || file.isDirectory();
-      }
+    jFileChooser.setFileFilter(
+        new FileFilter() {
+          @Override
+          public boolean accept(File file) {
+            return file.getName().toLowerCase().endsWith("jks")
+                || file.getName().endsWith("p12")
+                || file.isDirectory();
+          }
 
-      @Override
-      public String getDescription() {
-        return messages.getString("LOAD_CERT_DESCRIPTION");
-      }
-    });
+          @Override
+          public String getDescription() {
+            return messages.getString("LOAD_CERT_DESCRIPTION");
+          }
+        });
     int opt = jFileChooser.showOpenDialog(MainView.getInstance().getMainComponent());
     if (opt == JFileChooser.APPROVE_OPTION) {
       File folderToLoad = jFileChooser.getSelectedFile();
@@ -123,12 +130,20 @@ public class IdentityProviderView extends JPanel {
         try {
           idp = new KeystoreUtils(folderToLoad, password).loadIdpProperties();
         } catch (UnrecoverableKeyException e) {
-          JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),
-              messages.getString("LOAD_KEYSTORE_PASSWORD_ERROR_SHORT").replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()),
-              "Error", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(
+              MainView.getInstance().getMainComponent(),
+              messages
+                  .getString("LOAD_KEYSTORE_PASSWORD_ERROR_SHORT")
+                  .replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()),
+              "Error",
+              JOptionPane.ERROR_MESSAGE);
         } catch (KeyStoreException e) {
-          JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),
-              messages.getString("LOAD_KEYSTORE_ERROR").replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()), "Error",
+          JOptionPane.showMessageDialog(
+              MainView.getInstance().getMainComponent(),
+              messages
+                  .getString("LOAD_KEYSTORE_ERROR")
+                  .replace("XX_ERROR_XX", e.getMessage() == null ? "--" : e.getMessage()),
+              "Error",
               JOptionPane.ERROR_MESSAGE);
         }
       }
@@ -161,5 +176,13 @@ public class IdentityProviderView extends JPanel {
     identityProvider.setAuthcertkeystore(values.get(LABORATORY_JSON.AUTHCERTKEYSTORE).getValue());
     identityProvider.setUsername(values.get(LABORATORY_JSON.USERNAME).getValue());
     return identityProvider;
+  }
+
+  public void checkExpertMode(){
+    values.values().forEach(IValueTypeView::checkExpertMode);
+  };
+
+  public void activateForExperts(){
+    values.values().forEach(IValueTypeView::activateForExperts);
   }
 }

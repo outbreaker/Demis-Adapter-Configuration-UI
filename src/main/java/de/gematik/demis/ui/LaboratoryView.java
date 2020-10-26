@@ -31,7 +31,6 @@ public class LaboratoryView extends AbstractConfigurationView {
   private ReportingPersonView reportingPersonView;
   private ReportingFacilityView reportingFacilityView;
 
-
   public LaboratoryView(Path path) {
     this.path = path;
     initComponents(path.toFile());
@@ -44,8 +43,8 @@ public class LaboratoryView extends AbstractConfigurationView {
       laboratory = objectMapper.readValue(file, Laboratory.class);
     } catch (IOException e) {
       LOG.error("Failed to load Laboratory JSON: '" + file.getAbsolutePath() + "'", e);
-      throw new RuntimeException("Failed to load Laboratory JSON: '" + file.getAbsolutePath() + "'",
-          e);
+      throw new RuntimeException(
+          "Failed to load Laboratory JSON: '" + file.getAbsolutePath() + "'", e);
     }
 
     setLayout(new GridBagLayout());
@@ -56,14 +55,16 @@ public class LaboratoryView extends AbstractConfigurationView {
     addEditor(new StringEditor(laboratory.getIdentifikator()), c, LABORATORY_JSON.IDENTIFIKATOR);
     c.gridy++;
     addLabel(c, new Label(LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN.getDisplayName()));
-    addEditor(new StringListEditor(laboratory.getPositiveTestergebnisBezeichnungen()), c,
+    addEditor(
+        new StringListEditor(laboratory.getPositiveTestergebnisBezeichnungen()),
+        c,
         LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN);
     c.gridy++;
     c.gridx = 0;
     c.gridwidth = 2;
     c.weighty = 0.5;
     c.fill = GridBagConstraints.BOTH;
-    c.insets = new Insets(20, 0, 0, 0);  //top padding
+    c.insets = new Insets(20, 0, 0, 0); // top padding
 
     reportingPersonView = new ReportingPersonView(laboratory.getMelderPerson());
     this.add(reportingPersonView, c);
@@ -81,18 +82,21 @@ public class LaboratoryView extends AbstractConfigurationView {
   private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
     c.gridx = 1;
     c.weightx = 1.0;
+    editor.setExpertEditor(id.isExpertValue());
+    editor.checkExpertMode();
     this.add(editor.getViewComponent(), c);
     values.put(id, editor);
-    editor.addChangeListener(s -> {
-      setUnsaved();
-    });
+    editor.addChangeListener(
+        s -> {
+          setUnsaved();
+        });
   }
 
   private void addLabel(GridBagConstraints c, Label label) {
     c.weighty = 0.1;
     c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
-    c.insets = new Insets(0, 10, 0, 10);  //top padding
+    c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
     this.add(label, c);
@@ -122,10 +126,22 @@ public class LaboratoryView extends AbstractConfigurationView {
     return laboratory;
   }
 
+  public void checkExpertMode(){
+    values.values().forEach(IValueTypeView::checkExpertMode);
+     identityProviderView.checkExpertMode();
+     reportingPersonView.checkExpertMode();
+     reportingFacilityView.checkExpertMode();
+  };
+
+  public void activateForExperts(){
+    values.values().forEach(IValueTypeView::activateForExperts);
+    identityProviderView.activateForExperts();
+    reportingPersonView.activateForExperts();
+    reportingFacilityView.activateForExperts();
+  }
+
   @Override
   public String getName() {
     return path == null ? "New Json Configuration" : path.toFile().getName();
   }
-
-
 }
