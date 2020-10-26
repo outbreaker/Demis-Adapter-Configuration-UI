@@ -20,7 +20,7 @@ import javax.swing.event.ChangeListener;
 public class StringListEditor extends AbstractEditor {
 
   public static final String DELIMITER = ",";
-  private final JList stringList;
+  private final JList<String> stringList;
   private final DefaultListModel<String> listModel = new DefaultListModel<>();
   private final JScrollPane stringListScrollPane;
   private JButton addJb;
@@ -29,7 +29,7 @@ public class StringListEditor extends AbstractEditor {
   public StringListEditor() {
     setLayout(new BorderLayout());
     var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
-    stringList = new JList(listModel);
+    stringList = new JList<>(listModel);
     stringListScrollPane = new JScrollPane(stringList);
     this.add(stringListScrollPane, BorderLayout.CENTER);
     JPanel buttonPanel = createButtonPanel(messages);
@@ -109,11 +109,15 @@ public class StringListEditor extends AbstractEditor {
   public void checkExpertMode() {
     addJb.setEnabled(!isExpertEditor());
     removeJb.setEnabled(!isExpertEditor());
+    stringListScrollPane.setEnabled(!isExpertEditor());
+    stringList.setEnabled(!isExpertEditor());
   }
 
   @Override
   public void activateForExperts() {
     addJb.setEnabled(true);
     removeJb.setEnabled(true);
+    stringListScrollPane.setEnabled(true);
+    stringList.setEnabled(true);
   }
 }
