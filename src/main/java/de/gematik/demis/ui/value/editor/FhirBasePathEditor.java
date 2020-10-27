@@ -59,23 +59,7 @@ public class FhirBasePathEditor extends AbstractEditor {
           .setPropertiesValue(ADAPTER_Properties.IDP_LAB_TOKENENDPOINT, VALUES.get(field.getSelectedItem().toString()));
       changeListener.stateChanged(new ChangeEvent(FhirBasePathEditor.this));
     });
-//    field.addKeyListener(
-//        new KeyAdapter() {
-//          @Override
-//          public void keyTyped(KeyEvent e) {
-//            ConfigurationLoader.getInstance()
-//                .setPropertiesValue(ADAPTER_Properties.IDP_LAB_TOKENENDPOINT, VALUES.get(field.getSelectedItem().toString()));
-//            changeListener.stateChanged(new ChangeEvent(FhirBasePathEditor.this));
-//          }
-//        });
-//    field.addMouseListener(new MouseAdapter() {
-//      @Override
-//      public void mouseReleased(MouseEvent e) {
-//        ConfigurationLoader.getInstance()
-//            .setPropertiesValue(ADAPTER_Properties.IDP_LAB_TOKENENDPOINT, VALUES.get(field.getSelectedItem().toString()));
-//        changeListener.stateChanged(new ChangeEvent(FhirBasePathEditor.this));
-//      }
-//    });
+
   }
 
   @Override
