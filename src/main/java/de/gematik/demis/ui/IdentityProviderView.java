@@ -47,7 +47,7 @@ public class IdentityProviderView extends JPanel {
     addLabel(c, new Label(LABORATORY_JSON.LOAD_DATA.getDisplayName()));
 
     JButton loadJB = new JButton(ImageUtils.loadResizeImage("open-file-icon", 20));
-    loadJB.addActionListener(actionEvent -> selectFolder());
+    loadJB.addActionListener(actionEvent -> selectCertificateStore());
 
     c.gridx = 1;
     c.weightx = 1.0;
@@ -99,7 +99,7 @@ public class IdentityProviderView extends JPanel {
     this.add(label, c);
   }
 
-  private void selectFolder() {
+  private void selectCertificateStore() {
     var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
     JFileChooser jFileChooser = new JFileChooser(lastPath);
     jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -185,5 +185,18 @@ public class IdentityProviderView extends JPanel {
 
   public void activateForExperts() {
     values.values().forEach(IValueTypeView::activateForExperts);
+  }
+
+  public void setJsonValue(LABORATORY_JSON property, String value) {
+    if (values.containsKey(property)) values.get(property).setValue(value);
+  }
+
+  public boolean contains(LABORATORY_JSON property) {
+    if (values.containsKey(property)) return true;
+    return false;
+  }
+
+  void openLoadCertificate() {
+    selectCertificateStore();
   }
 }

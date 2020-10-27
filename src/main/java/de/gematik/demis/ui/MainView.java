@@ -4,15 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.Locale;
 import javax.swing.JFrame;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MainView {
 
+  private static final Logger LOG = LoggerFactory.getLogger(MainView.class.getName());
   private static MainView instance = new MainView();
   private JFrame frame;
   private JClosableTabbedPane configTabs;
 
   private MainView() {
-    System.out.println(">>>>>>>" + Locale.getDefault().getCountry());
+    LOG.info("Use Language: " + Locale.getDefault().getCountry());
     frame = new JFrame();
     frame.setJMenuBar(new Menu().createMenuBar());
     configTabs = new JClosableTabbedPane();
@@ -51,5 +56,18 @@ public class MainView {
 
   public void show() {
     frame.setVisible(true);
+  }
+
+  public void showTabFor(LaboratoryView laboratoryView) {
+    for (int i = 0; i < configTabs.getTabCount(); i++) {
+      JScrollPane jScrollPane = (JScrollPane) configTabs.getComponentAt(i);
+      Component component = jScrollPane.getViewport().getComponent(0);
+      if (component instanceof LaboratoryView){
+        configTabs.setSelectedIndex(i);
+        JScrollBar verticalScrollBar = jScrollPane.getVerticalScrollBar();
+        verticalScrollBar.setValue( verticalScrollBar.getMaximum() );
+        return;
+      }
+    }
   }
 }

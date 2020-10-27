@@ -1,6 +1,7 @@
 package de.gematik.demis.control;
 
 import de.gematik.demis.entities.IProperties;
+import de.gematik.demis.entities.LABORATORY_JSON;
 import de.gematik.demis.ui.LaboratoryView;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.PropertiesView;
@@ -12,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -87,5 +89,17 @@ public class ConfigurationLoader {
 
   public void setPropertiesValue(IProperties property, String value) {
     propertiesViews.forEach(prop -> prop.setPropertiesValue(property, value));
+  }
+
+  public void setJsonValue(LABORATORY_JSON property, String value) {
+    laboratoryViews.forEach(lab -> lab.setJsonValue(property, value));
+  }
+
+  public Optional<LaboratoryView> showFirstViewWith(LABORATORY_JSON property) {
+    Optional<LaboratoryView> first = laboratoryViews.stream().filter(lab -> lab.contains(property)).findFirst();
+    if (first.isPresent()){
+      MainView.getInstance().showTabFor(first.get());
+    }
+    return first;
   }
 }
