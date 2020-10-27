@@ -124,7 +124,7 @@ public class IdentityProviderView extends JPanel {
 
       String password = JOptionPane.showInputDialog(messages.getString("KEYSTORE_SMS_PASSWORD"));
       IdentityProvider idp = null;
-      if (password.isEmpty()) {
+      if (password == null || password.isEmpty()) {
         showWarningDialog(messages.getString("LOAD_KEYSTORE_PASSWORD_EMPTY"));
       } else {
         try {
