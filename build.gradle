@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'de.gematik'
-version '1.0.0-SNAPSHOT'
+version = file('src/main/resources/version.txt').text.trim()
 
 repositories {
     mavenCentral()

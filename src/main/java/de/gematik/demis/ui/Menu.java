@@ -41,6 +41,8 @@ class Menu {
     fileMenu.add(getMenuItem(messages, "EXIT", true));
     JMenu editMenu = new JMenu(messages.getString("EDIT"));
     JMenu helpMenu = new JMenu(messages.getString("HELP"));
+    helpMenu.add(getMenuItem(messages, "HELP_WDB", true));
+    helpMenu.add(getMenuItem(messages, "ABOUT", true));
     menuBar.add(fileMenu);
     menuBar.add(editMenu);
     menuBar.add(helpMenu);
