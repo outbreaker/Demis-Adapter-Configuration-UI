@@ -7,6 +7,7 @@ import de.gematik.demis.ui.LaboratoryView;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.MessageWithLinksPane;
 import de.gematik.demis.ui.PropertiesView;
+import de.gematik.demis.utils.MavenProperties;
 import de.gematik.demis.utils.ProjectVersionUtils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -203,7 +204,8 @@ public class DemisMenuActionListener implements ActionListener {
   }
 
   private void openAboutDialog(ResourceBundle messages) {
-    String version = ProjectVersionUtils.getProjectVersion();
+    //String version = ProjectVersionUtils.getProjectVersion();
+    String version = new MavenProperties("de.gematik", "Demis-Adapter-Configuration-UI").getVersionNumber();
     String versionMessage = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("VERSION");
     JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), versionMessage + version, "Information", JOptionPane.INFORMATION_MESSAGE);
   }
