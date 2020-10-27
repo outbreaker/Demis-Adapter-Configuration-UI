@@ -137,6 +137,7 @@ public class PropertiesView extends AbstractConfigurationView {
   public void setPropertiesValue(IProperties property, String value) {
     if (editors.containsKey(property)) {
       editors.get(property).setValue(value);
+      setUnsaved();
     }
   }
 
