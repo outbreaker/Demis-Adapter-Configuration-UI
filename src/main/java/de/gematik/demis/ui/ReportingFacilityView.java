@@ -142,4 +142,13 @@ public class ReportingFacilityView extends JPanel {
   public void activateForExperts() {
     values.values().forEach(IValueTypeView::activateForExperts);
   }
+
+  public void setJsonValue(LABORATORY_JSON property, String value) {
+    if (values.containsKey(property)) values.get(property).setValue(value);
+  }
+
+  public boolean contains(LABORATORY_JSON property) {
+    if (values.containsKey(property)) return true;
+    return false;
+  }
 }

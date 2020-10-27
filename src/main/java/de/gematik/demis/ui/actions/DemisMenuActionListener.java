@@ -177,14 +177,6 @@ public class DemisMenuActionListener implements ActionListener {
     }
   }
 
-  private JFileChooser getJsonFileChooser(ResourceBundle messages) {
-    return getUniversalFileChooser(messages, "LOAD_JSON_DESCRIPTION", "json");
-  }
-
-  private JFileChooser getPropsFileChooser(ResourceBundle messages) {
-    return getUniversalFileChooser(messages, "LOAD_PROPERTIES_DESCRIPTION", "properties");
-  }
-
   private JFileChooser getUniversalFileChooser(
       ResourceBundle messages, String description, String fileEnds) {
     JFileChooser jFileChooser = new JFileChooser(lastPath);

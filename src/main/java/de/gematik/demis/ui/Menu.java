@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 
 class Menu {
 
-  private static Logger LOG = LoggerFactory.getLogger(Menu.class.getName());
-  private ActionListener demisMenuActionListener = new DemisMenuActionListener();
+  private static final Logger LOG = LoggerFactory.getLogger(Menu.class.getName());
+  private final ActionListener demisMenuActionListener = new DemisMenuActionListener();
 
   JMenuBar createMenuBar() {
     var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());

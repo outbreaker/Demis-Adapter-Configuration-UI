@@ -145,4 +145,25 @@ public class LaboratoryView extends AbstractConfigurationView {
   public String getName() {
     return path == null ? "New Json Configuration" : path.toFile().getName();
   }
+
+  public void setJsonValue(LABORATORY_JSON property, String value) {
+    if (values.containsKey(property)) values.get(property).setValue(value);
+    identityProviderView.setJsonValue(property, value);
+    reportingPersonView.setJsonValue(property, value);
+    reportingFacilityView.setJsonValue(property, value);
+    setUnsaved();
+  }
+
+  public boolean contains(LABORATORY_JSON property) {
+    if (values.containsKey(property)) return true;
+    if (identityProviderView.contains(property)) return true;
+    if (reportingPersonView.contains(property)) return true;
+    if (reportingFacilityView.contains(property)) return true;
+    return false;
+  }
+
+  public void openLoadCertificate(){
+    identityProviderView.openLoadCertificate();
+  }
+
 }
