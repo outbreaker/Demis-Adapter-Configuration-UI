@@ -3,6 +3,7 @@ package de.gematik.demis.ui;
 import java.io.IOException;
 import java.net.URI;
 import javax.swing.JEditorPane;
+import javax.swing.JOptionPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import org.slf4j.Logger;
@@ -13,7 +14,7 @@ public class MessageWithLinksPane extends JEditorPane {
   private static final long serialVersionUID = 1L;
   private static Logger LOG = LoggerFactory.getLogger(MessageWithLinksPane.class.getName());
 
-  public MessageWithLinksPane(String htmlBody) {
+  public MessageWithLinksPane(String htmlBody, String errorMessage) {
     super("text/html", "<html><body>" + htmlBody + "</body></html>");
     addHyperlinkListener(new HyperlinkListener() {
       @Override
@@ -23,6 +24,11 @@ public class MessageWithLinksPane extends JEditorPane {
             java.awt.Desktop.getDesktop().browse(URI.create(e.getURL().toString()));
           } catch (IOException ioException) {
             LOG.debug("Error while opening link!");
+            JOptionPane.showMessageDialog(
+                MainView.getInstance().getMainComponent(),
+                errorMessage,
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
           }
         }
       }

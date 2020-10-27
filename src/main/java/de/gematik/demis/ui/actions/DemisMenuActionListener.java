@@ -206,7 +206,8 @@ public class DemisMenuActionListener implements ActionListener {
 
   private void openHelpDialog(ResourceBundle messages) {
     String help = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("HELP_DESCRIPTION");
-    JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), new MessageWithLinksPane(help),"Hilfe", JOptionPane.QUESTION_MESSAGE);
+    String error = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("HELP_ERROR");
+    JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), new MessageWithLinksPane(help, error),"Hilfe", JOptionPane.QUESTION_MESSAGE);
   }
 
   private void openAboutDialog(ResourceBundle messages) {
