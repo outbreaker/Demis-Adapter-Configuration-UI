@@ -2,6 +2,7 @@ package de.gematik.demis.control;
 
 import de.gematik.demis.entities.IProperties;
 import de.gematik.demis.entities.LABORATORY_JSON;
+import de.gematik.demis.ui.AbstractConfigurationView;
 import de.gematik.demis.ui.LaboratoryView;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.PropertiesView;
@@ -25,11 +26,10 @@ public class ConfigurationLoader {
   private static final Logger LOG =
       LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
   private static ConfigurationLoader instance;
-  private final List<PropertiesView> propertiesViews = new ArrayList<>();
-  private final List<LaboratoryView> laboratoryViews = new ArrayList<>();
+  private  List<PropertiesView> propertiesViews = new ArrayList<>();
+  private  List<LaboratoryView> laboratoryViews = new ArrayList<>();
 
-  private ConfigurationLoader() {
-  }
+  private ConfigurationLoader() {}
 
   public static ConfigurationLoader getInstance() {
     if (instance == null) {
@@ -58,7 +58,7 @@ public class ConfigurationLoader {
           .forEach(f -> MainView.getInstance().addTab(add(new PropertiesView(f))));
       paths.stream()
           .filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
-          .forEach(f -> MainView.getInstance().addCloeTab(add(new LaboratoryView(f))));
+          .forEach(f -> MainView.getInstance().addCloseTab(add(new LaboratoryView(f))));
     } catch (IOException e) {
       String failed = "Failed to read all Files";
       LOG.error(failed, e);
@@ -96,10 +96,26 @@ public class ConfigurationLoader {
   }
 
   public Optional<LaboratoryView> showFirstViewWith(LABORATORY_JSON property) {
-    Optional<LaboratoryView> first = laboratoryViews.stream().filter(lab -> lab.contains(property)).findFirst();
-    if (first.isPresent()){
-      MainView.getInstance().showTabFor(first.get());
-    }
+    Optional<LaboratoryView> first =
+        laboratoryViews.stream().filter(lab -> lab.contains(property)).findFirst();
+    first.ifPresent(laboratoryView -> MainView.getInstance().showTabFor(laboratoryView));
     return first;
+  }
+
+  public boolean hasUnsavedChanges() {
+    if (propertiesViews.stream().anyMatch(AbstractConfigurationView::hasUnsavedChanges)) {
+      return true;
+    } else
+      return laboratoryViews.stream().anyMatch(AbstractConfigurationView::hasUnsavedChanges);
+  }
+
+  public void closeAllViews() {
+    propertiesViews = new ArrayList<>();
+    laboratoryViews = new ArrayList<>();
+    MainView.getInstance().getJTabs().removeAll();
+  }
+
+  public boolean hasConfiguration() {
+    return !propertiesViews.isEmpty() || !laboratoryViews.isEmpty();
   }
 }

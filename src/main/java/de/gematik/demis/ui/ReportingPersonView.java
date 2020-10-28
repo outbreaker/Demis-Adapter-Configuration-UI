@@ -14,10 +14,9 @@ import javax.swing.border.TitledBorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ReportingPersonView extends JPanel {
+public class ReportingPersonView extends AbstractEditorsView {
 
   private static Logger LOG = LoggerFactory.getLogger(ReportingPersonView.class.getName());
-  private final HashMap<LABORATORY_JSON, IValueTypeView> values = new HashMap<>();
   private final ReportingPerson reportingPerson;
 
   public ReportingPersonView(ReportingPerson reportingPerson) {
@@ -70,10 +69,8 @@ public class ReportingPersonView extends JPanel {
   private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
     c.gridx = 1;
     c.weightx = 1.0;
-    editor.setExpertEditor(id.isExpertValue());
-    editor.checkExpertMode();
     this.add(editor.getViewComponent(), c);
-    values.put(id, editor);
+    addAndConfigEditor(editor, id);
   }
 
   private void addLabel(GridBagConstraints c, Label label) {
@@ -87,31 +84,30 @@ public class ReportingPersonView extends JPanel {
   }
 
   public ReportingPerson getReportingPerson() {
-    reportingPerson.setVorname(values.get(LABORATORY_JSON.VORNAME).getValue());
-    reportingPerson.setNachname(values.get(LABORATORY_JSON.NACHNAME).getValue());
-    reportingPerson.setErreichbarkeit(values.get(LABORATORY_JSON.ERREICHBARKEIT).getValue());
-    reportingPerson.setTelefonnummer(values.get(LABORATORY_JSON.TELEFONNUMMER).getValue());
-    reportingPerson.setStadt(values.get(LABORATORY_JSON.STADT).getValue());
-    reportingPerson.setPostleitzahl(values.get(LABORATORY_JSON.POSTLEITZAHL).getValue());
-    reportingPerson.setAnschriftenzeile(values.get(LABORATORY_JSON.ANSCHRIFTENZEILE).getValue());
+    reportingPerson.setVorname(getValueEditors().get(LABORATORY_JSON.VORNAME).getValue());
+    reportingPerson.setNachname(getValueEditors().get(LABORATORY_JSON.NACHNAME).getValue());
+    reportingPerson.setErreichbarkeit(getValueEditors().get(LABORATORY_JSON.ERREICHBARKEIT).getValue());
+    reportingPerson.setTelefonnummer(getValueEditors().get(LABORATORY_JSON.TELEFONNUMMER).getValue());
+    reportingPerson.setStadt(getValueEditors().get(LABORATORY_JSON.STADT).getValue());
+    reportingPerson.setPostleitzahl(getValueEditors().get(LABORATORY_JSON.POSTLEITZAHL).getValue());
+    reportingPerson.setAnschriftenzeile(getValueEditors().get(LABORATORY_JSON.ANSCHRIFTENZEILE).getValue());
     return reportingPerson;
   }
 
   public void checkExpertMode() {
-    values.values().forEach(IValueTypeView::checkExpertMode);
+    getValueEditors().values().forEach(IValueTypeView::checkExpertMode);
   }
   ;
 
   public void activateForExperts() {
-    values.values().forEach(IValueTypeView::activateForExperts);
+    getValueEditors().values().forEach(IValueTypeView::activateForExperts);
   }
 
   public void setJsonValue(LABORATORY_JSON property, String value) {
-    if (values.containsKey(property)) values.get(property).setValue(value);
+    if (getValueEditors().containsKey(property)) getValueEditors().get(property).setValue(value);
   }
 
   public boolean contains(LABORATORY_JSON property) {
-    if (values.containsKey(property)) return true;
-    return false;
+    return getValueEditors().containsKey(property);
   }
 }
