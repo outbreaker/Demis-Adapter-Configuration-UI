@@ -116,8 +116,8 @@ public class IdentityProviderView extends AbstractEditorsView {
         });
     int opt = jFileChooser.showOpenDialog(MainView.getInstance().getMainComponent());
     if (opt == JFileChooser.APPROVE_OPTION) {
-      File folderToLoad = jFileChooser.getSelectedFile();
-      lastPath = folderToLoad.getAbsolutePath();
+      File selectedFile = jFileChooser.getSelectedFile();
+      lastPath = selectedFile.getAbsolutePath();
 
       String password = JOptionPane.showInputDialog(messages.getString("KEYSTORE_SMS_PASSWORD"));
       IdentityProvider idp = null;
@@ -125,7 +125,7 @@ public class IdentityProviderView extends AbstractEditorsView {
         showWarningDialog(messages.getString("LOAD_KEYSTORE_PASSWORD_EMPTY"));
       } else {
         try {
-          idp = new KeystoreUtils(folderToLoad, password).loadIdpProperties();
+          idp = new KeystoreUtils(selectedFile, password).loadIdpProperties();
         } catch (UnrecoverableKeyException e) {
           JOptionPane.showMessageDialog(
               MainView.getInstance().getMainComponent(),
