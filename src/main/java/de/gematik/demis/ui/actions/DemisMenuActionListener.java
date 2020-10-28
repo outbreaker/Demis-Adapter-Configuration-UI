@@ -93,7 +93,7 @@ public class DemisMenuActionListener implements ActionListener {
       case "ABOUT":
         openAboutDialog(messages);
         break;
-      case "NEW_JSON":
+      case "NEW_LAB":
         ConfigurationLoader.getInstance().addNewLaboratoryConfiguration();
         break;
       case "CLOSE":
