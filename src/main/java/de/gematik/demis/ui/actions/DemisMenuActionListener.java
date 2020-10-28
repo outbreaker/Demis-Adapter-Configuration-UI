@@ -60,7 +60,8 @@ public class DemisMenuActionListener implements ActionListener {
           LOG.debug("Selected Folder to Load all Configurations: " + folderToLoad);
         }
         break;
-      case "OPEN":
+      case "EXIT":
+        MainView.getInstance().closeApplication();
         break;
       case "SAVE_ALL":
         saveAll();
@@ -91,6 +92,9 @@ public class DemisMenuActionListener implements ActionListener {
         break;
       case "ABOUT":
         openAboutDialog(messages);
+        break;
+      case "NEW_LAB":
+        ConfigurationLoader.getInstance().addNewLaboratoryConfiguration();
         break;
       case "CLOSE":
         closeConfiguration();
@@ -125,6 +129,7 @@ public class DemisMenuActionListener implements ActionListener {
             lab -> {
               Path path = checkPath(messages, lab.getPath(), "json", "LOAD_JSON_DESCRIPTION");
               if (path != null) {
+                lab.setPath(path);
                 saveJson(path, lab.getLaboratory());
                 lab.setSaved();
               }

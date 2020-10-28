@@ -19,15 +19,21 @@ public class MainView {
 
   private static final Logger LOG = LoggerFactory.getLogger(MainView.class.getName());
   private static MainView instance = new MainView();
-  private JFrame frame;
-  private JClosableTabbedPane configTabs;
+  private final JFrame frame;
+  private final JClosableTabbedPane configTabs;
+  private final Menu menuBar;
+  private final ToolBar toolBar;
+  private final ResourceBundle messages =
+      ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
 
   private MainView() {
     LOG.info("Use Language: " + Locale.getDefault().getCountry());
     frame = new JFrame();
-    frame.setJMenuBar(new Menu().createMenuBar());
+    menuBar = new Menu();
+    frame.setJMenuBar(menuBar.createMenuBar());
     configTabs = new JClosableTabbedPane();
-    frame.add(new ToolBar().getToolBar(), BorderLayout.NORTH);
+    toolBar = new ToolBar();
+    frame.add(toolBar.getToolBar(), BorderLayout.NORTH);
     frame.add(configTabs, BorderLayout.CENTER);
 
     frame.setTitle("Demis Adapter-Konfigurator");
@@ -37,39 +43,41 @@ public class MainView {
     frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     frame.addWindowListener(
         new WindowAdapter() {
-          private final ResourceBundle messages =
-              ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
 
           @Override
           public void windowClosing(WindowEvent e) {
             super.windowClosing(e);
 
-            if (ConfigurationLoader.getInstance().hasUnsavedChanges()) {
-              int i =
-                  JOptionPane.showConfirmDialog(
-                      MainView.getInstance().getMainComponent(),
-                      messages.getString("CLOSE_APP_WITH_UNSAVED_CHANGES"),
-                      messages.getString("CLOSE_APP_WITH_UNSAVED_CHANGES_TITLE"),
-                      JOptionPane.YES_NO_CANCEL_OPTION);
-              if (i == JOptionPane.YES_OPTION) {
-                new DemisMenuActionListener().saveAll();
-                exit();
-              } else if (i == JOptionPane.NO_OPTION) {
-                exit();
-              }
-            } else {
-              int i =
-                  JOptionPane.showConfirmDialog(
-                      MainView.getInstance().getMainComponent(),
-                      messages.getString("CLOSE_APP"),
-                      messages.getString("CLOSE_APP_TITLE"),
-                      JOptionPane.YES_NO_OPTION);
-              if (i == JOptionPane.YES_OPTION) {
-                exit();
-              }
-            }
+            closeApplication();
           }
         });
+  }
+
+  public void closeApplication() {
+    if (ConfigurationLoader.getInstance().hasUnsavedChanges()) {
+      int i =
+          JOptionPane.showConfirmDialog(
+              MainView.getInstance().getMainComponent(),
+              messages.getString("CLOSE_APP_WITH_UNSAVED_CHANGES"),
+              messages.getString("CLOSE_APP_WITH_UNSAVED_CHANGES_TITLE"),
+              JOptionPane.YES_NO_CANCEL_OPTION);
+      if (i == JOptionPane.YES_OPTION) {
+        new DemisMenuActionListener().saveAll();
+        exit();
+      } else if (i == JOptionPane.NO_OPTION) {
+        exit();
+      }
+    } else {
+      int i =
+          JOptionPane.showConfirmDialog(
+              MainView.getInstance().getMainComponent(),
+              messages.getString("CLOSE_APP"),
+              messages.getString("CLOSE_APP_TITLE"),
+              JOptionPane.YES_NO_OPTION);
+      if (i == JOptionPane.YES_OPTION) {
+        exit();
+      }
+    }
   }
 
   private void exit() {
@@ -115,5 +123,10 @@ public class MainView {
         return;
       }
     }
+  }
+
+  public void setConfigurationControl(boolean status) {
+    menuBar.setConfigurationControl(status);
+    toolBar.setConfigurationControl(status);
   }
 }

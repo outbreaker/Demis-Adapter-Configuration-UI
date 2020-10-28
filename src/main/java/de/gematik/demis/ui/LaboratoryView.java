@@ -1,8 +1,12 @@
 package de.gematik.demis.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.gematik.demis.control.LaboratoryFactory;
+import de.gematik.demis.entities.IdentityProvider;
 import de.gematik.demis.entities.LABORATORY_JSON;
 import de.gematik.demis.entities.Laboratory;
+import de.gematik.demis.entities.ReportingFacility;
+import de.gematik.demis.entities.ReportingPerson;
 import de.gematik.demis.entities.VALUE_TYPE;
 import de.gematik.demis.ui.value.editor.IValueTypeView;
 import de.gematik.demis.ui.value.editor.StringEditor;
@@ -12,10 +16,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Label;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import org.slf4j.Logger;
@@ -24,28 +28,30 @@ import org.slf4j.LoggerFactory;
 public class LaboratoryView extends AbstractConfigurationView {
 
   private static Logger LOG = LoggerFactory.getLogger(LaboratoryView.class.getName());
-  private final Path path;
+  private Path path;
   private Laboratory laboratory;
   private IdentityProviderView identityProviderView;
   private ReportingPersonView reportingPersonView;
   private ReportingFacilityView reportingFacilityView;
+  private ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
 
+
+  public LaboratoryView() {
+    this(null);
+    setUnsaved();
+  }
   public LaboratoryView(Path path) {
     this.path = path;
-    initComponents(path.toFile());
+    initComponents();
   }
 
-  private void initComponents(File file) {
-    LOG.debug("Laboratory File to load: " + file.getAbsolutePath());
-    ObjectMapper objectMapper = new ObjectMapper();
-    try {
-      laboratory = objectMapper.readValue(file, Laboratory.class);
-    } catch (IOException e) {
-      LOG.error("Failed to load Laboratory JSON: '" + file.getAbsolutePath() + "'", e);
-      throw new RuntimeException(
-          "Failed to load Laboratory JSON: '" + file.getAbsolutePath() + "'", e);
+  private void initComponents() {
+    if (path != null) {
+      loadFromFile();
     }
-
+    else {
+      laboratory = LaboratoryFactory.createDefaultLaboratory();
+    }
     setLayout(new GridBagLayout());
     GridBagConstraints c = new GridBagConstraints();
 
@@ -91,14 +97,24 @@ public class LaboratoryView extends AbstractConfigurationView {
     this.repaint();
   }
 
+  private void loadFromFile() {
+    LOG.debug("Laboratory File to load: " + path.toFile().getAbsolutePath());
+    ObjectMapper objectMapper = new ObjectMapper();
+    try {
+      laboratory = objectMapper.readValue(path.toFile(), Laboratory.class);
+    } catch (IOException e) {
+      LOG.error("Failed to load Laboratory JSON: '" + path.toFile().getAbsolutePath() + "'", e);
+      throw new RuntimeException(
+          "Failed to load Laboratory JSON: '" + path.toFile().getAbsolutePath() + "'", e);
+    }
+  }
+
   private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
     c.gridx = 1;
     c.weightx = 1.0;
     this.add(editor.getViewComponent(), c);
     addAndConfigEditor(editor, id);
   }
-
-  
 
   private void addLabel(GridBagConstraints c, Label label) {
     c.weighty = 0.1;
@@ -126,7 +142,10 @@ public class LaboratoryView extends AbstractConfigurationView {
   public Laboratory getLaboratory() {
     laboratory.setIdentifikator(getValueEditors().get(LABORATORY_JSON.IDENTIFIKATOR).getValue());
     laboratory.setPositiveTestergebnisBezeichnungen(
-        getValueEditors().get(LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN).getValue().split(","));
+        getValueEditors()
+            .get(LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN)
+            .getValue()
+            .split(","));
     laboratory.setIdp(identityProviderView.getIdentityProvider());
     laboratory.setMelderEinrichtung(reportingFacilityView.getReportingFacility());
     laboratory.setMelderPerson(reportingPersonView.getReportingPerson());
@@ -150,7 +169,7 @@ public class LaboratoryView extends AbstractConfigurationView {
 
   @Override
   public String getName() {
-    return path == null ? "New Json Configuration" : path.toFile().getName();
+    return path == null ? messages.getString("NEW_LAB") + " *" : path.toFile().getName();
   }
 
   public void setJsonValue(LABORATORY_JSON property, String value) {
@@ -169,8 +188,11 @@ public class LaboratoryView extends AbstractConfigurationView {
     return false;
   }
 
-  public void openLoadCertificate(){
+  public void openLoadCertificate() {
     identityProviderView.openLoadCertificate();
   }
 
+  public void setPath(Path path) {
+    this.path = path;
+  }
 }

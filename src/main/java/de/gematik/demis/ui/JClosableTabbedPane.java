@@ -43,6 +43,8 @@ public class JClosableTabbedPane extends JTabbedPane implements ChangeListener {
     JPanel pnlTab = new JPanel(new GridBagLayout());
     pnlTab.setOpaque(false);
     final JLabel lblTitle = new JLabel(configurationView.getName());
+//    if (configurationView.getPath() != null)
+//      lblTitle.setToolTipText(configurationView.getPath().toAbsolutePath().toString());
     final JButton btnClose = createCloseButton();
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -94,11 +96,19 @@ public class JClosableTabbedPane extends JTabbedPane implements ChangeListener {
       IConfigurationView configurationView = (IConfigurationView) changeEvent.getSource();
       String title =
           configurationView.getName() + (configurationView.hasUnsavedChanges() ? " *" : "");
+      String path =
+          configurationView.getPath() == null
+              ? ""
+              : configurationView.getPath().toAbsolutePath().toString();
       int index = indexOfComponent(configurationView.getComponent());
       if (getTabComponentAt(index) instanceof JPanel) {
         Arrays.stream(((JPanel) getTabComponentAt(index)).getComponents())
             .filter(s -> s instanceof JLabel)
-            .forEach(s -> ((JLabel) s).setText(title));
+            .forEach(
+                s -> {
+                  ((JLabel) s).setText(title);
+                  ((JLabel) s).setToolTipText(path);
+                });
       } else {
         setTitleAt(index, title);
       }
