@@ -72,7 +72,7 @@ public class FhirBasePathEditor extends AbstractEditor {
         new ItemListener() {
           private Object oldItem;
           private boolean cancel=false;
-          private ResourceBundle messages =
+          private final ResourceBundle messages =
               ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
 
           @Override

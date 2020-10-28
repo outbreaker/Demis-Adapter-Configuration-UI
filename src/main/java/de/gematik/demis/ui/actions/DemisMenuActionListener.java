@@ -3,6 +3,7 @@ package de.gematik.demis.ui.actions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.gematik.demis.control.ConfigurationLoader;
 import de.gematik.demis.entities.Laboratory;
+import de.gematik.demis.ui.AbstractConfigurationView;
 import de.gematik.demis.ui.LaboratoryView;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.MessageWithLinksPane;
@@ -29,13 +30,26 @@ public class DemisMenuActionListener implements ActionListener {
   private static final Logger LOG =
       LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
   private static File lastPath;
+  private final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
 
   @Override
   public void actionPerformed(ActionEvent actionEvent) {
-    var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
-
     switch (actionEvent.getActionCommand()) {
       case "OPEN_ALL":
+        if (ConfigurationLoader.getInstance().hasConfiguration()){
+          int i =
+              JOptionPane.showConfirmDialog(
+                  MainView.getInstance().getMainComponent(),
+                  messages.getString("OPEN_NEW_CONFIG_BUT_OPEN"),
+                  messages.getString("OPEN_NEW_CONFIG_BUT_OPEN_TITLE"),
+                  JOptionPane.YES_NO_OPTION);
+          if (i == JOptionPane.YES_OPTION) {
+            if (!closeConfiguration()) return;
+          } else {
+            return;
+          }
+        }
+        JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),messages.getString("OPEN_NEW_CONFIG"));
         JFileChooser jFileChooser =
             new JFileChooser("C:\\Demis\\Demis-Adapter-1.1.0 -- Docker LAB-01.01.01.100");
         jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -49,37 +63,7 @@ public class DemisMenuActionListener implements ActionListener {
       case "OPEN":
         break;
       case "SAVE_ALL":
-        ConfigurationLoader.getInstance()
-            .getLaboratoryViews()
-            .forEach(
-                lab -> {
-                  Path path = checkPath(messages, lab.getPath(), "json", "LOAD_JSON_DESCRIPTION");
-                  if (path != null) {
-                    saveJson(path, lab.getLaboratory());
-                    lab.setSaved();
-                  }
-                });
-
-        ConfigurationLoader.getInstance()
-            .getPropertiesViews()
-            .forEach(
-                props -> {
-                  Path path =
-                      checkPath(
-                          messages, props.getPath(), "properties", "LOAD_PROPERTIES_DESCRIPTION");
-                  if (path != null) {
-                    saveProperties(path, props.getProperties());
-                    props.setSaved();
-                  }
-                });
-        String successMessage =
-            ResourceBundle.getBundle("MessagesBundle", Locale.getDefault())
-                .getString("SAVE_PROPERTIES_SUCCESSFULL");
-        JOptionPane.showMessageDialog(
-            MainView.getInstance().getMainComponent(),
-            successMessage,
-            "Information",
-            JOptionPane.INFORMATION_MESSAGE);
+        saveAll();
         break;
       case "EXPERT":
         if (actionEvent.getSource() instanceof JToggleButton) {
@@ -108,9 +92,64 @@ public class DemisMenuActionListener implements ActionListener {
       case "ABOUT":
         openAboutDialog(messages);
         break;
+      case "CLOSE":
+        closeConfiguration();
+        break;
       default:
         LOG.warn("Action for Command \"" + actionEvent.getActionCommand() + "\" not implemented");
     }
+  }
+
+  public boolean closeConfiguration() {
+    if (ConfigurationLoader.getInstance().hasUnsavedChanges()) {
+      int i =
+          JOptionPane.showConfirmDialog(
+              MainView.getInstance().getMainComponent(),
+              messages.getString("CLOSE_CONFIG_WITH_UNSAVED_CHANGES"),
+              messages.getString("CLOSE_CONFIG_WITH_UNSAVED_CHANGES_TITLE"),
+              JOptionPane.YES_NO_CANCEL_OPTION);
+      if (i == JOptionPane.YES_OPTION) {
+        saveAll();
+      } else if (i == JOptionPane.CANCEL_OPTION){
+        return false;
+      }
+    }
+    ConfigurationLoader.getInstance().closeAllViews();
+    return true;
+  }
+
+  public void saveAll() {
+    ConfigurationLoader.getInstance()
+        .getLaboratoryViews().stream().filter(AbstractConfigurationView::hasUnsavedChanges)
+        .forEach(
+            lab -> {
+              Path path = checkPath(messages, lab.getPath(), "json", "LOAD_JSON_DESCRIPTION");
+              if (path != null) {
+                saveJson(path, lab.getLaboratory());
+                lab.setSaved();
+              }
+            });
+
+    ConfigurationLoader.getInstance()
+        .getPropertiesViews().stream().filter(AbstractConfigurationView::hasUnsavedChanges)
+        .forEach(
+            props -> {
+              Path path =
+                  checkPath(
+                      messages, props.getPath(), "properties", "LOAD_PROPERTIES_DESCRIPTION");
+              if (path != null) {
+                saveProperties(path, props.getProperties());
+                props.setSaved();
+              }
+            });
+    String successMessage =
+        ResourceBundle.getBundle("MessagesBundle", Locale.getDefault())
+            .getString("SAVE_PROPERTIES_SUCCESSFULL");
+    JOptionPane.showMessageDialog(
+        MainView.getInstance().getMainComponent(),
+        successMessage,
+        "Information",
+        JOptionPane.INFORMATION_MESSAGE);
   }
 
   private Path checkPath(

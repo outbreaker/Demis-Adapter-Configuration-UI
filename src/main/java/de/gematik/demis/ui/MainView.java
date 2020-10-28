@@ -1,9 +1,15 @@
 package de.gematik.demis.ui;
 
+import de.gematik.demis.control.ConfigurationLoader;
+import de.gematik.demis.ui.actions.DemisMenuActionListener;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import org.slf4j.Logger;
@@ -28,7 +34,47 @@ public class MainView {
     frame.setSize(900, 600);
     frame.setLocation(200, 200);
 
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    frame.addWindowListener(
+        new WindowAdapter() {
+          private final ResourceBundle messages =
+              ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
+
+          @Override
+          public void windowClosing(WindowEvent e) {
+            super.windowClosing(e);
+
+            if (ConfigurationLoader.getInstance().hasUnsavedChanges()) {
+              int i =
+                  JOptionPane.showConfirmDialog(
+                      MainView.getInstance().getMainComponent(),
+                      messages.getString("CLOSE_APP_WITH_UNSAVED_CHANGES"),
+                      messages.getString("CLOSE_APP_WITH_UNSAVED_CHANGES_TITLE"),
+                      JOptionPane.YES_NO_CANCEL_OPTION);
+              if (i == JOptionPane.YES_OPTION) {
+                new DemisMenuActionListener().saveAll();
+                exit();
+              } else if (i == JOptionPane.NO_OPTION) {
+                exit();
+              }
+            } else {
+              int i =
+                  JOptionPane.showConfirmDialog(
+                      MainView.getInstance().getMainComponent(),
+                      messages.getString("CLOSE_APP"),
+                      messages.getString("CLOSE_APP_TITLE"),
+                      JOptionPane.YES_NO_OPTION);
+              if (i == JOptionPane.YES_OPTION) {
+                exit();
+              }
+            }
+          }
+        });
+  }
+
+  private void exit() {
+    frame.dispose();
+    System.exit(0);
   }
 
   public static MainView getInstance() {
@@ -42,7 +88,7 @@ public class MainView {
     configTabs.addTab(configurationView);
   }
 
-  public void addCloeTab(IConfigurationView configurationView) {
+  public void addCloseTab(IConfigurationView configurationView) {
     configTabs.addClosableTab(configurationView);
   }
 
@@ -62,10 +108,10 @@ public class MainView {
     for (int i = 0; i < configTabs.getTabCount(); i++) {
       JScrollPane jScrollPane = (JScrollPane) configTabs.getComponentAt(i);
       Component component = jScrollPane.getViewport().getComponent(0);
-      if (component instanceof LaboratoryView){
+      if (component instanceof LaboratoryView) {
         configTabs.setSelectedIndex(i);
         JScrollBar verticalScrollBar = jScrollPane.getVerticalScrollBar();
-        verticalScrollBar.setValue( verticalScrollBar.getMaximum() );
+        verticalScrollBar.setValue(verticalScrollBar.getMaximum());
         return;
       }
     }

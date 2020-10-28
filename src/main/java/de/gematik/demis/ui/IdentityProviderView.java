@@ -26,11 +26,10 @@ import javax.swing.filechooser.FileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IdentityProviderView extends JPanel {
+public class IdentityProviderView extends AbstractEditorsView {
 
   private static Logger LOG = LoggerFactory.getLogger(IdentityProviderView.class.getName());
   private static String lastPath;
-  private final HashMap<LABORATORY_JSON, IValueTypeView> values = new HashMap<>();
   private IdentityProvider identityProvider;
 
   public IdentityProviderView(IdentityProvider identityProvider) {
@@ -83,10 +82,8 @@ public class IdentityProviderView extends JPanel {
   private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
     c.gridx = 1;
     c.weightx = 1.0;
-    editor.setExpertEditor(id.isExpertValue());
-    editor.checkExpertMode();
     this.add(editor.getViewComponent(), c);
-    values.put(id, editor);
+    addAndConfigEditor(editor, id);
   }
 
   private void addLabel(GridBagConstraints c, Label label) {
@@ -119,8 +116,8 @@ public class IdentityProviderView extends JPanel {
         });
     int opt = jFileChooser.showOpenDialog(MainView.getInstance().getMainComponent());
     if (opt == JFileChooser.APPROVE_OPTION) {
-      File folderToLoad = jFileChooser.getSelectedFile();
-      lastPath = folderToLoad.getAbsolutePath();
+      File selectedFile = jFileChooser.getSelectedFile();
+      lastPath = selectedFile.getAbsolutePath();
 
       String password = JOptionPane.showInputDialog(messages.getString("KEYSTORE_SMS_PASSWORD"));
       IdentityProvider idp = null;
@@ -128,7 +125,7 @@ public class IdentityProviderView extends JPanel {
         showWarningDialog(messages.getString("LOAD_KEYSTORE_PASSWORD_EMPTY"));
       } else {
         try {
-          idp = new KeystoreUtils(folderToLoad, password).loadIdpProperties();
+          idp = new KeystoreUtils(selectedFile, password).loadIdpProperties();
         } catch (UnrecoverableKeyException e) {
           JOptionPane.showMessageDialog(
               MainView.getInstance().getMainComponent(),
@@ -157,42 +154,43 @@ public class IdentityProviderView extends JPanel {
 
   private void repaint(IdentityProvider idp) {
     if (idp != null) {
-      values.get(LABORATORY_JSON.USERNAME).setValue(idp.getUsername());
-      values.get(LABORATORY_JSON.AUTHCERTALIAS).setValue(idp.getAuthcertalias());
-      values.get(LABORATORY_JSON.AUTHCERTKEYSTORE).setValue(idp.getAuthcertkeystore());
-      values.get(LABORATORY_JSON.AUTHCERTPASSWORD).setValue(idp.getAuthcertpassword());
+      getValueEditors().get(LABORATORY_JSON.USERNAME).setValue(idp.getUsername());
+      getValueEditors().get(LABORATORY_JSON.AUTHCERTALIAS).setValue(idp.getAuthcertalias());
+      getValueEditors().get(LABORATORY_JSON.AUTHCERTKEYSTORE).setValue(idp.getAuthcertkeystore());
+      getValueEditors().get(LABORATORY_JSON.AUTHCERTPASSWORD).setValue(idp.getAuthcertpassword());
     } else {
-      values.get(LABORATORY_JSON.USERNAME).setValue("");
-      values.get(LABORATORY_JSON.AUTHCERTALIAS).setValue("");
-      values.get(LABORATORY_JSON.AUTHCERTKEYSTORE).setValue("");
-      values.get(LABORATORY_JSON.AUTHCERTPASSWORD).setValue("");
+      getValueEditors().get(LABORATORY_JSON.USERNAME).setValue("");
+      getValueEditors().get(LABORATORY_JSON.AUTHCERTALIAS).setValue("");
+      getValueEditors().get(LABORATORY_JSON.AUTHCERTKEYSTORE).setValue("");
+      getValueEditors().get(LABORATORY_JSON.AUTHCERTPASSWORD).setValue("");
     }
+    setUnsaved();
     this.repaint();
   }
 
   public IdentityProvider getIdentityProvider() {
-    identityProvider.setAuthcertalias(values.get(LABORATORY_JSON.AUTHCERTALIAS).getValue());
-    identityProvider.setAuthcertpassword(values.get(LABORATORY_JSON.AUTHCERTPASSWORD).getValue());
-    identityProvider.setAuthcertkeystore(values.get(LABORATORY_JSON.AUTHCERTKEYSTORE).getValue());
-    identityProvider.setUsername(values.get(LABORATORY_JSON.USERNAME).getValue());
+    identityProvider.setAuthcertalias(getValueEditors().get(LABORATORY_JSON.AUTHCERTALIAS).getValue());
+    identityProvider.setAuthcertpassword(getValueEditors().get(LABORATORY_JSON.AUTHCERTPASSWORD).getValue());
+    identityProvider.setAuthcertkeystore(getValueEditors().get(LABORATORY_JSON.AUTHCERTKEYSTORE).getValue());
+    identityProvider.setUsername(getValueEditors().get(LABORATORY_JSON.USERNAME).getValue());
     return identityProvider;
   }
 
   public void checkExpertMode() {
-    values.values().forEach(IValueTypeView::checkExpertMode);
+    getValueEditors().values().forEach(IValueTypeView::checkExpertMode);
   }
   ;
 
   public void activateForExperts() {
-    values.values().forEach(IValueTypeView::activateForExperts);
+    getValueEditors().values().forEach(IValueTypeView::activateForExperts);
   }
 
   public void setJsonValue(LABORATORY_JSON property, String value) {
-    if (values.containsKey(property)) values.get(property).setValue(value);
+    if (getValueEditors().containsKey(property)) getValueEditors().get(property).setValue(value);
   }
 
   public boolean contains(LABORATORY_JSON property) {
-    if (values.containsKey(property)) return true;
+    if (getValueEditors().containsKey(property)) return true;
     return false;
   }
 
