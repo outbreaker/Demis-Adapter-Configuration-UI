@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 public class LaboratoryView extends AbstractConfigurationView {
 
   private static Logger LOG = LoggerFactory.getLogger(LaboratoryView.class.getName());
-  private final HashMap<LABORATORY_JSON, IValueTypeView> values = new HashMap<>();
   private final Path path;
   private Laboratory laboratory;
   private IdentityProviderView identityProviderView;
@@ -68,13 +67,26 @@ public class LaboratoryView extends AbstractConfigurationView {
 
     reportingPersonView = new ReportingPersonView(laboratory.getMelderPerson());
     this.add(reportingPersonView, c);
+    reportingPersonView.addChangeListener(
+        s -> {
+          setUnsaved();
+        });
+
     c.gridy++;
     reportingFacilityView = new ReportingFacilityView(laboratory.getMelderEinrichtung());
     this.add(reportingFacilityView, c);
+    reportingFacilityView.addChangeListener(
+        s -> {
+          setUnsaved();
+        });
 
     c.gridy++;
     identityProviderView = new IdentityProviderView(laboratory.getIdp());
     this.add(identityProviderView, c);
+    identityProviderView.addChangeListener(
+        s -> {
+          setUnsaved();
+        });
 
     this.repaint();
   }
@@ -82,15 +94,11 @@ public class LaboratoryView extends AbstractConfigurationView {
   private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
     c.gridx = 1;
     c.weightx = 1.0;
-    editor.setExpertEditor(id.isExpertValue());
-    editor.checkExpertMode();
     this.add(editor.getViewComponent(), c);
-    values.put(id, editor);
-    editor.addChangeListener(
-        s -> {
-          setUnsaved();
-        });
+    addAndConfigEditor(editor, id);
   }
+
+  
 
   private void addLabel(GridBagConstraints c, Label label) {
     c.weighty = 0.1;
@@ -116,9 +124,9 @@ public class LaboratoryView extends AbstractConfigurationView {
   }
 
   public Laboratory getLaboratory() {
-    laboratory.setIdentifikator(values.get(LABORATORY_JSON.IDENTIFIKATOR).getValue());
+    laboratory.setIdentifikator(getValueEditors().get(LABORATORY_JSON.IDENTIFIKATOR).getValue());
     laboratory.setPositiveTestergebnisBezeichnungen(
-        values.get(LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN).getValue().split(","));
+        getValueEditors().get(LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN).getValue().split(","));
     laboratory.setIdp(identityProviderView.getIdentityProvider());
     laboratory.setMelderEinrichtung(reportingFacilityView.getReportingFacility());
     laboratory.setMelderPerson(reportingPersonView.getReportingPerson());
@@ -127,15 +135,14 @@ public class LaboratoryView extends AbstractConfigurationView {
   }
 
   public void checkExpertMode() {
-    values.values().forEach(IValueTypeView::checkExpertMode);
+    getValueEditors().values().forEach(IValueTypeView::checkExpertMode);
     identityProviderView.checkExpertMode();
     reportingPersonView.checkExpertMode();
     reportingFacilityView.checkExpertMode();
   }
-  ;
 
   public void activateForExperts() {
-    values.values().forEach(IValueTypeView::activateForExperts);
+    getValueEditors().values().forEach(IValueTypeView::activateForExperts);
     identityProviderView.activateForExperts();
     reportingPersonView.activateForExperts();
     reportingFacilityView.activateForExperts();
@@ -147,7 +154,7 @@ public class LaboratoryView extends AbstractConfigurationView {
   }
 
   public void setJsonValue(LABORATORY_JSON property, String value) {
-    if (values.containsKey(property)) values.get(property).setValue(value);
+    if (getValueEditors().containsKey(property)) getValueEditors().get(property).setValue(value);
     identityProviderView.setJsonValue(property, value);
     reportingPersonView.setJsonValue(property, value);
     reportingFacilityView.setJsonValue(property, value);
@@ -155,7 +162,7 @@ public class LaboratoryView extends AbstractConfigurationView {
   }
 
   public boolean contains(LABORATORY_JSON property) {
-    if (values.containsKey(property)) return true;
+    if (getValueEditors().containsKey(property)) return true;
     if (identityProviderView.contains(property)) return true;
     if (reportingPersonView.contains(property)) return true;
     if (reportingFacilityView.contains(property)) return true;

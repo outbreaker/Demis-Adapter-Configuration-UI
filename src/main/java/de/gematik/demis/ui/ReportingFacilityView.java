@@ -14,10 +14,9 @@ import javax.swing.border.TitledBorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ReportingFacilityView extends JPanel {
+public class ReportingFacilityView extends AbstractEditorsView {
 
-  private static Logger LOG = LoggerFactory.getLogger(ReportingFacilityView.class.getName());
-  private final HashMap<LABORATORY_JSON, IValueTypeView> values = new HashMap<>();
+  private static final Logger LOG = LoggerFactory.getLogger(ReportingFacilityView.class.getName());
   private final ReportingFacility reportingFacility;
 
   public ReportingFacilityView(ReportingFacility reportingFacility) {
@@ -100,10 +99,8 @@ public class ReportingFacilityView extends JPanel {
   private void addEditor(IValueTypeView editor, GridBagConstraints c, LABORATORY_JSON id) {
     c.gridx = 1;
     c.weightx = 1.0;
-    editor.setExpertEditor(id.isExpertValue());
-    editor.checkExpertMode();
     this.add(editor.getViewComponent(), c);
-    values.put(id, editor);
+    addAndConfigEditor(editor, id);
   }
 
   private void addLabel(GridBagConstraints c, Label label) {
@@ -117,38 +114,37 @@ public class ReportingFacilityView extends JPanel {
   }
 
   public ReportingFacility getReportingFacility() {
-    reportingFacility.setTelefonnummer(values.get(LABORATORY_JSON.TELEFONNUMMER).getValue());
-    reportingFacility.setStadt(values.get(LABORATORY_JSON.STADT).getValue());
-    reportingFacility.setPostleitzahl(values.get(LABORATORY_JSON.POSTLEITZAHL).getValue());
-    reportingFacility.setAnschriftenzeile(values.get(LABORATORY_JSON.ANSCHRIFTENZEILE).getValue());
-    reportingFacility.setBsnr(values.get(LABORATORY_JSON.BSNR).getValue());
-    reportingFacility.setWebseite(values.get(LABORATORY_JSON.WEBSEITE).getValue());
-    reportingFacility.setEmail(values.get(LABORATORY_JSON.EMAIL).getValue());
-    reportingFacility.setFaxnummer(values.get(LABORATORY_JSON.FAXNUMMER).getValue());
+    reportingFacility.setTelefonnummer(getValueEditors().get(LABORATORY_JSON.TELEFONNUMMER).getValue());
+    reportingFacility.setStadt(getValueEditors().get(LABORATORY_JSON.STADT).getValue());
+    reportingFacility.setPostleitzahl(getValueEditors().get(LABORATORY_JSON.POSTLEITZAHL).getValue());
+    reportingFacility.setAnschriftenzeile(getValueEditors().get(LABORATORY_JSON.ANSCHRIFTENZEILE).getValue());
+    reportingFacility.setBsnr(getValueEditors().get(LABORATORY_JSON.BSNR).getValue());
+    reportingFacility.setWebseite(getValueEditors().get(LABORATORY_JSON.WEBSEITE).getValue());
+    reportingFacility.setEmail(getValueEditors().get(LABORATORY_JSON.EMAIL).getValue());
+    reportingFacility.setFaxnummer(getValueEditors().get(LABORATORY_JSON.FAXNUMMER).getValue());
     reportingFacility.setAnsprechspartnerVorname(
-        values.get(LABORATORY_JSON.ANSPRECHSPARTNER_VORNAME).getValue());
+        getValueEditors().get(LABORATORY_JSON.ANSPRECHSPARTNER_VORNAME).getValue());
     reportingFacility.setAnsprechspartnerNachname(
-        values.get(LABORATORY_JSON.ANSPRECHSPARTNER_NACHNAME).getValue());
-    reportingFacility.setEinrichtungsArt(values.get(LABORATORY_JSON.EINRICHTUNGS_ART).getValue());
-    reportingFacility.setName(values.get(LABORATORY_JSON.NAME).getValue());
+        getValueEditors().get(LABORATORY_JSON.ANSPRECHSPARTNER_NACHNAME).getValue());
+    reportingFacility.setEinrichtungsArt(getValueEditors().get(LABORATORY_JSON.EINRICHTUNGS_ART).getValue());
+    reportingFacility.setName(getValueEditors().get(LABORATORY_JSON.NAME).getValue());
     return reportingFacility;
   }
 
   public void checkExpertMode() {
-    values.values().forEach(IValueTypeView::checkExpertMode);
+    getValueEditors().values().forEach(IValueTypeView::checkExpertMode);
   }
-  ;
 
   public void activateForExperts() {
-    values.values().forEach(IValueTypeView::activateForExperts);
+    getValueEditors().values().forEach(IValueTypeView::activateForExperts);
   }
 
   public void setJsonValue(LABORATORY_JSON property, String value) {
-    if (values.containsKey(property)) values.get(property).setValue(value);
+    if (getValueEditors().containsKey(property)) getValueEditors().get(property).setValue(value);
   }
 
   public boolean contains(LABORATORY_JSON property) {
-    if (values.containsKey(property)) return true;
+    if (getValueEditors().containsKey(property)) return true;
     return false;
   }
 }
