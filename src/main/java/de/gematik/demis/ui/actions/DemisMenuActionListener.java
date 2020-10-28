@@ -78,9 +78,29 @@ public class DemisMenuActionListener implements ActionListener {
       case "ABOUT":
         openAboutDialog(messages);
         break;
+      case "CLOSE":
+        closeConfiguration();
+        break;
       default:
         LOG.warn("Action for Command \"" + actionEvent.getActionCommand() + "\" not implemented");
     }
+  }
+
+  public void closeConfiguration() {
+    if (ConfigurationLoader.getInstance().hasUnsavedChanges()) {
+      int i =
+          JOptionPane.showConfirmDialog(
+              MainView.getInstance().getMainComponent(),
+              messages.getString("CLOSE_CONFIG_WITH_UNSAVED_CHANGES"),
+              messages.getString("CLOSE_CONFIG_WITH_UNSAVED_CHANGES_TITLE"),
+              JOptionPane.YES_NO_CANCEL_OPTION);
+      if (i == JOptionPane.YES_OPTION) {
+        saveAll();
+      } else if (i == JOptionPane.CANCEL_OPTION){
+        return;
+      }
+    }
+    ConfigurationLoader.getInstance().closeAllViews();
   }
 
   public void saveAll() {

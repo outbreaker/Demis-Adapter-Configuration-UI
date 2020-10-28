@@ -26,8 +26,8 @@ public class ConfigurationLoader {
   private static final Logger LOG =
       LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
   private static ConfigurationLoader instance;
-  private final List<PropertiesView> propertiesViews = new ArrayList<>();
-  private final List<LaboratoryView> laboratoryViews = new ArrayList<>();
+  private  List<PropertiesView> propertiesViews = new ArrayList<>();
+  private  List<LaboratoryView> laboratoryViews = new ArrayList<>();
 
   private ConfigurationLoader() {}
 
@@ -58,7 +58,7 @@ public class ConfigurationLoader {
           .forEach(f -> MainView.getInstance().addTab(add(new PropertiesView(f))));
       paths.stream()
           .filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
-          .forEach(f -> MainView.getInstance().addCloeTab(add(new LaboratoryView(f))));
+          .forEach(f -> MainView.getInstance().addCloseTab(add(new LaboratoryView(f))));
     } catch (IOException e) {
       String failed = "Failed to read all Files";
       LOG.error(failed, e);
@@ -107,5 +107,11 @@ public class ConfigurationLoader {
       return true;
     } else
       return laboratoryViews.stream().anyMatch(AbstractConfigurationView::hasUnsavedChanges);
+  }
+
+  public void closeAllViews() {
+    propertiesViews = new ArrayList<>();
+    laboratoryViews = new ArrayList<>();
+    MainView.getInstance().getJTabs().removeAll();
   }
 }

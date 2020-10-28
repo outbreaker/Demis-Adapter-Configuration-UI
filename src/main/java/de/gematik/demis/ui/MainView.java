@@ -88,7 +88,7 @@ public class MainView {
     configTabs.addTab(configurationView);
   }
 
-  public void addCloeTab(IConfigurationView configurationView) {
+  public void addCloseTab(IConfigurationView configurationView) {
     configTabs.addClosableTab(configurationView);
   }
 
