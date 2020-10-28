@@ -3,6 +3,7 @@ package de.gematik.demis.ui.actions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.gematik.demis.control.ConfigurationLoader;
 import de.gematik.demis.entities.Laboratory;
+import de.gematik.demis.ui.AbstractConfigurationView;
 import de.gematik.demis.ui.LaboratoryView;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.MessageWithLinksPane;
@@ -29,11 +30,10 @@ public class DemisMenuActionListener implements ActionListener {
   private static final Logger LOG =
       LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
   private static File lastPath;
+  private final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
 
   @Override
   public void actionPerformed(ActionEvent actionEvent) {
-    var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
-
     switch (actionEvent.getActionCommand()) {
       case "OPEN_ALL":
         JFileChooser jFileChooser =
@@ -49,37 +49,7 @@ public class DemisMenuActionListener implements ActionListener {
       case "OPEN":
         break;
       case "SAVE_ALL":
-        ConfigurationLoader.getInstance()
-            .getLaboratoryViews()
-            .forEach(
-                lab -> {
-                  Path path = checkPath(messages, lab.getPath(), "json", "LOAD_JSON_DESCRIPTION");
-                  if (path != null) {
-                    saveJson(path, lab.getLaboratory());
-                    lab.setSaved();
-                  }
-                });
-
-        ConfigurationLoader.getInstance()
-            .getPropertiesViews()
-            .forEach(
-                props -> {
-                  Path path =
-                      checkPath(
-                          messages, props.getPath(), "properties", "LOAD_PROPERTIES_DESCRIPTION");
-                  if (path != null) {
-                    saveProperties(path, props.getProperties());
-                    props.setSaved();
-                  }
-                });
-        String successMessage =
-            ResourceBundle.getBundle("MessagesBundle", Locale.getDefault())
-                .getString("SAVE_PROPERTIES_SUCCESSFULL");
-        JOptionPane.showMessageDialog(
-            MainView.getInstance().getMainComponent(),
-            successMessage,
-            "Information",
-            JOptionPane.INFORMATION_MESSAGE);
+        saveAll();
         break;
       case "EXPERT":
         if (actionEvent.getSource() instanceof JToggleButton) {
@@ -111,6 +81,40 @@ public class DemisMenuActionListener implements ActionListener {
       default:
         LOG.warn("Action for Command \"" + actionEvent.getActionCommand() + "\" not implemented");
     }
+  }
+
+  public void saveAll() {
+    ConfigurationLoader.getInstance()
+        .getLaboratoryViews().stream().filter(AbstractConfigurationView::hasUnsavedChanges)
+        .forEach(
+            lab -> {
+              Path path = checkPath(messages, lab.getPath(), "json", "LOAD_JSON_DESCRIPTION");
+              if (path != null) {
+                saveJson(path, lab.getLaboratory());
+                lab.setSaved();
+              }
+            });
+
+    ConfigurationLoader.getInstance()
+        .getPropertiesViews().stream().filter(AbstractConfigurationView::hasUnsavedChanges)
+        .forEach(
+            props -> {
+              Path path =
+                  checkPath(
+                      messages, props.getPath(), "properties", "LOAD_PROPERTIES_DESCRIPTION");
+              if (path != null) {
+                saveProperties(path, props.getProperties());
+                props.setSaved();
+              }
+            });
+    String successMessage =
+        ResourceBundle.getBundle("MessagesBundle", Locale.getDefault())
+            .getString("SAVE_PROPERTIES_SUCCESSFULL");
+    JOptionPane.showMessageDialog(
+        MainView.getInstance().getMainComponent(),
+        successMessage,
+        "Information",
+        JOptionPane.INFORMATION_MESSAGE);
   }
 
   private Path checkPath(

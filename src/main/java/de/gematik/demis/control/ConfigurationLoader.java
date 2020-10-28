@@ -2,6 +2,7 @@ package de.gematik.demis.control;
 
 import de.gematik.demis.entities.IProperties;
 import de.gematik.demis.entities.LABORATORY_JSON;
+import de.gematik.demis.ui.AbstractConfigurationView;
 import de.gematik.demis.ui.LaboratoryView;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.PropertiesView;
@@ -28,8 +29,7 @@ public class ConfigurationLoader {
   private final List<PropertiesView> propertiesViews = new ArrayList<>();
   private final List<LaboratoryView> laboratoryViews = new ArrayList<>();
 
-  private ConfigurationLoader() {
-  }
+  private ConfigurationLoader() {}
 
   public static ConfigurationLoader getInstance() {
     if (instance == null) {
@@ -96,10 +96,16 @@ public class ConfigurationLoader {
   }
 
   public Optional<LaboratoryView> showFirstViewWith(LABORATORY_JSON property) {
-    Optional<LaboratoryView> first = laboratoryViews.stream().filter(lab -> lab.contains(property)).findFirst();
-    if (first.isPresent()){
-      MainView.getInstance().showTabFor(first.get());
-    }
+    Optional<LaboratoryView> first =
+        laboratoryViews.stream().filter(lab -> lab.contains(property)).findFirst();
+    first.ifPresent(laboratoryView -> MainView.getInstance().showTabFor(laboratoryView));
     return first;
+  }
+
+  public boolean hasUnsavedChanges() {
+    if (propertiesViews.stream().anyMatch(AbstractConfigurationView::hasUnsavedChanges)) {
+      return true;
+    } else
+      return laboratoryViews.stream().anyMatch(AbstractConfigurationView::hasUnsavedChanges);
   }
 }
