@@ -1,6 +1,7 @@
 package de.gematik.demis.ui;
 
 import java.awt.Component;
+import java.nio.file.Path;
 import javax.swing.event.ChangeListener;
 
 public interface IConfigurationView {
@@ -14,4 +15,6 @@ public interface IConfigurationView {
   boolean hasUnsavedChanges();
 
   void setSaved();
+
+  Path getPath();
 }

@@ -26,8 +26,8 @@ public class ConfigurationLoader {
   private static final Logger LOG =
       LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
   private static ConfigurationLoader instance;
-  private  List<PropertiesView> propertiesViews = new ArrayList<>();
-  private  List<LaboratoryView> laboratoryViews = new ArrayList<>();
+  private List<PropertiesView> propertiesViews = new ArrayList<>();
+  private List<LaboratoryView> laboratoryViews = new ArrayList<>();
 
   private ConfigurationLoader() {}
 
@@ -59,6 +59,9 @@ public class ConfigurationLoader {
       paths.stream()
           .filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
           .forEach(f -> MainView.getInstance().addCloseTab(add(new LaboratoryView(f))));
+      if (!laboratoryViews.isEmpty() || !propertiesViews.isEmpty()) {
+        MainView.getInstance().setConfigurationControl(true);
+      }
     } catch (IOException e) {
       String failed = "Failed to read all Files";
       LOG.error(failed, e);
@@ -105,17 +108,21 @@ public class ConfigurationLoader {
   public boolean hasUnsavedChanges() {
     if (propertiesViews.stream().anyMatch(AbstractConfigurationView::hasUnsavedChanges)) {
       return true;
-    } else
-      return laboratoryViews.stream().anyMatch(AbstractConfigurationView::hasUnsavedChanges);
+    } else return laboratoryViews.stream().anyMatch(AbstractConfigurationView::hasUnsavedChanges);
   }
 
   public void closeAllViews() {
     propertiesViews = new ArrayList<>();
     laboratoryViews = new ArrayList<>();
     MainView.getInstance().getJTabs().removeAll();
+    MainView.getInstance().setConfigurationControl(false);
   }
 
   public boolean hasConfiguration() {
     return !propertiesViews.isEmpty() || !laboratoryViews.isEmpty();
+  }
+
+  public void addNewLaboratoryConfiguration() {
+    MainView.getInstance().addCloseTab(add(new LaboratoryView()));
   }
 }

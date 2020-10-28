@@ -17,8 +17,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import org.slf4j.Logger;
@@ -30,6 +32,7 @@ public class PropertiesView extends AbstractConfigurationView {
   private final Map<IProperties, IValueTypeView> editors = new HashMap<>();
   private final Properties prop = new Properties();
   private final Path path;
+  private final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
   private IProperties[] values;
 
   public PropertiesView(Path path) {
@@ -102,8 +105,6 @@ public class PropertiesView extends AbstractConfigurationView {
     editors.values().forEach(IValueTypeView::checkExpertMode);
   }
 
-  ;
-
   public void activateForExperts() {
     editors.values().forEach(IValueTypeView::activateForExperts);
   }
@@ -131,7 +132,7 @@ public class PropertiesView extends AbstractConfigurationView {
 
   @Override
   public String getName() {
-    return path == null ? "New Properties Configuration" : path.toFile().getName();
+    return path == null ? messages.getString("NEW_PROPS") + " *" : path.toFile().getName();
   }
 
   public void setPropertiesValue(IProperties property, String value) {
