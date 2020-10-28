@@ -5,9 +5,9 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 public enum ADAPTER_Properties implements IProperties {
-  DEBUG("debuginfo.enabled", VALUE_TYPE.BOOLEAN, false, "Debug", true),
-  FHIR_BASEPATH("fhir.basepath", VALUE_TYPE.SELECT_FIX_FHIR_BASEPATH, false, "Server-URL", false),
-  IDP_LAB_TOKENENDPOINT("idp.lab.tokenendpoint", VALUE_TYPE.URL, false, "IDP-URL", true),
+  DEBUG("debuginfo.enabled", VALUE_TYPE.BOOLEAN, false, "true", true),
+  FHIR_BASEPATH("fhir.basepath", VALUE_TYPE.SELECT_FIX_FHIR_BASEPATH, false, "https://demis.rki.de/notification-api/fhir/", false),
+  IDP_LAB_TOKENENDPOINT("idp.lab.tokenendpoint", VALUE_TYPE.URL, false, "https://demis.rki.de/auth/realms/LAB/protocol/openid-connect/token", true),
   IDP_LAB_CLIENTID("idp.lab.clientid", VALUE_TYPE.STRING, false, "demis-adapter", true),
   IDP_LAB_SECRET("idp.lab.secret", VALUE_TYPE.STRING, false, "secret_client_secret", true),
   IDP_LAB_PROXY("idp.lab.proxy", VALUE_TYPE.STRING, true, "", false),
@@ -15,7 +15,7 @@ public enum ADAPTER_Properties implements IProperties {
       "idp.lab.truststore", VALUE_TYPE.RELATIVE_PATH, false, "../config/nginx.truststore", true),
   IDP_LAB_TRUSTSTOREPASSWORD(
       "idp.lab.truststorepassword", VALUE_TYPE.PASSWORD, false, "secret", true),
-  LABOR_CONFIGFILE("labor.configfile", VALUE_TYPE.PATH_LIST, false, "", false),
+  LABOR_CONFIGFILE("labor.configfile", VALUE_TYPE.PATH_LIST, false, "../config/labor1.json", false),
   ;
 
   private final String key;
