@@ -1,6 +1,8 @@
 package de.gematik.demis.entities;
 
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 public enum ADAPTER_Properties implements IProperties {
   DEBUG("debuginfo.enabled", VALUE_TYPE.BOOLEAN, false, "Debug", true),
@@ -63,7 +65,8 @@ public enum ADAPTER_Properties implements IProperties {
 
   @Override
   public String getToolTip() {
-    return ""; // TODO: load from Languagefile
+    var tooltips = ResourceBundle.getBundle("TooltipsBundle", Locale.getDefault());
+    return tooltips.getString(this.getKey());
   }
 
   @Override

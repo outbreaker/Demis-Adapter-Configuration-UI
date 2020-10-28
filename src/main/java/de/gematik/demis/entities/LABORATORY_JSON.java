@@ -1,6 +1,8 @@
 package de.gematik.demis.entities;
 
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 public enum LABORATORY_JSON implements IJson {
   IDENTIFIKATOR("identifikator", false, "", false),
@@ -69,7 +71,8 @@ public enum LABORATORY_JSON implements IJson {
 
   @Override
   public String getToolTip() {
-    return ""; // TODO: load from Languagefile
+    var tooltips = ResourceBundle.getBundle("TooltipsBundle", Locale.getDefault());
+    return tooltips.getString(this.getKey());
   }
 
   @Override
