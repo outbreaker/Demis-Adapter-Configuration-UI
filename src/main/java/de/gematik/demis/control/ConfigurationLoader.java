@@ -114,4 +114,8 @@ public class ConfigurationLoader {
     laboratoryViews = new ArrayList<>();
     MainView.getInstance().getJTabs().removeAll();
   }
+
+  public boolean hasConfiguration() {
+    return !propertiesViews.isEmpty() || !laboratoryViews.isEmpty();
+  }
 }

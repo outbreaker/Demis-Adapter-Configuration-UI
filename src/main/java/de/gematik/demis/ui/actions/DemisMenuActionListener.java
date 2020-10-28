@@ -36,6 +36,20 @@ public class DemisMenuActionListener implements ActionListener {
   public void actionPerformed(ActionEvent actionEvent) {
     switch (actionEvent.getActionCommand()) {
       case "OPEN_ALL":
+        if (ConfigurationLoader.getInstance().hasConfiguration()){
+          int i =
+              JOptionPane.showConfirmDialog(
+                  MainView.getInstance().getMainComponent(),
+                  messages.getString("OPEN_NEW_CONFIG_BUT_OPEN"),
+                  messages.getString("OPEN_NEW_CONFIG_BUT_OPEN_TITLE"),
+                  JOptionPane.YES_NO_OPTION);
+          if (i == JOptionPane.YES_OPTION) {
+            if (!closeConfiguration()) return;
+          } else {
+            return;
+          }
+        }
+        JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),messages.getString("OPEN_NEW_CONFIG"));
         JFileChooser jFileChooser =
             new JFileChooser("C:\\Demis\\Demis-Adapter-1.1.0 -- Docker LAB-01.01.01.100");
         jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -86,7 +100,7 @@ public class DemisMenuActionListener implements ActionListener {
     }
   }
 
-  public void closeConfiguration() {
+  public boolean closeConfiguration() {
     if (ConfigurationLoader.getInstance().hasUnsavedChanges()) {
       int i =
           JOptionPane.showConfirmDialog(
@@ -97,10 +111,11 @@ public class DemisMenuActionListener implements ActionListener {
       if (i == JOptionPane.YES_OPTION) {
         saveAll();
       } else if (i == JOptionPane.CANCEL_OPTION){
-        return;
+        return false;
       }
     }
     ConfigurationLoader.getInstance().closeAllViews();
+    return true;
   }
 
   public void saveAll() {
