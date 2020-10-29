@@ -61,7 +61,7 @@ public class ConfigurationLoader {
           .forEach(f -> MainView.getInstance().addTab(add(new PropertiesView(f))));
       paths.stream()
           .filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
-          .forEach(f -> MainView.getInstance().addCloseTab(add(new LaboratoryView(f))));
+          .forEach(f -> MainView.getInstance().addTab(add(new LaboratoryView(f))));
       Optional<Path> first =
           paths.stream()
               .filter(
