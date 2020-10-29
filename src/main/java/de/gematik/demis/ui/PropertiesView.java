@@ -5,6 +5,7 @@ import de.gematik.demis.entities.APP_Properties;
 import de.gematik.demis.entities.IProperties;
 import de.gematik.demis.entities.VALUE_TYPE;
 import de.gematik.demis.ui.value.editor.IValueTypeView;
+import de.gematik.demis.ui.value.editor.RelativPathListEditor;
 import de.gematik.demis.ui.value.editor.ValueTypeEditorFactory;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -32,7 +33,8 @@ public class PropertiesView extends AbstractConfigurationView {
   private final Map<IProperties, IValueTypeView> editors = new HashMap<>();
   private final Properties prop = new Properties();
   private final Path path;
-  private final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
+  private final ResourceBundle messages =
+      ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
   private IProperties[] values;
 
   public PropertiesView(Path path) {
@@ -77,6 +79,10 @@ public class PropertiesView extends AbstractConfigurationView {
                 c.fill = GridBagConstraints.BOTH;
               }
               IValueTypeView editor = ValueTypeEditorFactory.createEditor(e.getType());
+              if (e == ADAPTER_Properties.LABOR_CONFIGFILE && editor instanceof RelativPathListEditor) {
+                ((RelativPathListEditor) editor).setFileExtension(new String[] {"json"});
+              }
+
               editor.setExpertEditor(e.isExpertValue());
               editor.checkExpertMode();
               String property = prop.getProperty(e.getKey());
@@ -141,5 +147,4 @@ public class PropertiesView extends AbstractConfigurationView {
       setUnsaved();
     }
   }
-
 }

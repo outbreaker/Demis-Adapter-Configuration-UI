@@ -12,12 +12,20 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileFilter;
 
 public class RelativPathEditor extends AbstractEditor {
 
   private static String lastPath;
   private final JTextField relativPath;
   private final JButton dialogJb;
+  private String[] fileExtension;
+  private String fileExtensionDescription;
+
+  public RelativPathEditor(String[] fileExtension) {
+    this();
+    setFileExtensions(fileExtension);
+  }
 
   public RelativPathEditor() {
     this.setLayout(new BorderLayout());
@@ -25,15 +33,41 @@ public class RelativPathEditor extends AbstractEditor {
     relativPath.setEditable(false);
     add(relativPath, BorderLayout.CENTER);
     dialogJb = new JButton(ImageUtils.loadResizeImage("OPEN_FILE", 15));
-    dialogJb.addActionListener(actionEvent -> selectFolder());
+    dialogJb.addActionListener(actionEvent -> selectFile());
     dialogJb.setEnabled(!isExpertEditor());
     relativPath.setEnabled(!isExpertEditor());
     add(dialogJb, BorderLayout.EAST);
   }
 
-  private void selectFolder() {
+  public void setFileExtensions(String[] fileExtension) {
+    this.fileExtension = fileExtension;
+    fileExtensionDescription = "";
+    for (String ext : fileExtension) {
+      fileExtensionDescription += " *." + ext + ",";
+    }
+    fileExtensionDescription = fileExtensionDescription.substring(0, fileExtensionDescription.length() - 1);
+  }
+
+  private void selectFile() {
     JFileChooser jFileChooser = new JFileChooser(lastPath);
-    jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    if (fileExtension != null) {
+      jFileChooser.setFileFilter(
+          new FileFilter() {
+            @Override
+            public boolean accept(File file) {
+              for (String ext : fileExtension) {
+                if (file.getName().toLowerCase().endsWith(ext)) return true;
+              }
+              return file.isDirectory();
+            }
+
+            @Override
+            public String getDescription() {
+              return fileExtensionDescription;
+            }
+          });
+    }
     int opt = jFileChooser.showOpenDialog(MainView.getInstance().getMainComponent());
     if (opt == JFileChooser.APPROVE_OPTION) {
       File folderToLoad = jFileChooser.getSelectedFile();
