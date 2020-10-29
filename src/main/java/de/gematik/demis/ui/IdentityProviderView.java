@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -43,7 +44,7 @@ public class IdentityProviderView extends AbstractEditorsView {
     GridBagConstraints c = new GridBagConstraints();
     c.gridy = 0;
 
-    addLabel(c, new Label(LABORATORY_JSON.LOAD_DATA.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.LOAD_DATA);
 
     JButton loadJB = new JButton(ImageUtils.loadResizeImage("open-file-icon", 20));
     loadJB.addActionListener(actionEvent -> selectCertificateStore());
@@ -53,25 +54,25 @@ public class IdentityProviderView extends AbstractEditorsView {
     this.add(loadJB, c);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.USERNAME.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.USERNAME);
     addEditor(new StringEditor(identityProvider.getUsername()), c, LABORATORY_JSON.USERNAME);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.AUTHCERTKEYSTORE.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.AUTHCERTKEYSTORE);
     addEditor(
         new StringEditor(identityProvider.getAuthcertkeystore()),
         c,
         LABORATORY_JSON.AUTHCERTKEYSTORE);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.AUTHCERTPASSWORD.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.AUTHCERTPASSWORD);
     addEditor(
         new PasswordEditor(identityProvider.getAuthcertpassword()),
         c,
         LABORATORY_JSON.AUTHCERTPASSWORD);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.AUTHCERTALIAS.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.AUTHCERTALIAS);
     addEditor(
         new StringEditor(identityProvider.getAuthcertalias()), c, LABORATORY_JSON.AUTHCERTALIAS);
     c.gridy++;
@@ -86,13 +87,15 @@ public class IdentityProviderView extends AbstractEditorsView {
     addAndConfigEditor(editor, id);
   }
 
-  private void addLabel(GridBagConstraints c, Label label) {
+  private void addLabel(GridBagConstraints c, LABORATORY_JSON value) {
     c.weighty = 0.1;
     c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
     c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
+    JLabel label =  new JLabel(value.getDisplayName());
+    label.setToolTipText(value.getToolTip());
     this.add(label, c);
   }
 

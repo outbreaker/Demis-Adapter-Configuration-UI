@@ -10,7 +10,6 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Label;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -68,7 +67,9 @@ public class PropertiesView extends AbstractConfigurationView {
               c.insets = new Insets(0, 10, 0, 10); // top padding
               c.anchor = GridBagConstraints.LAST_LINE_START;
               c.weightx = 0;
-              this.add(new Label(e.getKey()), c);
+              JLabel label = new JLabel(e.getKey());
+              label.setToolTipText(e.getToolTip());
+              this.add(label, c);
 
               c.gridx = 1;
               c.weightx = 1.0;

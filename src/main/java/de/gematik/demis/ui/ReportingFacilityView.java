@@ -7,9 +7,7 @@ import de.gematik.demis.ui.value.editor.StringEditor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Label;
-import java.util.HashMap;
-import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,65 +29,65 @@ public class ReportingFacilityView extends AbstractEditorsView {
     GridBagConstraints c = new GridBagConstraints();
     c.gridy = 0;
 
-    addLabel(c, new Label(LABORATORY_JSON.BSNR.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.BSNR);
     addEditor(new StringEditor(reportingFacility.getBsnr()), c, LABORATORY_JSON.BSNR);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.NAME.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.NAME);
     addEditor(new StringEditor(reportingFacility.getName()), c, LABORATORY_JSON.NAME);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.EINRICHTUNGS_ART.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.EINRICHTUNGS_ART);
     addEditor(
         new StringEditor(reportingFacility.getEinrichtungsArt()),
         c,
         LABORATORY_JSON.EINRICHTUNGS_ART);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.ANSPRECHSPARTNER_VORNAME.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.ANSPRECHSPARTNER_VORNAME);
     addEditor(
         new StringEditor(reportingFacility.getAnsprechspartnerVorname()),
         c,
         LABORATORY_JSON.ANSPRECHSPARTNER_VORNAME);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.ANSPRECHSPARTNER_NACHNAME.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.ANSPRECHSPARTNER_NACHNAME);
     addEditor(
         new StringEditor(reportingFacility.getAnsprechspartnerNachname()),
         c,
         LABORATORY_JSON.ANSPRECHSPARTNER_NACHNAME);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.ANSCHRIFTENZEILE.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.ANSCHRIFTENZEILE);
     addEditor(
         new StringEditor(reportingFacility.getAnschriftenzeile()),
         c,
         LABORATORY_JSON.ANSCHRIFTENZEILE);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.POSTLEITZAHL.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.POSTLEITZAHL);
     addEditor(
         new StringEditor(reportingFacility.getPostleitzahl()), c, LABORATORY_JSON.POSTLEITZAHL);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.STADT.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.STADT);
     addEditor(new StringEditor(reportingFacility.getStadt()), c, LABORATORY_JSON.STADT);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.TELEFONNUMMER.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.TELEFONNUMMER);
     addEditor(
         new StringEditor(reportingFacility.getTelefonnummer()), c, LABORATORY_JSON.TELEFONNUMMER);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.FAXNUMMER.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.FAXNUMMER);
     addEditor(new StringEditor(reportingFacility.getFaxnummer()), c, LABORATORY_JSON.FAXNUMMER);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.EMAIL.getDisplayName()));
+    addLabel(c,LABORATORY_JSON.EMAIL);
     addEditor(new StringEditor(reportingFacility.getEmail()), c, LABORATORY_JSON.EMAIL);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.WEBSEITE.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.WEBSEITE);
     addEditor(new StringEditor(reportingFacility.getWebseite()), c, LABORATORY_JSON.WEBSEITE);
     c.gridy++;
 
@@ -103,13 +101,15 @@ public class ReportingFacilityView extends AbstractEditorsView {
     addAndConfigEditor(editor, id);
   }
 
-  private void addLabel(GridBagConstraints c, Label label) {
+  private void addLabel(GridBagConstraints c, LABORATORY_JSON value) {
     c.weighty = 0.1;
     c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
     c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
+    JLabel label =  new JLabel(value.getDisplayName());
+    label.setToolTipText(value.getToolTip());
     this.add(label, c);
   }
 

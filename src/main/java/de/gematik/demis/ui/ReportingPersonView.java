@@ -7,8 +7,8 @@ import de.gematik.demis.ui.value.editor.StringEditor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Label;
 import java.util.HashMap;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import org.slf4j.Logger;
@@ -30,35 +30,35 @@ public class ReportingPersonView extends AbstractEditorsView {
     GridBagConstraints c = new GridBagConstraints();
     c.gridy = 0;
 
-    addLabel(c, new Label(LABORATORY_JSON.VORNAME.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.VORNAME);
     addEditor(new StringEditor(reportingPerson.getVorname()), c, LABORATORY_JSON.VORNAME);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.NACHNAME.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.NACHNAME);
     addEditor(new StringEditor(reportingPerson.getNachname()), c, LABORATORY_JSON.NACHNAME);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.ANSCHRIFTENZEILE.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.ANSCHRIFTENZEILE);
     addEditor(
         new StringEditor(reportingPerson.getAnschriftenzeile()),
         c,
         LABORATORY_JSON.ANSCHRIFTENZEILE);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.POSTLEITZAHL.getDisplayName()));
+    addLabel(c,LABORATORY_JSON.POSTLEITZAHL);
     addEditor(new StringEditor(reportingPerson.getPostleitzahl()), c, LABORATORY_JSON.POSTLEITZAHL);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.STADT.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.STADT);
     addEditor(new StringEditor(reportingPerson.getStadt()), c, LABORATORY_JSON.STADT);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.TELEFONNUMMER.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.TELEFONNUMMER);
     addEditor(
         new StringEditor(reportingPerson.getTelefonnummer()), c, LABORATORY_JSON.TELEFONNUMMER);
     c.gridy++;
 
-    addLabel(c, new Label(LABORATORY_JSON.ERREICHBARKEIT.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.ERREICHBARKEIT);
     addEditor(
         new StringEditor(reportingPerson.getErreichbarkeit()), c, LABORATORY_JSON.ERREICHBARKEIT);
     c.gridy++;
@@ -73,13 +73,15 @@ public class ReportingPersonView extends AbstractEditorsView {
     addAndConfigEditor(editor, id);
   }
 
-  private void addLabel(GridBagConstraints c, Label label) {
+  private void addLabel(GridBagConstraints c, LABORATORY_JSON value) {
     c.weighty = 0.1;
     c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
     c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
+    JLabel label =  new JLabel(value.getDisplayName());
+    label.setToolTipText(value.getToolTip());
     this.add(label, c);
   }
 

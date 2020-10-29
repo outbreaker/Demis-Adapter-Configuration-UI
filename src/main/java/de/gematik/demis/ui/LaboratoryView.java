@@ -2,11 +2,8 @@ package de.gematik.demis.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.gematik.demis.control.LaboratoryFactory;
-import de.gematik.demis.entities.IdentityProvider;
 import de.gematik.demis.entities.LABORATORY_JSON;
 import de.gematik.demis.entities.Laboratory;
-import de.gematik.demis.entities.ReportingFacility;
-import de.gematik.demis.entities.ReportingPerson;
 import de.gematik.demis.entities.VALUE_TYPE;
 import de.gematik.demis.ui.value.editor.IValueTypeView;
 import de.gematik.demis.ui.value.editor.StringEditor;
@@ -15,7 +12,6 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Label;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Locale;
@@ -56,10 +52,10 @@ public class LaboratoryView extends AbstractConfigurationView {
     GridBagConstraints c = new GridBagConstraints();
 
     c.gridy = 0;
-    addLabel(c, new Label(LABORATORY_JSON.IDENTIFIKATOR.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.IDENTIFIKATOR);
     addEditor(new StringEditor(laboratory.getIdentifikator()), c, LABORATORY_JSON.IDENTIFIKATOR);
     c.gridy++;
-    addLabel(c, new Label(LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN.getDisplayName()));
+    addLabel(c, LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN);
     addEditor(
         new StringListEditor(laboratory.getPositiveTestergebnisBezeichnungen()),
         c,
@@ -116,13 +112,15 @@ public class LaboratoryView extends AbstractConfigurationView {
     addAndConfigEditor(editor, id);
   }
 
-  private void addLabel(GridBagConstraints c, Label label) {
+  private void addLabel(GridBagConstraints c, LABORATORY_JSON value) {
     c.weighty = 0.1;
     c.fill = GridBagConstraints.BOTH;
     c.gridx = 0;
     c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
+    JLabel label =  new JLabel(value.getDisplayName());
+    label.setToolTipText(value.getToolTip());
     this.add(label, c);
   }
 

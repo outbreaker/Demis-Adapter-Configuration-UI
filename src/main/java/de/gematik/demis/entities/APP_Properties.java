@@ -1,9 +1,11 @@
 package de.gematik.demis.entities;
 
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 public enum APP_Properties implements IProperties {
-  DEBUG("debuginfo.enabled", VALUE_TYPE.BOOLEAN, false, "Debug", true),
+  DEBUG("debuginfo.enabled", VALUE_TYPE.BOOLEAN, false, "true", true),
   FOLDER_INCOMING(
       "incoming.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/input", true),
   FOLDER_SUBMITTED(
@@ -19,9 +21,9 @@ public enum APP_Properties implements IProperties {
       "demis_einsender_ansprechpartner,demis_einsender_telefon,demis_einsender_fax,demis_einsender_email,demis_test_code,demis_betroffeneperson_strasse,demis_betroffeneperson_hausnummer,demis_betroffeneperson_plz,demis_betroffeneperson_ort,demis_betroffeneperson_laendercode,demis_betroffeneperson_telefon\n",
       true),
 
-  SENDRETRY_NBSECONDS("sendretry.nbseconds", VALUE_TYPE.INT, false, "", true),
-  SENDRETRY_NBATTEMPTS("sendretry.nbattempts", VALUE_TYPE.INT, false, "", true),
-  SENDRETRY_NBTHREADS("sendretry.nbthreads", VALUE_TYPE.INT, false, "", true),
+  SENDRETRY_NBSECONDS("sendretry.nbseconds", VALUE_TYPE.INT, false, "60", true),
+  SENDRETRY_NBATTEMPTS("sendretry.nbattempts", VALUE_TYPE.INT, false, "10", true),
+  SENDRETRY_NBTHREADS("sendretry.nbthreads", VALUE_TYPE.INT, false, "10", true),
   MAINTENANCE_WAITNBMINUTES("maintenance.waitnbminutes", VALUE_TYPE.INT, false, "5", true),
   ;
 
@@ -72,7 +74,8 @@ public enum APP_Properties implements IProperties {
 
   @Override
   public String getToolTip() {
-    return ""; // TODO: load from Languagefile
+    var tooltips = ResourceBundle.getBundle("TooltipsBundle", Locale.getDefault());
+    return tooltips.getString(this.getKey());
   }
 
   @Override

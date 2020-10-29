@@ -1,10 +1,16 @@
 package de.gematik.demis.entities;
 
+import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 public enum LABORATORY_JSON implements IJson {
-  IDENTIFIKATOR("identifikator", false, "", false),
-  POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN("positiveTestergebnisBezeichnungen", false, "", false),
+  IDENTIFIKATOR("identifikator", false, "123456789", false),
+  POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN(
+      "positiveTestergebnisBezeichnungen",
+      false,
+      "schwach nachweisbar,positiv,POSITIV,P O S I T I V",
+      false),
   MELDER_PERSON("Melder-Person", false, "", false),
   VORNAME("vorname", false, "", false),
   NACHNAME("nachname", false, "", false),
@@ -69,7 +75,8 @@ public enum LABORATORY_JSON implements IJson {
 
   @Override
   public String getToolTip() {
-    return ""; // TODO: load from Languagefile
+    var tooltips = ResourceBundle.getBundle("TooltipsBundle", Locale.getDefault());
+    return tooltips.getString(this.getKey());
   }
 
   @Override
