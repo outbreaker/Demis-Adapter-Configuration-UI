@@ -238,7 +238,7 @@ public class DemisMenuActionListener implements ActionListener {
 
   private JFileChooser getUniversalFileChooser(
       ResourceBundle messages, String description, String fileEnds) {
-    JFileChooser jFileChooser = new JFileChooser(lastPath);
+    JFileChooser jFileChooser = new JFileChooser(lastPath==null?ConfigurationLoader.getInstance().getPathToMainFolder().toFile():lastPath);
     jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     jFileChooser.setFileFilter(
         new FileFilter() {

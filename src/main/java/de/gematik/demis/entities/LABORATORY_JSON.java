@@ -5,7 +5,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 public enum LABORATORY_JSON implements IJson {
-  IDENTIFIKATOR("identifikator", false, "123456789", false),
+  IDENTIFIKATOR("identifikator", false, "", false),
   POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN(
       "positiveTestergebnisBezeichnungen",
       false,

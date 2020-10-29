@@ -49,6 +49,7 @@ public abstract class AbstractEditorsView extends JPanel {
   protected void addAndConfigEditor(IValueTypeView editor, LABORATORY_JSON id) {
     editor.setExpertEditor(id.isExpertValue());
     editor.checkExpertMode();
+    editor.setValue(id.getDefaultValue());
     valueEditors.put(id, editor);
     editor.addChangeListener(
         s -> {
