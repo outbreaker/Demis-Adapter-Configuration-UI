@@ -49,16 +49,7 @@ public class DemisMenuActionListener implements ActionListener {
             return;
           }
         }
-        JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),messages.getString("OPEN_NEW_CONFIG"));
-        JFileChooser jFileChooser =
-            new JFileChooser("C:\\Demis\\Demis-Adapter-1.1.0 -- Docker LAB-01.01.01.100");
-        jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int opt = jFileChooser.showOpenDialog(MainView.getInstance().getMainComponent());
-        if (opt == JFileChooser.APPROVE_OPTION) {
-          File folderToLoad = jFileChooser.getSelectedFile();
-          ConfigurationLoader.getInstance().loadAll(folderToLoad);
-          LOG.debug("Selected Folder to Load all Configurations: " + folderToLoad);
-        }
+        loadConfig();
         break;
       case "EXIT":
         MainView.getInstance().closeApplication();
@@ -103,6 +94,25 @@ public class DemisMenuActionListener implements ActionListener {
         LOG.warn("Action for Command \"" + actionEvent.getActionCommand() + "\" not implemented");
     }
   }
+
+  private void loadConfig(){
+    JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),messages.getString("OPEN_NEW_CONFIG"));
+    JFileChooser jFileChooser =
+        new JFileChooser("C:\\Demis\\Demis-Adapter-1.1.0 -- Docker LAB-01.01.01.100");
+    jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    int opt = jFileChooser.showOpenDialog(MainView.getInstance().getMainComponent());
+    if (opt == JFileChooser.APPROVE_OPTION) {
+      File folderToLoad = jFileChooser.getSelectedFile();
+      if (ConfigurationLoader.getInstance().checkPath(folderToLoad.getAbsolutePath())) {
+        ConfigurationLoader.getInstance().loadAll(folderToLoad);
+        LOG.debug("Selected Folder to Load all Configurations: " + folderToLoad);
+
+      }
+      else {
+        loadConfig();
+      }
+      }
+}
 
   public boolean closeConfiguration() {
     if (ConfigurationLoader.getInstance().hasUnsavedChanges()) {

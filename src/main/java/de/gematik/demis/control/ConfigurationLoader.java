@@ -28,6 +28,8 @@ public class ConfigurationLoader {
   private static ConfigurationLoader instance;
   private List<PropertiesView> propertiesViews = new ArrayList<>();
   private List<LaboratoryView> laboratoryViews = new ArrayList<>();
+  private Path pathToJar;
+  private Path pathToMainFolder;
 
   private ConfigurationLoader() {}
 
@@ -59,6 +61,15 @@ public class ConfigurationLoader {
       paths.stream()
           .filter(f -> (f.toFile().getAbsolutePath().endsWith("json")))
           .forEach(f -> MainView.getInstance().addCloseTab(add(new LaboratoryView(f))));
+      Optional<Path> first =
+          paths.stream()
+              .filter(
+                  f ->
+                      (f.toFile().getAbsolutePath().endsWith("jar")
+                          && f.toFile().getAbsolutePath().toLowerCase().contains("client")))
+              .findFirst();
+      first.ifPresent(path -> pathToJar = path);
+      pathToMainFolder = pathToJar.toFile().getParentFile().getParentFile().toPath();
       if (!laboratoryViews.isEmpty() || !propertiesViews.isEmpty()) {
         MainView.getInstance().setConfigurationControl(true);
       }
@@ -69,6 +80,32 @@ public class ConfigurationLoader {
     }
   }
 
+  public boolean checkPath(String dir) {
+    boolean config = false;
+    boolean client = false;
+    boolean data = false;
+
+    try (Stream<Path> stream1 = Files.walk(Paths.get(dir), 1);
+        Stream<Path> stream2 = Files.walk(Paths.get(dir), 1);
+        Stream<Path> stream3 = Files.walk(Paths.get(dir), 1)) {
+      config =
+          stream1
+              .filter(file -> Files.isDirectory(file))
+              .anyMatch(f -> f.toFile().getAbsolutePath().toLowerCase().endsWith("config"));
+      client =
+          stream2
+              .filter(file -> Files.isDirectory(file))
+              .anyMatch(f -> f.toFile().getAbsolutePath().toLowerCase().endsWith("client"));
+      data =
+          stream3
+              .filter(file -> Files.isDirectory(file))
+              .anyMatch(f -> f.toFile().getAbsolutePath().toLowerCase().endsWith("data"));
+    } catch (Exception e) {
+      LOG.error("Failed to check folder", e);
+    }
+    return config && client && data;
+  }
+
   public Set<Path> listFilesUsingFileWalk(String dir, int depth) throws IOException {
     try (Stream<Path> stream = Files.walk(Paths.get(dir), depth)) {
       return stream
@@ -77,7 +114,8 @@ public class ConfigurationLoader {
           .filter(
               f ->
                   (f.toFile().getAbsolutePath().endsWith("properties")
-                      || f.toFile().getAbsolutePath().endsWith("json")))
+                      || f.toFile().getAbsolutePath().endsWith("json")
+                      || f.toFile().getAbsolutePath().endsWith("jar")))
           .collect(Collectors.toSet());
     }
   }
@@ -124,5 +162,13 @@ public class ConfigurationLoader {
 
   public void addNewLaboratoryConfiguration() {
     MainView.getInstance().addCloseTab(add(new LaboratoryView()));
+  }
+
+  public Path getPathToJar() {
+    return pathToJar;
+  }
+
+  public Path getPathToMainFolder() {
+    return pathToMainFolder;
   }
 }

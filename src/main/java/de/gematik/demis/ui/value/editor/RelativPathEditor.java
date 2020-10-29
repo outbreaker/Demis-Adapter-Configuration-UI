@@ -1,7 +1,9 @@
 package de.gematik.demis.ui.value.editor;
 
+import de.gematik.demis.control.ConfigurationLoader;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.utils.ImageUtils;
+import de.gematik.demis.utils.PathUtils;
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -45,11 +47,12 @@ public class RelativPathEditor extends AbstractEditor {
     for (String ext : fileExtension) {
       fileExtensionDescription += " *." + ext + ",";
     }
-    fileExtensionDescription = fileExtensionDescription.substring(0, fileExtensionDescription.length() - 1);
+    fileExtensionDescription =
+        fileExtensionDescription.substring(0, fileExtensionDescription.length() - 1);
   }
 
   private void selectFile() {
-    JFileChooser jFileChooser = new JFileChooser(lastPath);
+    JFileChooser jFileChooser = new JFileChooser((lastPath==null?ConfigurationLoader.getInstance().getPathToMainFolder().toFile().getAbsolutePath():lastPath));
     jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     if (fileExtension != null) {
       jFileChooser.setFileFilter(
@@ -70,9 +73,10 @@ public class RelativPathEditor extends AbstractEditor {
     }
     int opt = jFileChooser.showOpenDialog(MainView.getInstance().getMainComponent());
     if (opt == JFileChooser.APPROVE_OPTION) {
-      File folderToLoad = jFileChooser.getSelectedFile();
-      lastPath = folderToLoad.getAbsolutePath();
-      relativPath.setText(lastPath);
+      File selectedFile = jFileChooser.getSelectedFile();
+      lastPath = selectedFile.getAbsolutePath();
+      relativPath.setText(
+          PathUtils.getRelativPath(selectedFile.toPath()));
     }
   }
 
