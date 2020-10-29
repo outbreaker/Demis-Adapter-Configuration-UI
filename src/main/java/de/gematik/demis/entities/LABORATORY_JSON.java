@@ -16,7 +16,7 @@ public enum LABORATORY_JSON implements IJson {
   MELDER_EINRICHTUNG("Melder-Einrichtung", false, "", false),
   BSNR("BSNR", false, "", false),
   NAME("name", false, "", false),
-  EINRICHTUNGS_ART("einrichtungsArt", false, "", false),
+  EINRICHTUNGS_ART("einrichtungsArt", false, "laboratory", true),
   ANSPRECHSPARTNER_NACHNAME("ansprechspartnerNachname", false, "", false),
   ANSPRECHSPARTNER_VORNAME("ansprechspartnerVorname", false, "", false),
   FAXNUMMER("faxnummer", false, "", false),
