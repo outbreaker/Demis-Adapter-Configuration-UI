@@ -46,7 +46,7 @@ public class IdentityProviderView extends AbstractEditorsView {
 
     addLabel(c, LABORATORY_JSON.LOAD_DATA);
 
-    JButton loadJB = new JButton(ImageUtils.loadResizeImage("open-file-icon", 20));
+    JButton loadJB = new JButton(ImageUtils.loadResizeImage("OPEN_FILE", 20));
     loadJB.addActionListener(actionEvent -> selectCertificateStore());
 
     c.gridx = 1;

@@ -2,6 +2,7 @@ package de.gematik.demis.ui;
 
 import de.gematik.demis.control.ConfigurationLoader;
 import de.gematik.demis.ui.actions.DemisMenuActionListener;
+import de.gematik.demis.utils.ImageUtils;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.WindowAdapter;
@@ -29,6 +30,7 @@ public class MainView {
   private MainView() {
     LOG.info("Use Language: " + Locale.getDefault().getCountry());
     frame = new JFrame();
+    frame.setIconImage(ImageUtils.loadImage("APP_ICON"));
     menuBar = new Menu();
     frame.setJMenuBar(menuBar.createMenuBar());
     configTabs = new JClosableTabbedPane();
