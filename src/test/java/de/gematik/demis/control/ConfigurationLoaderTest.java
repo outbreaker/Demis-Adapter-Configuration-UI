@@ -21,11 +21,6 @@ class ConfigurationLoaderTest {
 
     }
 
-    //@Test
-    public void loadAll() {
-//        new ConfigurationLoader().loadAll(new File("C:\\Demis\\Demis-Adapter-1.1.0 -- Docker LAB-01.01.01.100"));
-    }
-
     @Test
     void listFilesUsingFileWalk() throws IOException {
         URL resource = getClass().getClassLoader().getResource("Demis-Adapter");

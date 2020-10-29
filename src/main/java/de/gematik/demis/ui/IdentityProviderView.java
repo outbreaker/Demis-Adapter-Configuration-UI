@@ -1,5 +1,6 @@
 package de.gematik.demis.ui;
 
+import de.gematik.demis.control.ConfigurationLoader;
 import de.gematik.demis.entities.IdentityProvider;
 import de.gematik.demis.entities.LABORATORY_JSON;
 import de.gematik.demis.ui.value.editor.IValueTypeView;
@@ -101,7 +102,7 @@ public class IdentityProviderView extends AbstractEditorsView {
 
   private void selectCertificateStore() {
     var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
-    JFileChooser jFileChooser = new JFileChooser(lastPath);
+    JFileChooser jFileChooser = new JFileChooser(lastPath == null? ConfigurationLoader.getInstance().getPathToMainFolder().toFile().getAbsolutePath():lastPath);
     jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     jFileChooser.setFileFilter(
         new FileFilter() {
