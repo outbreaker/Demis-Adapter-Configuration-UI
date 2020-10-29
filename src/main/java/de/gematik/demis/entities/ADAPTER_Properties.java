@@ -15,7 +15,7 @@ public enum ADAPTER_Properties implements IProperties {
       "idp.lab.truststore", VALUE_TYPE.RELATIVE_PATH, false, "../config/nginx.truststore", true),
   IDP_LAB_TRUSTSTOREPASSWORD(
       "idp.lab.truststorepassword", VALUE_TYPE.PASSWORD, false, "secret", true),
-  LABOR_CONFIGFILE("labor.configfile", VALUE_TYPE.PATH_LIST, false, "../config/labor1.json", false),
+  LABOR_CONFIGFILE("labor.configfile", VALUE_TYPE.PATH_LIST, false, "", false),
   ;
 
   private final String key;
