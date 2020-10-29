@@ -29,7 +29,7 @@ public class LaboratoryView extends AbstractConfigurationView {
   private IdentityProviderView identityProviderView;
   private ReportingPersonView reportingPersonView;
   private ReportingFacilityView reportingFacilityView;
-  private ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
+  private final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
 
 
   public LaboratoryView() {

@@ -5,9 +5,12 @@ import de.gematik.demis.entities.IdentityProvider;
 import de.gematik.demis.entities.LABORATORY_JSON;
 import de.gematik.demis.ui.value.editor.IValueTypeView;
 import de.gematik.demis.ui.value.editor.PasswordEditor;
+import de.gematik.demis.ui.value.editor.RelativPathEditor;
+import de.gematik.demis.ui.value.editor.RelativPathListEditor;
 import de.gematik.demis.ui.value.editor.StringEditor;
 import de.gematik.demis.utils.ImageUtils;
 import de.gematik.demis.utils.KeystoreUtils;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -23,6 +26,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
 import org.slf4j.Logger;
@@ -123,7 +127,23 @@ public class IdentityProviderView extends AbstractEditorsView {
       File selectedFile = jFileChooser.getSelectedFile();
       lastPath = selectedFile.getAbsolutePath();
 
-      String password = JOptionPane.showInputDialog(messages.getString("KEYSTORE_SMS_PASSWORD"));
+      String password;
+
+      PasswordEditor passwordEditor = new PasswordEditor();
+      passwordEditor.setPreferredSize(new Dimension(500, 25));
+      int okCxl =
+          JOptionPane.showConfirmDialog(
+              SwingUtilities.getWindowAncestor(IdentityProviderView.this),
+              passwordEditor,
+              messages.getString("KEYSTORE_SMS_PASSWORD"),
+              JOptionPane.OK_CANCEL_OPTION,
+              JOptionPane.PLAIN_MESSAGE);
+      if (okCxl == JOptionPane.OK_OPTION) {
+        password = passwordEditor.getValue();
+      } else{
+        return;
+      }
+
       IdentityProvider idp = null;
       if (password == null || password.isEmpty()) {
         showWarningDialog(messages.getString("LOAD_KEYSTORE_PASSWORD_EMPTY"));
