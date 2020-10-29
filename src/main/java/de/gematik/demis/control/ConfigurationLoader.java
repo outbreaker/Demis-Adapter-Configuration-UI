@@ -1,5 +1,6 @@
 package de.gematik.demis.control;
 
+import de.gematik.demis.entities.ADAPTER_Properties;
 import de.gematik.demis.entities.IProperties;
 import de.gematik.demis.entities.LABORATORY_JSON;
 import de.gematik.demis.ui.AbstractConfigurationView;
@@ -7,6 +8,7 @@ import de.gematik.demis.ui.LaboratoryView;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.PropertiesView;
 import de.gematik.demis.ui.actions.DemisMenuActionListener;
+import de.gematik.demis.ui.value.editor.IValueTypeView;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -124,6 +126,15 @@ public class ConfigurationLoader {
     return propertiesViews;
   }
 
+  public Optional<IValueTypeView> getEditor(IProperties property){
+    Optional<PropertiesView> first = propertiesViews.stream().filter(props -> props.hasEditor(property)).findFirst();
+    if (first.isPresent()){
+      PropertiesView propertiesView = first.get();
+      return Optional.of(propertiesView.getEditor(property));
+    }
+    return Optional.empty();
+  }
+
   public List<LaboratoryView> getLaboratoryViews() {
     return laboratoryViews;
   }
@@ -160,8 +171,9 @@ public class ConfigurationLoader {
     return !propertiesViews.isEmpty() || !laboratoryViews.isEmpty();
   }
 
-  public void addNewLaboratoryConfiguration() {
-    MainView.getInstance().addCloseTab(add(new LaboratoryView()));
+  public LaboratoryView addNewLaboratoryConfiguration(LaboratoryView laboratoryView) {
+    MainView.getInstance().addCloseTab(add(laboratoryView));
+    return laboratoryView;
   }
 
   public Path getPathToJar() {

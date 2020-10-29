@@ -10,25 +10,11 @@ public class PathUtils {
     if (pathToJar == null) {
       return selectedFile.toFile().getAbsolutePath();
     } else {
-      return pathToJar.getParent().relativize(selectedFile).toString();
+      try {
+        return pathToJar.getParent().relativize(selectedFile).toString();
+      } catch (Exception e) {
+        return selectedFile.toFile().getAbsolutePath();
+      }
     }
   }
-
-  //  private String getRelativPath(final String xincludeAbsoluteLocation, final File
-  // mainDocumentDestination) {
-  //    Path pathAbsolute = Paths.get(xincludeAbsoluteLocation);
-  //    Path pathBase = Paths.get(mainDocumentDestination.getAbsoluteFile().getParent());
-  //    Path pathRelative;
-  //    try {
-  //      pathRelative = pathBase.relativize(pathAbsolute);
-  //    } catch (IllegalArgumentException exception) {
-  //      LOGGER.debug("Die beiden Pfade xinclude: \"" + xincludeAbsoluteLocation + "\" und der Pfad
-  // zum Haupdokument: \""
-  //          + mainDocumentDestination.getAbsolutePath() + "\" liegen auf unterschiedlichen
-  // Laufwerken und es kann kein relativer Pfad bestimmt werden. "
-  //          + "Es wird mit dem absoluten Pfad gearbeitet!");
-  //      return xincludeAbsoluteLocation;
-  //    }
-  //    return pathRelative.toString();
-  //  }
 }

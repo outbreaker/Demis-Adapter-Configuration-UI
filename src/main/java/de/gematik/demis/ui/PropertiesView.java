@@ -148,4 +148,14 @@ public class PropertiesView extends AbstractConfigurationView {
       setUnsaved();
     }
   }
+
+  public IValueTypeView getEditor(IProperties property){
+    if (editors.containsKey(property))
+      return editors.get(property);
+    return null;
+  }
+
+  public boolean hasEditor(IProperties property){
+    return editors.containsKey(property);
+  }
 }
