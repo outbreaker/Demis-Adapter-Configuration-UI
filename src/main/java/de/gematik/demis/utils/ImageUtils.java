@@ -24,4 +24,14 @@ public class ImageUtils {
               .getScaledInstance(size, size, Image.SCALE_AREA_AVERAGING));
     }
   }
+
+  public static Image loadImage(String name) {
+    URL resource = ImageUtils.class.getResource("/icons/" + name + ".png");
+    if (resource == null) {
+      LOG.warn("No Icon File for \"" + name + ".png\" found!");
+      return null;
+    } else {
+      return new ImageIcon(resource).getImage();
+    }
+  }
 }
