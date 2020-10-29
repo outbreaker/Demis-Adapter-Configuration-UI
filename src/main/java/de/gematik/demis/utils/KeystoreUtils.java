@@ -37,7 +37,7 @@ public class KeystoreUtils {
     String authCertAlias = extractAuthCertAlias(keystoreName);
     String username = extractUsername(authCertAlias);
     LOG.debug("Set ipdProperties: AuthCertName=" + authCertAlias + "; Username=" + username);
-    idp.setAuthcertkeystore(keystoreFile.getAbsolutePath());
+    idp.setAuthcertkeystore(PathUtils.getRelativPath(keystoreFile.toPath()));
     idp.setUsername(username);
     idp.setAuthcertalias(authCertAlias);
     idp.setAuthcertpassword(password);

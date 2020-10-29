@@ -32,8 +32,9 @@ class ConfigurationLoaderTest {
         Assert.assertNotNull(resource);
         String absolutePath = new File(resource.getFile()).getAbsolutePath();
         Set<Path> paths = ConfigurationLoader.getInstance().listFilesUsingFileWalk(absolutePath, 10);
-        Assert.assertEquals(5, paths.size());
+        Assert.assertEquals(6, paths.size());
         Assert.assertEquals(2, paths.stream().filter(f -> f.toFile().getAbsolutePath().endsWith("properties")).collect(Collectors.toSet()).size());
         Assert.assertEquals(3, paths.stream().filter(f -> f.toFile().getAbsolutePath().endsWith("json")).collect(Collectors.toSet()).size());
+        Assert.assertEquals(1, paths.stream().filter(f -> f.toFile().getAbsolutePath().endsWith("jar")).collect(Collectors.toSet()).size());
     }
 }

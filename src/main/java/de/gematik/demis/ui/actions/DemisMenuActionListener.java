@@ -2,12 +2,15 @@ package de.gematik.demis.ui.actions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.gematik.demis.control.ConfigurationLoader;
+import de.gematik.demis.entities.ADAPTER_Properties;
 import de.gematik.demis.entities.Laboratory;
 import de.gematik.demis.ui.AbstractConfigurationView;
 import de.gematik.demis.ui.LaboratoryView;
 import de.gematik.demis.ui.MainView;
 import de.gematik.demis.ui.MessageWithLinksPane;
 import de.gematik.demis.ui.PropertiesView;
+import de.gematik.demis.ui.value.editor.IValueTypeView;
+import de.gematik.demis.ui.value.editor.RelativPathListEditor;
 import de.gematik.demis.utils.ProjectVersionUtils;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.JFileChooser;
@@ -49,16 +53,7 @@ public class DemisMenuActionListener implements ActionListener {
             return;
           }
         }
-        JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),messages.getString("OPEN_NEW_CONFIG"));
-        JFileChooser jFileChooser =
-            new JFileChooser("C:\\Demis\\Demis-Adapter-1.1.0 -- Docker LAB-01.01.01.100");
-        jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int opt = jFileChooser.showOpenDialog(MainView.getInstance().getMainComponent());
-        if (opt == JFileChooser.APPROVE_OPTION) {
-          File folderToLoad = jFileChooser.getSelectedFile();
-          ConfigurationLoader.getInstance().loadAll(folderToLoad);
-          LOG.debug("Selected Folder to Load all Configurations: " + folderToLoad);
-        }
+        loadConfig();
         break;
       case "EXIT":
         MainView.getInstance().closeApplication();
@@ -94,7 +89,16 @@ public class DemisMenuActionListener implements ActionListener {
         openAboutDialog(messages);
         break;
       case "NEW_LAB":
-        ConfigurationLoader.getInstance().addNewLaboratoryConfiguration();
+        LaboratoryView laboratoryView = new LaboratoryView();
+        Path path = checkPath(messages, laboratoryView.getPath(), "json", "LOAD_JSON_DESCRIPTION");
+        if (path != null) {
+          laboratoryView.setPath(path);
+          saveJson(path, laboratoryView.getLaboratory());
+          laboratoryView.setSaved();
+          ConfigurationLoader.getInstance().addNewLaboratoryConfiguration(laboratoryView);
+          Optional<IValueTypeView> editor = ConfigurationLoader.getInstance().getEditor(ADAPTER_Properties.LABOR_CONFIGFILE);
+          editor.ifPresent(iValueTypeView -> ((RelativPathListEditor) iValueTypeView).addPath(path));
+        }
         break;
       case "CLOSE":
         closeConfiguration();
@@ -103,6 +107,25 @@ public class DemisMenuActionListener implements ActionListener {
         LOG.warn("Action for Command \"" + actionEvent.getActionCommand() + "\" not implemented");
     }
   }
+
+  private void loadConfig(){
+    JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),messages.getString("OPEN_NEW_CONFIG"));
+    JFileChooser jFileChooser =
+        new JFileChooser("C:\\Demis\\Demis-Adapter-1.1.0 -- Docker LAB-01.01.01.100");
+    jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    int opt = jFileChooser.showOpenDialog(MainView.getInstance().getMainComponent());
+    if (opt == JFileChooser.APPROVE_OPTION) {
+      File folderToLoad = jFileChooser.getSelectedFile();
+      if (ConfigurationLoader.getInstance().checkPath(folderToLoad.getAbsolutePath())) {
+        ConfigurationLoader.getInstance().loadAll(folderToLoad);
+        LOG.debug("Selected Folder to Load all Configurations: " + folderToLoad);
+
+      }
+      else {
+        loadConfig();
+      }
+      }
+}
 
   public boolean closeConfiguration() {
     if (ConfigurationLoader.getInstance().hasUnsavedChanges()) {

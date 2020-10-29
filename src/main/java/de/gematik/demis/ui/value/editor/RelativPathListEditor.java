@@ -1,10 +1,12 @@
 package de.gematik.demis.ui.value.editor;
 
 import de.gematik.demis.utils.ImageUtils;
+import de.gematik.demis.utils.PathUtils;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -134,5 +136,10 @@ public class RelativPathListEditor extends AbstractEditor {
     removeJb.setEnabled(true);
     pathList.setEnabled(true);
     relativPathListScrollPane.setEnabled(true);
+  }
+
+  public void addPath(Path path) {
+    fireTabChangedEvent();
+    listModel.addElement(PathUtils.getRelativPath(path));
   }
 }
