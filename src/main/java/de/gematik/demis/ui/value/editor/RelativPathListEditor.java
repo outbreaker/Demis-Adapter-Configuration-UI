@@ -69,7 +69,7 @@ public class RelativPathListEditor extends AbstractEditor {
                     messages.getString("INPUT_PATH"),
                     JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.PLAIN_MESSAGE,
-                    ImageUtils.loadResizeImage("Folder-icon", 35));
+                    ImageUtils.loadResizeImage("OPEN_FILE", 35));
             if (okCxl == JOptionPane.OK_OPTION) {
               listModel.addElement(relativPathEditor.getValue());
               fireTabChangedEvent();

@@ -16,15 +16,15 @@ import javax.swing.event.ChangeListener;
 public class RelativPathEditor extends AbstractEditor {
 
   private static String lastPath;
-  private JTextField relativPath;
-  private JButton dialogJb;
+  private final JTextField relativPath;
+  private final JButton dialogJb;
 
   public RelativPathEditor() {
     this.setLayout(new BorderLayout());
     relativPath = new JTextField();
     relativPath.setEditable(false);
     add(relativPath, BorderLayout.CENTER);
-    dialogJb = new JButton(ImageUtils.loadResizeImage("Folder-Open-icon", 15));
+    dialogJb = new JButton(ImageUtils.loadResizeImage("OPEN_FILE", 15));
     dialogJb.addActionListener(actionEvent -> selectFolder());
     dialogJb.setEnabled(!isExpertEditor());
     relativPath.setEnabled(!isExpertEditor());
