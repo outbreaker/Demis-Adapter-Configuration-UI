@@ -14,8 +14,9 @@ public class ProjectVersionUtils {
   public static String getProjectVersion() {
     String projectVersion = "";
 
-    try (InputStream input = ProjectVersionUtils.class.getClassLoader().getResourceAsStream("version.txt")){
-      projectVersion =  new Scanner(input).useDelimiter("\n").next();
+    try (InputStream input =
+        ProjectVersionUtils.class.getClassLoader().getResourceAsStream("version.txt")) {
+      projectVersion = new Scanner(input).useDelimiter("\n").next();
       LOG.debug("Version: " + projectVersion);
     } catch (IOException ex) {
       LOG.debug("Could not get Version!");

@@ -34,13 +34,14 @@ public class DemisMenuActionListener implements ActionListener {
   private static final Logger LOG =
       LoggerFactory.getLogger(DemisMenuActionListener.class.getName());
   private static File lastPath;
-  private final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
+  private final ResourceBundle messages =
+      ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
 
   @Override
   public void actionPerformed(ActionEvent actionEvent) {
     switch (actionEvent.getActionCommand()) {
       case "OPEN_ALL":
-        if (ConfigurationLoader.getInstance().hasConfiguration()){
+        if (ConfigurationLoader.getInstance().hasConfiguration()) {
           int i =
               JOptionPane.showConfirmDialog(
                   MainView.getInstance().getMainComponent(),
@@ -96,8 +97,10 @@ public class DemisMenuActionListener implements ActionListener {
           saveJson(path, laboratoryView.getLaboratory());
           laboratoryView.setSaved();
           ConfigurationLoader.getInstance().addNewLaboratoryConfiguration(laboratoryView);
-          Optional<IValueTypeView> editor = ConfigurationLoader.getInstance().getEditor(ADAPTER_Properties.LABOR_CONFIGFILE);
-          editor.ifPresent(iValueTypeView -> ((RelativPathListEditor) iValueTypeView).addPath(path));
+          Optional<IValueTypeView> editor =
+              ConfigurationLoader.getInstance().getEditor(ADAPTER_Properties.LABOR_CONFIGFILE);
+          editor.ifPresent(
+              iValueTypeView -> ((RelativPathListEditor) iValueTypeView).addPath(path));
         }
         break;
       case "CLOSE":
@@ -108,10 +111,10 @@ public class DemisMenuActionListener implements ActionListener {
     }
   }
 
-  private void loadConfig(){
-    JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(),messages.getString("OPEN_NEW_CONFIG"));
-    JFileChooser jFileChooser =
-        new JFileChooser("C:\\Demis\\Demis-Adapter-1.1.0 -- Docker LAB-01.01.01.100");
+  private void loadConfig() {
+    JOptionPane.showMessageDialog(
+        MainView.getInstance().getMainComponent(), messages.getString("OPEN_NEW_CONFIG"));
+    JFileChooser jFileChooser = new JFileChooser();
     jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     int opt = jFileChooser.showOpenDialog(MainView.getInstance().getMainComponent());
     if (opt == JFileChooser.APPROVE_OPTION) {
@@ -120,12 +123,11 @@ public class DemisMenuActionListener implements ActionListener {
         ConfigurationLoader.getInstance().loadAll(folderToLoad);
         LOG.debug("Selected Folder to Load all Configurations: " + folderToLoad);
 
-      }
-      else {
+      } else {
         loadConfig();
       }
-      }
-}
+    }
+  }
 
   public boolean closeConfiguration() {
     if (ConfigurationLoader.getInstance().hasUnsavedChanges()) {
@@ -137,7 +139,7 @@ public class DemisMenuActionListener implements ActionListener {
               JOptionPane.YES_NO_CANCEL_OPTION);
       if (i == JOptionPane.YES_OPTION) {
         saveAll();
-      } else if (i == JOptionPane.CANCEL_OPTION){
+      } else if (i == JOptionPane.CANCEL_OPTION) {
         return false;
       }
     }
@@ -146,8 +148,8 @@ public class DemisMenuActionListener implements ActionListener {
   }
 
   public void saveAll() {
-    ConfigurationLoader.getInstance()
-        .getLaboratoryViews().stream().filter(AbstractConfigurationView::hasUnsavedChanges)
+    ConfigurationLoader.getInstance().getLaboratoryViews().stream()
+        .filter(AbstractConfigurationView::hasUnsavedChanges)
         .forEach(
             lab -> {
               Path path = checkPath(messages, lab.getPath(), "json", "LOAD_JSON_DESCRIPTION");
@@ -158,13 +160,12 @@ public class DemisMenuActionListener implements ActionListener {
               }
             });
 
-    ConfigurationLoader.getInstance()
-        .getPropertiesViews().stream().filter(AbstractConfigurationView::hasUnsavedChanges)
+    ConfigurationLoader.getInstance().getPropertiesViews().stream()
+        .filter(AbstractConfigurationView::hasUnsavedChanges)
         .forEach(
             props -> {
               Path path =
-                  checkPath(
-                      messages, props.getPath(), "properties", "LOAD_PROPERTIES_DESCRIPTION");
+                  checkPath(messages, props.getPath(), "properties", "LOAD_PROPERTIES_DESCRIPTION");
               if (path != null) {
                 saveProperties(path, props.getProperties());
                 props.setSaved();
@@ -238,7 +239,11 @@ public class DemisMenuActionListener implements ActionListener {
 
   private JFileChooser getUniversalFileChooser(
       ResourceBundle messages, String description, String fileEnds) {
-    JFileChooser jFileChooser = new JFileChooser(lastPath==null?ConfigurationLoader.getInstance().getPathToMainFolder().toFile():lastPath);
+    JFileChooser jFileChooser =
+        new JFileChooser(
+            lastPath == null
+                ? ConfigurationLoader.getInstance().getPathToMainFolder().toFile()
+                : lastPath);
     jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     jFileChooser.setFileFilter(
         new FileFilter() {
@@ -256,14 +261,26 @@ public class DemisMenuActionListener implements ActionListener {
   }
 
   private void openHelpDialog(ResourceBundle messages) {
-    String help = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("HELP_DESCRIPTION");
-    String error = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("HELP_ERROR");
-    JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), new MessageWithLinksPane(help, error),"Hilfe", JOptionPane.QUESTION_MESSAGE);
+    String help =
+        ResourceBundle.getBundle("MessagesBundle", Locale.getDefault())
+            .getString("HELP_DESCRIPTION");
+    String error =
+        ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("HELP_ERROR");
+    JOptionPane.showMessageDialog(
+        MainView.getInstance().getMainComponent(),
+        new MessageWithLinksPane(help, error),
+        "Hilfe",
+        JOptionPane.QUESTION_MESSAGE);
   }
 
   private void openAboutDialog(ResourceBundle messages) {
     String version = ProjectVersionUtils.getProjectVersion();
-    String versionMessage = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("VERSION");
-    JOptionPane.showMessageDialog(MainView.getInstance().getMainComponent(), versionMessage + version, "Information", JOptionPane.INFORMATION_MESSAGE);
+    String versionMessage =
+        ResourceBundle.getBundle("MessagesBundle", Locale.getDefault()).getString("VERSION");
+    JOptionPane.showMessageDialog(
+        MainView.getInstance().getMainComponent(),
+        versionMessage + version,
+        "Information",
+        JOptionPane.INFORMATION_MESSAGE);
   }
 }

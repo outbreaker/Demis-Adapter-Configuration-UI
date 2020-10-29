@@ -27,8 +27,7 @@ public class UrlEditor extends AbstractEditor {
     field.addFocusListener(
         new FocusListener() {
           @Override
-          public void focusGained(FocusEvent focusEvent) {
-          }
+          public void focusGained(FocusEvent focusEvent) {}
 
           @Override
           public void focusLost(FocusEvent focusEvent) {

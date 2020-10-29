@@ -1,6 +1,5 @@
 package de.gematik.demis.control;
 
-import de.gematik.demis.entities.ADAPTER_Properties;
 import de.gematik.demis.entities.IProperties;
 import de.gematik.demis.entities.LABORATORY_JSON;
 import de.gematik.demis.ui.AbstractConfigurationView;
@@ -126,9 +125,10 @@ public class ConfigurationLoader {
     return propertiesViews;
   }
 
-  public Optional<IValueTypeView> getEditor(IProperties property){
-    Optional<PropertiesView> first = propertiesViews.stream().filter(props -> props.hasEditor(property)).findFirst();
-    if (first.isPresent()){
+  public Optional<IValueTypeView> getEditor(IProperties property) {
+    Optional<PropertiesView> first =
+        propertiesViews.stream().filter(props -> props.hasEditor(property)).findFirst();
+    if (first.isPresent()) {
       PropertiesView propertiesView = first.get();
       return Optional.of(propertiesView.getEditor(property));
     }

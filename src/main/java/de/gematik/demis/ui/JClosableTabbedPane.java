@@ -43,8 +43,8 @@ public class JClosableTabbedPane extends JTabbedPane implements ChangeListener {
     JPanel pnlTab = new JPanel(new GridBagLayout());
     pnlTab.setOpaque(false);
     final JLabel lblTitle = new JLabel(configurationView.getName());
-//    if (configurationView.getPath() != null)
-//      lblTitle.setToolTipText(configurationView.getPath().toAbsolutePath().toString());
+    //    if (configurationView.getPath() != null)
+    //      lblTitle.setToolTipText(configurationView.getPath().toAbsolutePath().toString());
     final JButton btnClose = createCloseButton();
 
     GridBagConstraints gbc = new GridBagConstraints();

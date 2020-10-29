@@ -80,7 +80,8 @@ public class PropertiesView extends AbstractConfigurationView {
                 c.fill = GridBagConstraints.BOTH;
               }
               IValueTypeView editor = ValueTypeEditorFactory.createEditor(e.getType());
-              if (e == ADAPTER_Properties.LABOR_CONFIGFILE && editor instanceof RelativPathListEditor) {
+              if (e == ADAPTER_Properties.LABOR_CONFIGFILE
+                  && editor instanceof RelativPathListEditor) {
                 ((RelativPathListEditor) editor).setFileExtension(new String[] {"json"});
               }
 
@@ -149,13 +150,12 @@ public class PropertiesView extends AbstractConfigurationView {
     }
   }
 
-  public IValueTypeView getEditor(IProperties property){
-    if (editors.containsKey(property))
-      return editors.get(property);
+  public IValueTypeView getEditor(IProperties property) {
+    if (editors.containsKey(property)) return editors.get(property);
     return null;
   }
 
-  public boolean hasEditor(IProperties property){
+  public boolean hasEditor(IProperties property) {
     return editors.containsKey(property);
   }
 }

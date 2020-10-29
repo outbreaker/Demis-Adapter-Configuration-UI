@@ -70,20 +70,21 @@ public class FhirBasePathEditor extends AbstractEditor {
   public void addChangeListener(ChangeListener changeListener) {
     field.addItemListener(
         new ItemListener() {
-          private Object oldItem;
-          private boolean cancel=false;
           private final ResourceBundle messages =
               ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
+          private Object oldItem;
+          private boolean cancel = false;
 
           @Override
           public void itemStateChanged(ItemEvent itemEvent) {
-            if(cancel){
+            if (cancel) {
               cancel = false;
               return;
             }
             if (itemEvent.getStateChange() == ItemEvent.DESELECTED) {
               oldItem = itemEvent.getItem();
-            } else if (itemEvent.getStateChange() == ItemEvent.SELECTED && !oldItem.equals(itemEvent.getItem())) {
+            } else if (itemEvent.getStateChange() == ItemEvent.SELECTED
+                && !oldItem.equals(itemEvent.getItem())) {
               int i =
                   JOptionPane.showConfirmDialog(
                       MainView.getInstance().getMainComponent(),
@@ -98,10 +99,8 @@ public class FhirBasePathEditor extends AbstractEditor {
               }
 
               if (i == JOptionPane.YES_OPTION || i == JOptionPane.NO_OPTION) {
-                ConfigurationLoader.getInstance()
-                    .setJsonValue(LABORATORY_JSON.USERNAME, "");
-                ConfigurationLoader.getInstance()
-                    .setJsonValue(LABORATORY_JSON.AUTHCERTALIAS, "");
+                ConfigurationLoader.getInstance().setJsonValue(LABORATORY_JSON.USERNAME, "");
+                ConfigurationLoader.getInstance().setJsonValue(LABORATORY_JSON.AUTHCERTALIAS, "");
                 ConfigurationLoader.getInstance()
                     .setJsonValue(LABORATORY_JSON.AUTHCERTKEYSTORE, "");
                 ConfigurationLoader.getInstance()
@@ -115,13 +114,13 @@ public class FhirBasePathEditor extends AbstractEditor {
               }
 
               if (i == JOptionPane.YES_OPTION) {
-                Optional<LaboratoryView> laboratoryView = ConfigurationLoader.getInstance().showFirstViewWith(LABORATORY_JSON.USERNAME);
+                Optional<LaboratoryView> laboratoryView =
+                    ConfigurationLoader.getInstance().showFirstViewWith(LABORATORY_JSON.USERNAME);
                 laboratoryView.ifPresent(LaboratoryView::openLoadCertificate);
               }
             }
           }
         });
-
   }
 
   @Override

@@ -83,7 +83,7 @@ public class ReportingFacilityView extends AbstractEditorsView {
     addEditor(new StringEditor(reportingFacility.getFaxnummer()), c, LABORATORY_JSON.FAXNUMMER);
     c.gridy++;
 
-    addLabel(c,LABORATORY_JSON.EMAIL);
+    addLabel(c, LABORATORY_JSON.EMAIL);
     addEditor(new StringEditor(reportingFacility.getEmail()), c, LABORATORY_JSON.EMAIL);
     c.gridy++;
 
@@ -108,16 +108,19 @@ public class ReportingFacilityView extends AbstractEditorsView {
     c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
-    JLabel label =  new JLabel(value.getDisplayName());
+    JLabel label = new JLabel(value.getDisplayName());
     label.setToolTipText(value.getToolTip());
     this.add(label, c);
   }
 
   public ReportingFacility getReportingFacility() {
-    reportingFacility.setTelefonnummer(getValueEditors().get(LABORATORY_JSON.TELEFONNUMMER).getValue());
+    reportingFacility.setTelefonnummer(
+        getValueEditors().get(LABORATORY_JSON.TELEFONNUMMER).getValue());
     reportingFacility.setStadt(getValueEditors().get(LABORATORY_JSON.STADT).getValue());
-    reportingFacility.setPostleitzahl(getValueEditors().get(LABORATORY_JSON.POSTLEITZAHL).getValue());
-    reportingFacility.setAnschriftenzeile(getValueEditors().get(LABORATORY_JSON.ANSCHRIFTENZEILE).getValue());
+    reportingFacility.setPostleitzahl(
+        getValueEditors().get(LABORATORY_JSON.POSTLEITZAHL).getValue());
+    reportingFacility.setAnschriftenzeile(
+        getValueEditors().get(LABORATORY_JSON.ANSCHRIFTENZEILE).getValue());
     reportingFacility.setBsnr(getValueEditors().get(LABORATORY_JSON.BSNR).getValue());
     reportingFacility.setWebseite(getValueEditors().get(LABORATORY_JSON.WEBSEITE).getValue());
     reportingFacility.setEmail(getValueEditors().get(LABORATORY_JSON.EMAIL).getValue());
@@ -126,7 +129,8 @@ public class ReportingFacilityView extends AbstractEditorsView {
         getValueEditors().get(LABORATORY_JSON.ANSPRECHSPARTNER_VORNAME).getValue());
     reportingFacility.setAnsprechspartnerNachname(
         getValueEditors().get(LABORATORY_JSON.ANSPRECHSPARTNER_NACHNAME).getValue());
-    reportingFacility.setEinrichtungsArt(getValueEditors().get(LABORATORY_JSON.EINRICHTUNGS_ART).getValue());
+    reportingFacility.setEinrichtungsArt(
+        getValueEditors().get(LABORATORY_JSON.EINRICHTUNGS_ART).getValue());
     reportingFacility.setName(getValueEditors().get(LABORATORY_JSON.NAME).getValue());
     return reportingFacility;
   }

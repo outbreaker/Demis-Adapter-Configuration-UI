@@ -7,9 +7,7 @@ import de.gematik.demis.ui.value.editor.StringEditor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.HashMap;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +43,7 @@ public class ReportingPersonView extends AbstractEditorsView {
         LABORATORY_JSON.ANSCHRIFTENZEILE);
     c.gridy++;
 
-    addLabel(c,LABORATORY_JSON.POSTLEITZAHL);
+    addLabel(c, LABORATORY_JSON.POSTLEITZAHL);
     addEditor(new StringEditor(reportingPerson.getPostleitzahl()), c, LABORATORY_JSON.POSTLEITZAHL);
     c.gridy++;
 
@@ -80,7 +78,7 @@ public class ReportingPersonView extends AbstractEditorsView {
     c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
-    JLabel label =  new JLabel(value.getDisplayName());
+    JLabel label = new JLabel(value.getDisplayName());
     label.setToolTipText(value.getToolTip());
     this.add(label, c);
   }
@@ -88,11 +86,14 @@ public class ReportingPersonView extends AbstractEditorsView {
   public ReportingPerson getReportingPerson() {
     reportingPerson.setVorname(getValueEditors().get(LABORATORY_JSON.VORNAME).getValue());
     reportingPerson.setNachname(getValueEditors().get(LABORATORY_JSON.NACHNAME).getValue());
-    reportingPerson.setErreichbarkeit(getValueEditors().get(LABORATORY_JSON.ERREICHBARKEIT).getValue());
-    reportingPerson.setTelefonnummer(getValueEditors().get(LABORATORY_JSON.TELEFONNUMMER).getValue());
+    reportingPerson.setErreichbarkeit(
+        getValueEditors().get(LABORATORY_JSON.ERREICHBARKEIT).getValue());
+    reportingPerson.setTelefonnummer(
+        getValueEditors().get(LABORATORY_JSON.TELEFONNUMMER).getValue());
     reportingPerson.setStadt(getValueEditors().get(LABORATORY_JSON.STADT).getValue());
     reportingPerson.setPostleitzahl(getValueEditors().get(LABORATORY_JSON.POSTLEITZAHL).getValue());
-    reportingPerson.setAnschriftenzeile(getValueEditors().get(LABORATORY_JSON.ANSCHRIFTENZEILE).getValue());
+    reportingPerson.setAnschriftenzeile(
+        getValueEditors().get(LABORATORY_JSON.ANSCHRIFTENZEILE).getValue());
     return reportingPerson;
   }
 

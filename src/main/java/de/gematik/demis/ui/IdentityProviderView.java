@@ -5,8 +5,6 @@ import de.gematik.demis.entities.IdentityProvider;
 import de.gematik.demis.entities.LABORATORY_JSON;
 import de.gematik.demis.ui.value.editor.IValueTypeView;
 import de.gematik.demis.ui.value.editor.PasswordEditor;
-import de.gematik.demis.ui.value.editor.RelativPathEditor;
-import de.gematik.demis.ui.value.editor.RelativPathListEditor;
 import de.gematik.demis.ui.value.editor.StringEditor;
 import de.gematik.demis.utils.ImageUtils;
 import de.gematik.demis.utils.KeystoreUtils;
@@ -14,18 +12,15 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Label;
 import java.io.File;
 import java.security.KeyStoreException;
 import java.security.UnrecoverableKeyException;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
@@ -99,14 +94,18 @@ public class IdentityProviderView extends AbstractEditorsView {
     c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
-    JLabel label =  new JLabel(value.getDisplayName());
+    JLabel label = new JLabel(value.getDisplayName());
     label.setToolTipText(value.getToolTip());
     this.add(label, c);
   }
 
   private void selectCertificateStore() {
     var messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
-    JFileChooser jFileChooser = new JFileChooser(lastPath == null? ConfigurationLoader.getInstance().getPathToMainFolder().toFile().getAbsolutePath():lastPath);
+    JFileChooser jFileChooser =
+        new JFileChooser(
+            lastPath == null
+                ? ConfigurationLoader.getInstance().getPathToMainFolder().toFile().getAbsolutePath()
+                : lastPath);
     jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     jFileChooser.setFileFilter(
         new FileFilter() {
@@ -140,7 +139,7 @@ public class IdentityProviderView extends AbstractEditorsView {
               JOptionPane.PLAIN_MESSAGE);
       if (okCxl == JOptionPane.OK_OPTION) {
         password = passwordEditor.getValue();
-      } else{
+      } else {
         return;
       }
 
@@ -193,9 +192,12 @@ public class IdentityProviderView extends AbstractEditorsView {
   }
 
   public IdentityProvider getIdentityProvider() {
-    identityProvider.setAuthcertalias(getValueEditors().get(LABORATORY_JSON.AUTHCERTALIAS).getValue());
-    identityProvider.setAuthcertpassword(getValueEditors().get(LABORATORY_JSON.AUTHCERTPASSWORD).getValue());
-    identityProvider.setAuthcertkeystore(getValueEditors().get(LABORATORY_JSON.AUTHCERTKEYSTORE).getValue());
+    identityProvider.setAuthcertalias(
+        getValueEditors().get(LABORATORY_JSON.AUTHCERTALIAS).getValue());
+    identityProvider.setAuthcertpassword(
+        getValueEditors().get(LABORATORY_JSON.AUTHCERTPASSWORD).getValue());
+    identityProvider.setAuthcertkeystore(
+        getValueEditors().get(LABORATORY_JSON.AUTHCERTKEYSTORE).getValue());
     identityProvider.setUsername(getValueEditors().get(LABORATORY_JSON.USERNAME).getValue());
     return identityProvider;
   }

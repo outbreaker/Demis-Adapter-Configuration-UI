@@ -8,9 +8,10 @@ import de.gematik.demis.entities.ReportingPerson;
 
 public class LaboratoryFactory {
 
-  public static Laboratory createDefaultLaboratory(){
+  public static Laboratory createDefaultLaboratory() {
     Laboratory laboratory = new Laboratory();
-    laboratory.setPositiveTestergebnisBezeichnungen(LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN.getDefaultValue().split(","));
+    laboratory.setPositiveTestergebnisBezeichnungen(
+        LABORATORY_JSON.POSITIVE_TESTERGEBNIS_BEZEICHNUNGEN.getDefaultValue().split(","));
     laboratory.setMelderEinrichtung(createMelderEinrichtung());
     laboratory.setMelderPerson(createMelderPerson());
     laboratory.setIdp(createIdp());

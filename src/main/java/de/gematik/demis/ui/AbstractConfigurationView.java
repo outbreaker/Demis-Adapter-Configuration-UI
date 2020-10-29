@@ -1,20 +1,14 @@
 package de.gematik.demis.ui;
 
-import de.gematik.demis.entities.LABORATORY_JSON;
-import de.gematik.demis.ui.value.editor.IValueTypeView;
 import java.awt.Component;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.HashMap;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.EventListenerList;
 
-public abstract class AbstractConfigurationView extends AbstractEditorsView implements IConfigurationView {
+public abstract class AbstractConfigurationView extends AbstractEditorsView
+    implements IConfigurationView {
 
   private JScrollPane jScrollPane;
 
@@ -60,5 +54,4 @@ public abstract class AbstractConfigurationView extends AbstractEditorsView impl
 
     return jScrollPane;
   }
-
 }

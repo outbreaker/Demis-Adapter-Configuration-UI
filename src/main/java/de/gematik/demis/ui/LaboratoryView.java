@@ -24,18 +24,19 @@ import org.slf4j.LoggerFactory;
 public class LaboratoryView extends AbstractConfigurationView {
 
   private static final Logger LOG = LoggerFactory.getLogger(LaboratoryView.class.getName());
+  private final ResourceBundle messages =
+      ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
   private Path path;
   private Laboratory laboratory;
   private IdentityProviderView identityProviderView;
   private ReportingPersonView reportingPersonView;
   private ReportingFacilityView reportingFacilityView;
-  private final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
-
 
   public LaboratoryView() {
     this(null);
     setUnsaved();
   }
+
   public LaboratoryView(Path path) {
     this.path = path;
     initComponents();
@@ -44,8 +45,7 @@ public class LaboratoryView extends AbstractConfigurationView {
   private void initComponents() {
     if (path != null) {
       loadFromFile();
-    }
-    else {
+    } else {
       laboratory = LaboratoryFactory.createDefaultLaboratory();
     }
     setLayout(new GridBagLayout());
@@ -119,7 +119,7 @@ public class LaboratoryView extends AbstractConfigurationView {
     c.insets = new Insets(0, 10, 0, 10); // top padding
     c.anchor = GridBagConstraints.LAST_LINE_START;
     c.weightx = 0;
-    JLabel label =  new JLabel(value.getDisplayName());
+    JLabel label = new JLabel(value.getDisplayName());
     label.setToolTipText(value.getToolTip());
     this.add(label, c);
   }
@@ -135,6 +135,10 @@ public class LaboratoryView extends AbstractConfigurationView {
 
   public Path getPath() {
     return path;
+  }
+
+  public void setPath(Path path) {
+    this.path = path;
   }
 
   public Laboratory getLaboratory() {
@@ -188,9 +192,5 @@ public class LaboratoryView extends AbstractConfigurationView {
 
   public void openLoadCertificate() {
     identityProviderView.openLoadCertificate();
-  }
-
-  public void setPath(Path path) {
-    this.path = path;
   }
 }

@@ -20,8 +20,10 @@ class Menu {
 
   private static final Logger LOG = LoggerFactory.getLogger(Menu.class.getName());
   private final ActionListener demisMenuActionListener = new DemisMenuActionListener();
-  private final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
+  private final ResourceBundle messages =
+      ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
   private List<JMenuItem> configurationItems = new ArrayList<>();
+
   JMenuBar createMenuBar() {
 
     JMenuBar menuBar = new JMenuBar();
@@ -41,12 +43,12 @@ class Menu {
     fileMenu.add(getMenuItem(messages, "SAVE_ALL", false));
     fileMenu.add(getMenuItem(messages, "CLOSE", false));
     fileMenu.add(getMenuItem(messages, "EXIT", true));
-//    JMenu editMenu = new JMenu(messages.getString("EDIT")); //disabled for first Version
+    //    JMenu editMenu = new JMenu(messages.getString("EDIT")); //disabled for first Version
     JMenu helpMenu = new JMenu(messages.getString("HELP"));
     helpMenu.add(getMenuItem(messages, "HELP_WDB", true));
     helpMenu.add(getMenuItem(messages, "ABOUT", true));
     menuBar.add(fileMenu);
-//    menuBar.add(editMenu);//disabled for first Version
+    //    menuBar.add(editMenu);//disabled for first Version
     menuBar.add(helpMenu);
     return menuBar;
   }

@@ -52,7 +52,11 @@ public class RelativPathEditor extends AbstractEditor {
   }
 
   private void selectFile() {
-    JFileChooser jFileChooser = new JFileChooser((lastPath==null?ConfigurationLoader.getInstance().getPathToMainFolder().toFile().getAbsolutePath():lastPath));
+    JFileChooser jFileChooser =
+        new JFileChooser(
+            (lastPath == null
+                ? ConfigurationLoader.getInstance().getPathToMainFolder().toFile().getAbsolutePath()
+                : lastPath));
     jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
     if (fileExtension != null) {
       jFileChooser.setFileFilter(
@@ -75,8 +79,7 @@ public class RelativPathEditor extends AbstractEditor {
     if (opt == JFileChooser.APPROVE_OPTION) {
       File selectedFile = jFileChooser.getSelectedFile();
       lastPath = selectedFile.getAbsolutePath();
-      relativPath.setText(
-          PathUtils.getRelativPath(selectedFile.toPath()));
+      relativPath.setText(PathUtils.getRelativPath(selectedFile.toPath()));
     }
   }
 

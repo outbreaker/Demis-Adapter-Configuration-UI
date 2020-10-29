@@ -55,6 +55,13 @@ public class MainView {
         });
   }
 
+  public static MainView getInstance() {
+    if (instance == null) {
+      instance = new MainView();
+    }
+    return instance;
+  }
+
   public void closeApplication() {
     if (ConfigurationLoader.getInstance().hasUnsavedChanges()) {
       int i =
@@ -85,13 +92,6 @@ public class MainView {
   private void exit() {
     frame.dispose();
     System.exit(0);
-  }
-
-  public static MainView getInstance() {
-    if (instance == null) {
-      instance = new MainView();
-    }
-    return instance;
   }
 
   public void addTab(IConfigurationView configurationView) {
