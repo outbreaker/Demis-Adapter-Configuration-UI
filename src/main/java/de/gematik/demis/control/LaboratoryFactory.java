@@ -29,6 +29,7 @@ public class LaboratoryFactory {
 
   private static ReportingFacility createMelderEinrichtung() {
     ReportingFacility reportingFacility = new ReportingFacility();
+    reportingFacility.setEinrichtungsArt(LABORATORY_JSON.EINRICHTUNGS_ART.getDefaultValue());
     return reportingFacility;
   }
 }

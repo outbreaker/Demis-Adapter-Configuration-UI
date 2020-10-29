@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 public class LaboratoryView extends AbstractConfigurationView {
 
-  private static Logger LOG = LoggerFactory.getLogger(LaboratoryView.class.getName());
+  private static final Logger LOG = LoggerFactory.getLogger(LaboratoryView.class.getName());
   private Path path;
   private Laboratory laboratory;
   private IdentityProviderView identityProviderView;
