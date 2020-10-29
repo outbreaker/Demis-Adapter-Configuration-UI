@@ -69,7 +69,7 @@ public class PropertiesView extends AbstractConfigurationView {
               c.insets = new Insets(0, 10, 0, 10); // top padding
               c.anchor = GridBagConstraints.LAST_LINE_START;
               c.weightx = 0;
-              JLabel label = new JLabel(e.getKey());
+              JLabel label = new JLabel(e.getDisplayName());
               label.setToolTipText(e.getToolTip());
               this.add(label, c);
 

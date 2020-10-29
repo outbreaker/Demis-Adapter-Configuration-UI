@@ -70,7 +70,8 @@ public enum LABORATORY_JSON implements IJson {
 
   @Override
   public String getDisplayName() {
-    return getKey(); // TODO: load from Languagefile
+    var displayNames = ResourceBundle.getBundle("DisplayNamesBundle", Locale.getDefault());
+    return displayNames.getString(this.getKey());
   }
 
   @Override
