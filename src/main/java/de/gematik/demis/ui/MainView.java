@@ -38,7 +38,7 @@ public class MainView {
     frame.add(toolBar.getToolBar(), BorderLayout.NORTH);
     frame.add(configTabs, BorderLayout.CENTER);
 
-    frame.setTitle("Demis Adapter-Konfigurator");
+    frame.setTitle("DEMIS Adapter-Konfigurator");
     frame.setSize(900, 600);
     frame.setLocation(200, 200);
 

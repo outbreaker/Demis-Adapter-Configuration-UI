@@ -60,7 +60,8 @@ public enum ADAPTER_Properties implements IProperties {
 
   @Override
   public String getDisplayName() {
-    return ""; // TODO: load from Languagefile
+    var displayNames = ResourceBundle.getBundle("DisplayNamesBundle", Locale.getDefault());
+    return displayNames.getString(this.getKey());
   }
 
   @Override
