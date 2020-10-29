@@ -1,4 +1,4 @@
-# Demis-Adapter-Configuration-UI
+# DEMIS-Adapter-Configuration-UI
 
 ## Implementation 
 ### Code-Style
