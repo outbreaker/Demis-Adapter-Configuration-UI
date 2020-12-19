@@ -5,27 +5,38 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 public enum ADAPTER_Properties implements IProperties {
-  DEBUG("debuginfo.enabled", VALUE_TYPE.BOOLEAN, false, "true", true),
+  DEBUG("debuginfo.enabled", VALUE_TYPE.BOOLEAN, false, "true", true, false),
   FHIR_BASEPATH(
       "fhir.basepath",
       VALUE_TYPE.SELECT_FIX_FHIR_BASEPATH,
       false,
       "https://demis.rki.de/notification-api/fhir/",
+      false,
       false),
   IDP_LAB_TOKENENDPOINT(
       "idp.lab.tokenendpoint",
       VALUE_TYPE.URL,
       false,
       "https://demis.rki.de/auth/realms/LAB/protocol/openid-connect/token",
-      true),
-  IDP_LAB_CLIENTID("idp.lab.clientid", VALUE_TYPE.STRING, false, "demis-adapter", true),
-  IDP_LAB_SECRET("idp.lab.secret", VALUE_TYPE.STRING, false, "secret_client_secret", true),
-  IDP_LAB_PROXY("idp.lab.proxy", VALUE_TYPE.STRING, true, "", false),
+      true,
+      false),
+  IDP_LAB_CLIENTID("idp.lab.clientid", VALUE_TYPE.STRING, false, "demis-adapter", true, false),
+  IDP_LAB_SECRET("idp.lab.secret", VALUE_TYPE.STRING, false, "secret_client_secret", true, false),
+  IDP_LAB_PROXY("idp.lab.proxy", VALUE_TYPE.STRING, true, "", false, true),
+  IDP_LAB_PROXY_HOST("idp.lab.proxy.host", VALUE_TYPE.STRING, true, "", false, false),
+  IDP_LAB_PROXY_PORT("idp.lab.proxy.port", VALUE_TYPE.INT, true, "", false, false),
+  IDP_LAB_PROXY_USERNAME("idp.lab.proxy.username", VALUE_TYPE.STRING, true, "", false, false),
+  IDP_LAB_PROXY_PASSWORD("idp.lab.proxy.password", VALUE_TYPE.PASSWORD, true, "", false, false),
   IDP_LAB_TRUSTSTORE(
-      "idp.lab.truststore", VALUE_TYPE.RELATIVE_PATH, false, "../config/nginx.truststore", true),
+      "idp.lab.truststore",
+      VALUE_TYPE.RELATIVE_PATH,
+      false,
+      "../config/nginx.truststore",
+      true,
+      false),
   IDP_LAB_TRUSTSTOREPASSWORD(
-      "idp.lab.truststorepassword", VALUE_TYPE.PASSWORD, false, "secret", true),
-  LABOR_CONFIGFILE("labor.configfile", VALUE_TYPE.PATH_LIST, false, "", false),
+      "idp.lab.truststorepassword", VALUE_TYPE.PASSWORD, false, "secret", true, false),
+  LABOR_CONFIGFILE("labor.configfile", VALUE_TYPE.PATH_LIST, false, "", false, false),
   ;
 
   private final String key;
@@ -33,14 +44,21 @@ public enum ADAPTER_Properties implements IProperties {
   private final boolean optional;
   private final boolean expertValue;
   private final String defaultValue;
+  private final boolean deprecated;
 
   ADAPTER_Properties(
-      String key, VALUE_TYPE type, boolean optional, String defaultValue, boolean expertValue) {
+      String key,
+      VALUE_TYPE type,
+      boolean optional,
+      String defaultValue,
+      boolean expertValue,
+      boolean deprecated) {
     this.key = key;
     this.type = type;
     this.optional = optional;
     this.expertValue = expertValue;
     this.defaultValue = defaultValue;
+    this.deprecated = deprecated;
   }
 
   public static boolean containsProperties(Properties properties) {
@@ -88,5 +106,10 @@ public enum ADAPTER_Properties implements IProperties {
   @Override
   public boolean isExpertValue() {
     return expertValue;
+  }
+
+  @Override
+  public boolean isDeprecated() {
+    return deprecated;
   }
 }

@@ -1,0 +1,34 @@
+{
+    "identifikator":"987654321",        
+    "positiveTestergebnisBezeichnungen": ["schwach nachweisbar", "positiv", "POSITIV", "P O S I T I V"],
+    "melderPerson":{
+        "nachname":"MelderPersonTestNachname",
+        "vorname":"MelderPersonTesVorname",
+        "anschriftenzeile":"MelderPerson Strasse nr 123 Drittenhinterhof",
+        "postleitzahl":"13055",
+        "stadt":"Berlin",
+        "telefonnummer":"030 1234",
+        "erreichbarkeit":"montag-freitag 8:00-16:00"
+    }, 
+    "melderEinrichtung":{
+        "BSNR":"987654321",
+        "name":"Labor von Froreich/Schmidt und Partner",
+        "einrichtungsArt":"laboratory",
+        "ansprechspartnerNachname":"MelderEinrichtung Ansp. Nachname",
+        "ansprechspartnerVorname":"MelderEinrichtung Ansp. Vorname",
+        "anschriftenzeile":"MelderEinrichtung Strasse nr 123 Drittenhinterhof",
+        "postleitzahl":"13055",
+        "stadt":"Berlin",
+        "telefonnummer":"030 1234",
+        "faxnummer":"030 1234",
+        "email":"office@meldereinrichtung.de",
+        "webseite":"meldereinrichtung.de"
+    },
+    "idp": {
+		"username":"01.01.01.100.",
+        "authcertkeystore":"../Config/LAB-01.01.01.100.jks",
+        "authcertpassword":"GIBMSSV1QX",
+        "authcertalias":"lab-01.01.01.100."
+    }
+}
+
