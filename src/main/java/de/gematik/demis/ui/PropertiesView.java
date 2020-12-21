@@ -120,6 +120,7 @@ public class PropertiesView extends AbstractConfigurationView {
       prop.remove(proxyKey);
       prop.put(ADAPTER_Properties.IDP_LAB_PROXY_HOST.getKey(), hostPort[0]);
       prop.put(ADAPTER_Properties.IDP_LAB_PROXY_PORT.getKey(), hostPort[1]);
+      setUnsaved();
     }
   }
 
