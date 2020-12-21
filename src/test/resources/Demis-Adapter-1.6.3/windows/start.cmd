@@ -1,5 +1,5 @@
 SET JAVADIR=jre11\bin
-SET CLIENTDIR=../client
+SET CLIENTDIR=..\client
 
 REM java as new window
-%JAVADIR%\java -jar -Dfile.encoding=UTF-8 %CLIENTDIR%/demis-adapter-1.1.0.jar -apiConf=%CLIENTDIR%/demis-adapter-api.properties -conf=%CLIENTDIR%/app.properties
+%JAVADIR%\java -Dfile.encoding=UTF-8 -jar %CLIENTDIR%\demis-adapter-1.6.3.jar -conf %CLIENTDIR%\app.properties -apiConf %CLIENTDIR%\demis-adapter-api.properties
