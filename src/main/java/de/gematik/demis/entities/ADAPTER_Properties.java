@@ -24,7 +24,7 @@ public enum ADAPTER_Properties implements IProperties {
   IDP_LAB_SECRET("idp.lab.secret", VALUE_TYPE.STRING, false, "secret_client_secret", true, false),
   IDP_LAB_PROXY("idp.lab.proxy", VALUE_TYPE.STRING, true, "", false, true),
   IDP_LAB_PROXY_HOST("idp.lab.proxy.host", VALUE_TYPE.STRING, true, "", false, false),
-  IDP_LAB_PROXY_PORT("idp.lab.proxy.port", VALUE_TYPE.INT, true, "", false, false),
+  IDP_LAB_PROXY_PORT("idp.lab.proxy.port", VALUE_TYPE.PORT, true, "", false, false),
   IDP_LAB_PROXY_USERNAME("idp.lab.proxy.username", VALUE_TYPE.STRING, true, "", false, false),
   IDP_LAB_PROXY_PASSWORD("idp.lab.proxy.password", VALUE_TYPE.PASSWORD, true, "", false, false),
   IDP_LAB_TRUSTSTORE(
