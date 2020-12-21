@@ -5,4 +5,4 @@ CLIENTDIR=../client
 
 $JAVA -version
 
-$JAVA -Dfile.encoding=UTF-8 -jar $CLIENTDIR/demis-adapter-1.6.3.jar –conf $CLIENTDIR/app.properties –apiConf $CLIENTDIR/demis-adapter-api.properties
+$JAVA -Dfile.encoding=UTF-8 -jar $CLIENTDIR/demis-adapter-1.6.3.jar â€“conf $CLIENTDIR/app.properties â€“apiConf $CLIENTDIR/demis-adapter-api.properties
