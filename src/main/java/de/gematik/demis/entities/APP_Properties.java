@@ -5,26 +5,28 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 public enum APP_Properties implements IProperties {
-  DEBUG("debuginfo.enabled", VALUE_TYPE.BOOLEAN, false, "true", true),
+  DEBUG("debuginfo.enabled", VALUE_TYPE.BOOLEAN, false, "true", true, false),
   FOLDER_INCOMING(
-      "incoming.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/input", true),
+      "incoming.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/input", true, false),
   FOLDER_SUBMITTED(
-      "submitted.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/done", true),
-  FOLDER_ERROR("error.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/error", true),
+      "submitted.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/done", true, false),
+  FOLDER_ERROR(
+      "error.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/error", true, false),
   FOLDER_QUEUED(
-      "queued.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/queue", true),
+      "queued.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/queue", true, false),
 
   VALID_DEMIS_JOKERS(
       "labor.ldt.valid9901",
       VALUE_TYPE.STRING_LIST,
       false,
       "demis_einsender_ansprechpartner,demis_einsender_telefon,demis_einsender_fax,demis_einsender_email,demis_test_code,demis_betroffeneperson_strasse,demis_betroffeneperson_hausnummer,demis_betroffeneperson_plz,demis_betroffeneperson_ort,demis_betroffeneperson_laendercode,demis_betroffeneperson_telefon\n",
-      true),
+      true,
+      false),
 
-  SENDRETRY_NBSECONDS("sendretry.nbseconds", VALUE_TYPE.INT, false, "60", true),
-  SENDRETRY_NBATTEMPTS("sendretry.nbattempts", VALUE_TYPE.INT, false, "10", true),
-  SENDRETRY_NBTHREADS("sendretry.nbthreads", VALUE_TYPE.INT, false, "10", true),
-  MAINTENANCE_WAITNBMINUTES("maintenance.waitnbminutes", VALUE_TYPE.INT, false, "5", true),
+  SENDRETRY_NBSECONDS("sendretry.nbseconds", VALUE_TYPE.INT, false, "60", true, false),
+  SENDRETRY_NBATTEMPTS("sendretry.nbattempts", VALUE_TYPE.INT, false, "10", true, false),
+  SENDRETRY_NBTHREADS("sendretry.nbthreads", VALUE_TYPE.INT, false, "10", true, false),
+  MAINTENANCE_WAITNBMINUTES("maintenance.waitnbminutes", VALUE_TYPE.INT, false, "5", true, false),
   ;
 
   private final boolean expertValue;
@@ -32,14 +34,21 @@ public enum APP_Properties implements IProperties {
   private final VALUE_TYPE type;
   private final boolean optional;
   private final String defaultValue;
+  private final boolean deprecated;
 
   APP_Properties(
-      String key, VALUE_TYPE type, boolean optional, String defaultValue, boolean expertValue) {
+      String key,
+      VALUE_TYPE type,
+      boolean optional,
+      String defaultValue,
+      boolean expertValue,
+      boolean deprecated) {
     this.key = key;
     this.type = type;
     this.optional = optional;
     this.expertValue = expertValue;
     this.defaultValue = defaultValue;
+    this.deprecated = deprecated;
   }
 
   public static boolean containsProperties(Properties properties) {
@@ -87,5 +96,10 @@ public enum APP_Properties implements IProperties {
   @Override
   public boolean isExpertValue() {
     return expertValue;
+  }
+
+  @Override
+  public boolean isDeprecated() {
+    return deprecated;
   }
 }

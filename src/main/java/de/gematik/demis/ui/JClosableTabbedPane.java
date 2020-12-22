@@ -22,6 +22,7 @@ public class JClosableTabbedPane extends JTabbedPane implements ChangeListener {
   public void addTab(final IConfigurationView configurationView) {
     super.addTab(configurationView.getName(), configurationView.getComponent());
     configurationView.addChangeListener(this);
+    configurationView.checkForChanges();
   }
 
   public void addClosableTab(final IConfigurationView configurationView) {

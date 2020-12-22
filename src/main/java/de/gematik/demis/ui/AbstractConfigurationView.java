@@ -54,4 +54,9 @@ public abstract class AbstractConfigurationView extends AbstractEditorsView
 
     return jScrollPane;
   }
+
+  @Override
+  public void checkForChanges() {
+    if (hasUnsavedChanges()) fireTabChangedEvent();
+  }
 }

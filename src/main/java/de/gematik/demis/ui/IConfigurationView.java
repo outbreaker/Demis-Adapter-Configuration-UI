@@ -17,4 +17,6 @@ public interface IConfigurationView {
   void setSaved();
 
   Path getPath();
+
+  void checkForChanges();
 }

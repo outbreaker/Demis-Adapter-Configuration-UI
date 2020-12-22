@@ -14,6 +14,8 @@ public class ValueTypeEditorFactory {
         return new BooleanEditor();
       case INT:
         return new IntEditor();
+      case PORT:
+        return new PortEditor();
       case STRING_LIST:
         return new StringListEditor();
       case RELATIVE_PATH:
