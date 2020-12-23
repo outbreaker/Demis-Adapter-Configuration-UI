@@ -89,7 +89,9 @@ public class PropertiesView extends AbstractConfigurationView {
 
               editor.setExpertEditor(e.isExpertValue());
               editor.checkExpertMode();
-              String property = prop.getProperty(e.getKey());
+
+              String property =
+                  prop.containsKey(e.getKey()) ? prop.getProperty(e.getKey()) : e.getDefaultValue();
               if (property == null) {
                 LOG.error(
                     "File: \""
