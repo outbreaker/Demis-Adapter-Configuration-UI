@@ -27,6 +27,8 @@ public enum APP_Properties implements IProperties {
   SENDRETRY_NBATTEMPTS("sendretry.nbattempts", VALUE_TYPE.INT, false, "10", true, false),
   SENDRETRY_NBTHREADS("sendretry.nbthreads", VALUE_TYPE.INT, false, "10", true, false),
   MAINTENANCE_WAITNBMINUTES("maintenance.waitnbminutes", VALUE_TYPE.INT, false, "5", true, false),
+  LABOR_LDT_GEBURTSDATUM_FORMAT(
+      "labor.ldt.geburtsdatum.format", VALUE_TYPE.STRING, false, "yyyyMMdd", true, false),
   ;
 
   private final boolean expertValue;
