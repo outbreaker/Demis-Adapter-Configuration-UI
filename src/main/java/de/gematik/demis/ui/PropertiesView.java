@@ -126,8 +126,11 @@ public class PropertiesView extends AbstractConfigurationView {
     if (exception instanceof NumberFormatException) {
       JOptionPane.showMessageDialog(
           MainView.getInstance().getMainComponent(),
-          messages.getString("ERROR_SET_VALUE_AS_PORT").replace("##VALUE##", value),
-          messages.getString("ERROR_SET_VALUE_AS_PORT_TITLE"),
+          messages
+              .getString("ERROR_SET_VALUE_AS_NUMBER")
+              .replace("##VALUE##", value)
+              .replace("##PROPERTY##", property),
+          messages.getString("ERROR_SET_VALUE_AS_NUMBER_TITLE"),
           JOptionPane.WARNING_MESSAGE);
     } else {
       JOptionPane.showMessageDialog(
