@@ -23,6 +23,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,7 +101,11 @@ public class PropertiesView extends AbstractConfigurationView {
                         + e.getKey()
                         + "\" has no Value!");
               } else {
-                editor.setValue(property);
+                try {
+                  editor.setValue(property);
+                } catch (Exception exception) {
+                  handleSetValueException(exception, property, e.getKey());
+                }
               }
               editor.addChangeListener(
                   s -> {
@@ -111,6 +116,27 @@ public class PropertiesView extends AbstractConfigurationView {
               c.gridy++;
             });
     this.repaint();
+  }
+
+  private void handleSetValueException(Exception exception, String value, String property) {
+    ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", Locale.getDefault());
+    if (exception instanceof NumberFormatException) {
+      JOptionPane.showMessageDialog(
+          MainView.getInstance().getMainComponent(),
+          messages.getString("ERROR_SET_VALUE_AS_PORT").replace("##VALUE##", value),
+          messages.getString("ERROR_SET_VALUE_AS_PORT_TITLE"),
+          JOptionPane.WARNING_MESSAGE);
+    } else {
+      JOptionPane.showMessageDialog(
+          MainView.getInstance().getMainComponent(),
+          messages
+              .getString("ERROR_SET_VALUE")
+              .replace("##VALUE##", value)
+              .replace("##PROPERTY##", property),
+          messages.getString("ERROR_SET_VALUE_TITLE"),
+          JOptionPane.WARNING_MESSAGE);
+    }
+    setUnsaved();
   }
 
   private void convertProxyFromSinglelineToMultiline(Properties prop) {
