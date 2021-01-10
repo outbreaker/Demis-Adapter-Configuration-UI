@@ -38,6 +38,10 @@ class PortEditorTest {
         () -> {
           portEditor.setValue("-1");
         });
+    portEditor.setValue("100");
+    Assertions.assertEquals("100", portEditor.getValue());
+    portEditor.setValue("");
+    Assertions.assertEquals("", portEditor.getValue());
   }
 
   @Test

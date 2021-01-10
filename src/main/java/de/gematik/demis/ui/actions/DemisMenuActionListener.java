@@ -26,6 +26,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.swing.filechooser.FileFilter;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -185,7 +186,10 @@ public class DemisMenuActionListener implements ActionListener {
           == JFileChooser.APPROVE_OPTION) {
         File folderToLoad = universalFileChooser.getSelectedFile();
         if (!folderToLoad.getAbsolutePath().toLowerCase().endsWith("." + fileType)) {
-          lastPath = new File(folderToLoad.getAbsolutePath() + "." + fileType);
+          lastPath =
+              new File(
+                  FilenameUtils.getPath(
+                      folderToLoad.getAbsolutePath() + "." + FilenameUtils.getName(fileType)));
         } else {
           lastPath = folderToLoad.getAbsoluteFile();
         }

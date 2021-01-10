@@ -44,6 +44,10 @@ public class PortEditor extends AbstractEditor {
 
   @Override
   public void setValue(String value) {
+    if (value.isEmpty()) {
+      field.setValue(null);
+      return;
+    }
     field.setValue(Integer.valueOf(value));
     try {
       field.commitEdit();
