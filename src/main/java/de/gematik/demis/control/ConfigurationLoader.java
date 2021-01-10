@@ -86,9 +86,12 @@ public class ConfigurationLoader {
     boolean config = false;
     boolean client = false;
     boolean data = false;
-    try (Stream<Path> stream1 = Files.walk(Paths.get(FilenameUtils.normalize(dir)), 1);
-        Stream<Path> stream2 = Files.walk(Paths.get(FilenameUtils.normalize(dir)), 1);
-        Stream<Path> stream3 = Files.walk(Paths.get(FilenameUtils.normalize(dir)), 1)) {
+    try (Stream<Path> stream1 =
+            Files.walk(Paths.get(FilenameUtils.getFullPath(dir + File.separator)), 1);
+        Stream<Path> stream2 =
+            Files.walk(Paths.get(FilenameUtils.getFullPath(dir + File.separator)), 1);
+        Stream<Path> stream3 =
+            Files.walk(Paths.get(FilenameUtils.getFullPath(dir + File.separator)), 1)) {
       config =
           stream1
               .filter(Files::isDirectory)
@@ -108,7 +111,8 @@ public class ConfigurationLoader {
   }
 
   public Set<Path> listFilesUsingFileWalk(String dir, int depth) throws IOException {
-    try (Stream<Path> stream = Files.walk(Paths.get(FilenameUtils.normalize(dir)), depth)) {
+    try (Stream<Path> stream =
+        Files.walk(Paths.get(FilenameUtils.getFullPath(dir + File.separator)), depth)) {
       return stream
           .filter(file -> !Files.isDirectory(file))
           .filter(file -> !file.toFile().getAbsolutePath().toLowerCase().contains("\\jre"))
