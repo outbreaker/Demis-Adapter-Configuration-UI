@@ -187,7 +187,7 @@ public class DemisMenuActionListener implements ActionListener {
         File folderToLoad = universalFileChooser.getSelectedFile();
         if (!folderToLoad.getAbsolutePath().toLowerCase().endsWith("." + fileType)) {
           String filename = folderToLoad.getAbsolutePath() + "." + fileType;
-          lastPath = new File(FilenameUtils.getPath(filename));
+          lastPath = new File(FilenameUtils.normalize(filename));
         } else {
           lastPath = folderToLoad.getAbsoluteFile();
         }

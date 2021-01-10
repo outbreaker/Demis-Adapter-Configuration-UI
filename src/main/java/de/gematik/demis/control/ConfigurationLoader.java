@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,21 +86,20 @@ public class ConfigurationLoader {
     boolean config = false;
     boolean client = false;
     boolean data = false;
-
-    try (Stream<Path> stream1 = Files.walk(Paths.get(dir), 1);
-        Stream<Path> stream2 = Files.walk(Paths.get(dir), 1);
-        Stream<Path> stream3 = Files.walk(Paths.get(dir), 1)) {
+    try (Stream<Path> stream1 = Files.walk(Paths.get(FilenameUtils.normalize(dir)), 1);
+        Stream<Path> stream2 = Files.walk(Paths.get(FilenameUtils.normalize(dir)), 1);
+        Stream<Path> stream3 = Files.walk(Paths.get(FilenameUtils.normalize(dir)), 1)) {
       config =
           stream1
-              .filter(file -> Files.isDirectory(file))
+              .filter(Files::isDirectory)
               .anyMatch(f -> f.toFile().getAbsolutePath().toLowerCase().endsWith("config"));
       client =
           stream2
-              .filter(file -> Files.isDirectory(file))
+              .filter(Files::isDirectory)
               .anyMatch(f -> f.toFile().getAbsolutePath().toLowerCase().endsWith("client"));
       data =
           stream3
-              .filter(file -> Files.isDirectory(file))
+              .filter(Files::isDirectory)
               .anyMatch(f -> f.toFile().getAbsolutePath().toLowerCase().endsWith("data"));
     } catch (Exception e) {
       LOG.error("Failed to check folder", e);
@@ -108,7 +108,7 @@ public class ConfigurationLoader {
   }
 
   public Set<Path> listFilesUsingFileWalk(String dir, int depth) throws IOException {
-    try (Stream<Path> stream = Files.walk(Paths.get(dir), depth)) {
+    try (Stream<Path> stream = Files.walk(Paths.get(FilenameUtils.normalize(dir)), depth)) {
       return stream
           .filter(file -> !Files.isDirectory(file))
           .filter(file -> !file.toFile().getAbsolutePath().toLowerCase().contains("\\jre"))
