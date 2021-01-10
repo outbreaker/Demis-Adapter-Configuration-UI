@@ -1,3 +1,10 @@
+# Release 1.1.1
+
+Bug fixes:
+* Properties in in loaded files with wrong number value would reset to default value
+* Ignore empty properties in files
+* Fix Code Smells 
+
 # Release 1.1.0
 
 Implemented features:
@@ -22,3 +29,4 @@ Implemented features:
 * UI for Multi-Labor Configuration
 
 > Support Adapter 1.1.0
+
