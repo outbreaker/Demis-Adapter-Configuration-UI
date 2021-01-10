@@ -103,6 +103,9 @@ public class PropertiesView extends AbstractConfigurationView {
               } else {
                 try {
                   editor.setValue(property);
+                } catch (NumberFormatException exception) {
+                  editor.setValue(e.getDefaultValue());
+                  handleSetValueException(exception, property, e.getKey());
                 } catch (Exception exception) {
                   handleSetValueException(exception, property, e.getKey());
                 }
