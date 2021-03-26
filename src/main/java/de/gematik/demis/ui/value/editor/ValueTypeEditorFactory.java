@@ -18,9 +18,10 @@ public class ValueTypeEditorFactory {
         return new PortEditor();
       case STRING_LIST:
         return new StringListEditor();
-      case RELATIVE_PATH:
-      case PATH:
-        return new RelativPathEditor();
+      case RELATIVE_PATH_FILE:
+        return new RelativPathEditor(false);
+      case RELATIVE_PATH_DIR:
+        return new RelativPathEditor(true);
       case STRING:
         return new StringEditor();
       case PASSWORD:

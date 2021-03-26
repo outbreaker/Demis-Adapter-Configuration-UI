@@ -22,14 +22,14 @@ class ValueTypeEditorFactoryTest {
         ValueTypeEditorFactory.createEditor(VALUE_TYPE.STRING_LIST).getClass());
     Assert.assertEquals(
         RelativPathEditor.class,
-        ValueTypeEditorFactory.createEditor(VALUE_TYPE.RELATIVE_PATH).getClass());
+        ValueTypeEditorFactory.createEditor(VALUE_TYPE.RELATIVE_PATH_FILE).getClass());
     Assert.assertEquals(
         StringEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.STRING).getClass());
     Assert.assertEquals(
         RelativPathListEditor.class,
         ValueTypeEditorFactory.createEditor(VALUE_TYPE.PATH_LIST).getClass());
     Assert.assertEquals(
-        RelativPathEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.PATH).getClass());
+        RelativPathEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.RELATIVE_PATH_DIR).getClass());
     Assert.assertEquals(
         UrlEditor.class, ValueTypeEditorFactory.createEditor(VALUE_TYPE.URL).getClass());
     Assert.assertEquals(

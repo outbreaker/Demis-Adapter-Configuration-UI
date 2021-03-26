@@ -23,19 +23,25 @@ public class RelativPathEditor extends AbstractEditor {
   private final JButton dialogJb;
   private String[] fileExtension;
   private String fileExtensionDescription;
+  private boolean selectDir;
 
   public RelativPathEditor(String[] fileExtension) {
-    this();
+    this(false);
     setFileExtensions(fileExtension);
   }
 
-  public RelativPathEditor() {
+  public RelativPathEditor(boolean selectDir) {
+    this.selectDir = selectDir;
     this.setLayout(new BorderLayout());
     relativPath = new JTextField();
     relativPath.setEditable(false);
     add(relativPath, BorderLayout.CENTER);
     dialogJb = new JButton(ImageUtils.loadResizeImage("OPEN_FILE", 15));
-    dialogJb.addActionListener(actionEvent -> selectFile());
+    if (selectDir) {
+      dialogJb.addActionListener(actionEvent -> select(JFileChooser.DIRECTORIES_ONLY));
+    } else {
+      dialogJb.addActionListener(actionEvent -> select(JFileChooser.FILES_ONLY));
+    }
     dialogJb.setEnabled(!isExpertEditor());
     relativPath.setEnabled(!isExpertEditor());
     add(dialogJb, BorderLayout.EAST);
@@ -51,13 +57,13 @@ public class RelativPathEditor extends AbstractEditor {
         fileExtensionDescription.substring(0, fileExtensionDescription.length() - 1);
   }
 
-  private void selectFile() {
+  private void select(int mode) {
     JFileChooser jFileChooser =
         new JFileChooser(
             (lastPath == null
                 ? ConfigurationLoader.getInstance().getPathToMainFolder().toFile().getAbsolutePath()
                 : lastPath));
-    jFileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    jFileChooser.setFileSelectionMode(mode);
     if (fileExtension != null) {
       jFileChooser.setFileFilter(
           new FileFilter() {
