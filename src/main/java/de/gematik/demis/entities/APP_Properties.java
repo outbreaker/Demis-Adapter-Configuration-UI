@@ -7,13 +7,13 @@ import java.util.ResourceBundle;
 public enum APP_Properties implements IProperties {
   DEBUG("debuginfo.enabled", VALUE_TYPE.BOOLEAN, false, "true", true, false),
   FOLDER_INCOMING(
-      "incoming.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/input", true, false),
+      "incoming.lab.results.folder", VALUE_TYPE.RELATIVE_PATH_DIR, false, "../data/input", true, false),
   FOLDER_SUBMITTED(
-      "submitted.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/done", true, false),
+      "submitted.lab.results.folder", VALUE_TYPE.RELATIVE_PATH_DIR, false, "../data/done", true, false),
   FOLDER_ERROR(
-      "error.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/error", true, false),
+      "error.lab.results.folder", VALUE_TYPE.RELATIVE_PATH_DIR, false, "../data/error", true, false),
   FOLDER_QUEUED(
-      "queued.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/queue", true, false),
+      "queued.lab.results.folder", VALUE_TYPE.RELATIVE_PATH_DIR, false, "../data/queue", true, false),
 
   VALID_DEMIS_JOKERS(
       "labor.ldt.valid9901",
@@ -29,6 +29,7 @@ public enum APP_Properties implements IProperties {
   MAINTENANCE_WAITNBMINUTES("maintenance.waitnbminutes", VALUE_TYPE.INT, false, "15", true, false),
   LABOR_LDT_GEBURTSDATUM_FORMAT(
       "labor.ldt.geburtsdatum.format", VALUE_TYPE.STRING, false, "yyyyMMdd", true, false),
+  PDF_FILEPATH("quittung.lab.results.folder", VALUE_TYPE.RELATIVE_PATH_DIR, false, "../data/done", true, false)
   ;
 
   private final boolean expertValue;

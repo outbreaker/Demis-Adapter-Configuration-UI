@@ -29,7 +29,7 @@ public enum ADAPTER_Properties implements IProperties {
   IDP_LAB_PROXY_PASSWORD("idp.lab.proxy.password", VALUE_TYPE.PASSWORD, true, "", false, false),
   IDP_LAB_TRUSTSTORE(
       "idp.lab.truststore",
-      VALUE_TYPE.RELATIVE_PATH,
+      VALUE_TYPE.RELATIVE_PATH_FILE,
       false,
       "../config/nginx.truststore",
       true,
