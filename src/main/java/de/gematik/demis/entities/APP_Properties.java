@@ -29,6 +29,7 @@ public enum APP_Properties implements IProperties {
   MAINTENANCE_WAITNBMINUTES("maintenance.waitnbminutes", VALUE_TYPE.INT, false, "15", true, false),
   LABOR_LDT_GEBURTSDATUM_FORMAT(
       "labor.ldt.geburtsdatum.format", VALUE_TYPE.STRING, false, "yyyyMMdd", true, false),
+  PDF_FILEPATH("quittung.lab.results.folder", VALUE_TYPE.RELATIVE_PATH, false, "../data/done", true, false)
   ;
 
   private final boolean expertValue;
