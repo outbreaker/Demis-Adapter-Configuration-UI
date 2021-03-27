@@ -1,5 +1,5 @@
 # DEMIS-Adapter-Configuration-UI
-
+[![Codacy Security Scan](https://github.com/outbreaker/Demis-Adapter-Configuration-UI/actions/workflows/codacy-analysis.yml/badge.svg?branch=master)](https://github.com/outbreaker/Demis-Adapter-Configuration-UI/actions/workflows/codacy-analysis.yml) [![CodeQL](https://github.com/outbreaker/Demis-Adapter-Configuration-UI/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/outbreaker/Demis-Adapter-Configuration-UI/actions/workflows/codeql-analysis.yml) [![Java CI with Gradle](https://github.com/outbreaker/Demis-Adapter-Configuration-UI/actions/workflows/gitHubBuild.yml/badge.svg?branch=master)](https://github.com/outbreaker/Demis-Adapter-Configuration-UI/actions/workflows/gitHubBuild.yml) [![SL Scan](https://github.com/outbreaker/Demis-Adapter-Configuration-UI/actions/workflows/shiftleft-analysis.yml/badge.svg?branch=master)](https://github.com/outbreaker/Demis-Adapter-Configuration-UI/actions/workflows/shiftleft-analysis.yml)
 ## Implementation 
 ### Code-Style
 <https://raw.githubusercontent.com/google/styleguide/gh-pages/intellij-java-google-style.xml>
