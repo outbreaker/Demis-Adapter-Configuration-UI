@@ -30,7 +30,7 @@ public class RelativPathListEditor extends AbstractEditor {
   private final JScrollPane relativPathListScrollPane;
   private JButton addJb;
   private JButton removeJb;
-  private String[] fileExtension;
+  private String fileExtension;
 
   public RelativPathListEditor() {
     setLayout(new BorderLayout());
@@ -42,7 +42,7 @@ public class RelativPathListEditor extends AbstractEditor {
     this.add(buttonPanel, BorderLayout.EAST);
   }
 
-  public void setFileExtension(String[] fileExtension) {
+  public void setFileExtension(String fileExtension) {
     this.fileExtension = fileExtension;
   }
 
@@ -67,7 +67,7 @@ public class RelativPathListEditor extends AbstractEditor {
         new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent actionEvent) {
-            RelativPathEditor relativPathEditor = new RelativPathEditor(fileExtension);
+            RelativPathEditor relativPathEditor = new RelativPathEditor(false, fileExtension);
             relativPathEditor.setPreferredSize(new Dimension(500, 25));
             int okCxl =
                 JOptionPane.showConfirmDialog(
