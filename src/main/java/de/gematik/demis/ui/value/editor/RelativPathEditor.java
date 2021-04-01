@@ -5,6 +5,8 @@ import de.gematik.demis.ui.MainView;
 import de.gematik.demis.utils.ImageUtils;
 import de.gematik.demis.utils.PathUtils;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -15,22 +17,20 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class RelativPathEditor extends AbstractEditor {
 
   private static String lastPath;
   private final JTextField relativPath;
   private final JButton dialogJb;
-  private String[] fileExtension;
+  private String fileExtension;
   private String fileExtensionDescription;
   private boolean selectDir;
 
-  public RelativPathEditor(String[] fileExtension) {
-    this(false);
-    setFileExtensions(fileExtension);
-  }
 
-  public RelativPathEditor(boolean selectDir) {
+  public RelativPathEditor(boolean selectDir, String fileExtension) {
+    setFileExtensions(fileExtension);
     this.selectDir = selectDir;
     this.setLayout(new BorderLayout());
     relativPath = new JTextField();
@@ -47,14 +47,9 @@ public class RelativPathEditor extends AbstractEditor {
     add(dialogJb, BorderLayout.EAST);
   }
 
-  public void setFileExtensions(String[] fileExtension) {
+  public void setFileExtensions(String fileExtension) {
     this.fileExtension = fileExtension;
-    fileExtensionDescription = "";
-    for (String ext : fileExtension) {
-      fileExtensionDescription += " *." + ext + ",";
-    }
-    fileExtensionDescription =
-        fileExtensionDescription.substring(0, fileExtensionDescription.length() - 1);
+    fileExtensionDescription = "." + fileExtension;
   }
 
   private void select(int mode) {
@@ -69,8 +64,8 @@ public class RelativPathEditor extends AbstractEditor {
           new FileFilter() {
             @Override
             public boolean accept(File file) {
-              for (String ext : fileExtension) {
-                if (file.getName().toLowerCase().endsWith(ext)) return true;
+              if (file.getName().toLowerCase().endsWith(fileExtension)) {
+                return true;
               }
               return file.isDirectory();
             }
@@ -86,8 +81,24 @@ public class RelativPathEditor extends AbstractEditor {
       File selectedFile = jFileChooser.getSelectedFile();
       lastPath = selectedFile.getAbsolutePath();
       relativPath.setText(PathUtils.getRelativPath(selectedFile.toPath()));
+      fireTabChangedEvent(jFileChooser);
     }
   }
+
+  protected void fireTabChangedEvent(Object jFileChooser) {
+    ChangeEvent evt = new ChangeEvent(jFileChooser);
+    Object[] listeners = listenerList.getListenerList();
+    for (int i = 0; i < listeners.length; i = i + 2) {
+      if (listeners[i] == ChangeListener.class) {
+        ((ChangeListener) listeners[i + 1]).stateChanged(evt);
+      }
+    }
+  }
+
+  public void setFileExtension(String fileExtension) {
+    this.fileExtension = fileExtension;
+  }
+
 
   @Override
   public String getValue() {
@@ -106,13 +117,7 @@ public class RelativPathEditor extends AbstractEditor {
 
   @Override
   public void addChangeListener(ChangeListener changeListener) {
-    relativPath.addKeyListener(
-        new KeyAdapter() {
-          @Override
-          public void keyTyped(KeyEvent e) {
-            changeListener.stateChanged(new ChangeEvent(RelativPathEditor.this));
-          }
-        });
+    listenerList.add(ChangeListener.class, changeListener);
   }
 
   @Override

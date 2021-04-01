@@ -5,6 +5,7 @@ import de.gematik.demis.entities.APP_Properties;
 import de.gematik.demis.entities.IProperties;
 import de.gematik.demis.entities.VALUE_TYPE;
 import de.gematik.demis.ui.value.editor.IValueTypeView;
+import de.gematik.demis.ui.value.editor.RelativPathEditor;
 import de.gematik.demis.ui.value.editor.RelativPathListEditor;
 import de.gematik.demis.ui.value.editor.ValueTypeEditorFactory;
 import java.awt.Component;
@@ -85,8 +86,12 @@ public class PropertiesView extends AbstractConfigurationView {
               IValueTypeView editor = ValueTypeEditorFactory.createEditor(e.getType());
               if (e == ADAPTER_Properties.LABOR_CONFIGFILE
                   && editor instanceof RelativPathListEditor) {
-                ((RelativPathListEditor) editor).setFileExtension(new String[] {"json"});
+                ((RelativPathListEditor) editor).setFileExtension("json");
               }
+                if (e == ADAPTER_Properties.IDP_LAB_TRUSTSTORE
+                        && editor instanceof RelativPathEditor) {
+                    ((RelativPathEditor) editor).setFileExtension("truststore");
+                }
 
               editor.setExpertEditor(e.isExpertValue());
               editor.checkExpertMode();

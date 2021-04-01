@@ -19,9 +19,9 @@ public class ValueTypeEditorFactory {
       case STRING_LIST:
         return new StringListEditor();
       case RELATIVE_PATH_FILE:
-        return new RelativPathEditor(false);
+        return new RelativPathEditor(false, "truststore");
       case RELATIVE_PATH_DIR:
-        return new RelativPathEditor(true);
+        return new RelativPathEditor(true, "");
       case STRING:
         return new StringEditor();
       case PASSWORD:
